@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Boney for Brands</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Poppins:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:      #F5F2ED;
+  --ink:     #0A0A0A;
+  --accent:  #025df0;
+  --muted:   #8A8478;
+  --rule:    rgba(10,10,10,.09);
+  --dark:    #141414;
+  --dark-fg: #F5F2ED;
+  --dark-mu: rgba(245,242,237,.45);
+  --dark-rl: rgba(245,242,237,.1);
+  --serif: 'Libre Caslon Text', Georgia, serif;
+  --body:  'Poppins', sans-serif;
+  --mono:  'DM Mono', monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased;}
+.ac{color:var(--accent);}
+strong{color:var(--accent);font-weight:500;}
+
+/* CURSOR */
+#dot{position:fixed;z-index:9999;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--bg);mix-blend-mode:difference;pointer-events:none;transform:translate(-50%,-50%);}
+#ring{position:fixed;z-index:9998;top:0;left:0;width:36px;height:36px;border-radius:50%;border:1px solid rgba(10,10,10,.2);pointer-events:none;transform:translate(-50%,-50%);transition:width .4s cubic-bezier(.22,1,.36,1),height .4s cubic-bezier(.22,1,.36,1),border-color .3s;}
+
+/* HEADER */
+#site-header{position:fixed;top:0;left:0;right:0;z-index:1000;height:74px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding:0 100px;}
+.header-logo{display:flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0;}
+.logo-box{width:34px;height:34px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-0.02em;transition:background .25s,color .25s,border-color .25s;}
+.header-logo:hover .logo-box{background:var(--accent);border-color:var(--accent);color:#fff;}
+.logo-wordmark{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);transition:color .2s;}
+.header-logo:hover .logo-wordmark{color:var(--accent);}
+.header-right{display:flex;align-items:center;gap:40px;}
+.header-nav{display:flex;align-items:center;gap:36px;}
+.header-nav a{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.header-nav a:hover,.header-nav a.active{color:var(--ink);}
+.header-nav a.active{color:var(--accent);}
+.header-audit{position:relative;display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;padding:10px 22px;border:1px solid var(--ink);overflow:hidden;transition:color .32s;flex-shrink:0;}
+.header-audit::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .36s cubic-bezier(.77,0,.18,1);}
+.header-audit:hover::before{transform:translateX(0);}
+.header-audit:hover{color:#fff;}
+.header-audit span{position:relative;z-index:1;}
+.header-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.header-hamburger span{display:block;width:22px;height:1.5px;background:var(--ink);}
+body{padding-top:74px;}
+@media(hover:none),(pointer:coarse){body{cursor:auto;}#dot,#ring{display:none!important;}}
+@media(max-width:900px){#site-header{padding:0 24px;}.header-right{display:none;}.header-hamburger{display:flex;}body{padding-top:51px;}}
+
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);}
+.rv.on{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.44s;}
+
+/* ── HERO ── */
+#hero{
+  min-height:100svh;
+  padding:80px 60px;
+  padding-top:calc(64px + 60px);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+  border-bottom:1px solid var(--rule);
+  position:relative;
+  overflow:hidden;
+}
+.hero-left{}
+.hero-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:28px;opacity:0;animation:riseIn .6s .1s both;}
+.hero-headline{font-family:var(--serif);font-size:clamp(44px,6vw,88px);font-weight:400;line-height:1.05;letter-spacing:-0.03em;opacity:0;animation:riseIn .9s .2s both;}
+.hero-headline .ac{display:block;}
+.hero-right{padding-bottom:8px;opacity:0;animation:riseIn .8s .4s both;}
+.hero-body{font-family:var(--body);font-size:16px;font-weight:300;line-height:2;color:var(--muted);margin-bottom:40px;}
+.hero-body strong{color:var(--accent);}
+.hero-stat-row{display:flex;gap:40px;border-top:1px solid var(--rule);padding-top:32px;}
+.hs{display:flex;flex-direction:column;gap:6px;}
+.hs-num{font-family:var(--serif);font-size:clamp(26px,3vw,40px);color:var(--ink);line-height:1;}
+.hs-label{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+
+/* large background letter */
+.hero-bg-letter{
+  position:absolute;right:-40px;bottom:-60px;
+  font-family:var(--serif);font-size:clamp(260px,30vw,420px);
+  font-weight:700;color:rgba(10,10,10,.03);
+  line-height:1;pointer-events:none;user-select:none;
+  letter-spacing:-0.04em;
+}
+
+@keyframes riseIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── TICKER ── */
+.ticker{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);overflow:hidden;white-space:nowrap;padding:18px 0;}
+.ticker-t{display:inline-flex;animation:tk 32s linear infinite;}
+.ticker:hover .ticker-t{animation-direction:reverse;}
+.ti{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(10,10,10,.32);padding:0 36px;display:inline-flex;align-items:center;gap:36px;transition:color .2s;}
+.ti:hover{color:var(--accent);}
+.ti::after{content:'·';color:var(--accent);font-size:14px;}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── MANIFESTO ── */
+#manifesto{
+  background:var(--dark);
+  padding:140px 60px;
+  overflow:hidden;
+  position:relative;
+}
+.mf-label{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,242,237,.22);display:block;margin-bottom:56px;}
+.mf-lines{display:flex;flex-direction:column;gap:0;}
+.mf-line{
+  font-family:var(--serif);
+  font-size:clamp(22px,3.5vw,54px);
+  font-weight:400;
+  line-height:1.3;
+  letter-spacing:-0.02em;
+  color:rgba(245,242,237,.15);
+  padding:28px 0;
+  border-bottom:1px solid rgba(245,242,237,.05);
+  transition:color .4s;
+  cursor:default;
+  display:flex;
+  align-items:center;
+  gap:32px;
+}
+.mf-line:last-child{border-bottom:none;}
+.mf-line:hover{color:var(--dark-fg);}
+.mf-line.ac-line:hover{color:var(--accent);}
+.mf-line-num{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:rgba(245,242,237,.15);flex-shrink:0;width:28px;}
+.mf-line:hover .mf-line-num{color:rgba(245,242,237,.35);}
+
+/* ── WHO WE ARE ── */
+#who{padding:130px 60px;border-top:1px solid var(--rule);display:grid;grid-template-columns:380px 1fr;gap:100px;align-items:start;}
+.who-sticky{position:sticky;top:120px;}
+.who-label{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:24px;}
+.who-head{font-family:var(--serif);font-size:clamp(30px,3.5vw,50px);font-weight:400;line-height:1.15;letter-spacing:-0.02em;}
+.who-right{display:flex;flex-direction:column;gap:48px;}
+.who-block{border-top:1px solid var(--rule);padding-top:36px;}
+.wb-tag{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:16px;}
+.wb-title{font-family:var(--serif);font-size:clamp(20px,2vw,30px);font-weight:400;letter-spacing:-0.01em;margin-bottom:16px;}
+.wb-body{font-family:var(--body);font-size:15px;font-weight:300;line-height:1.95;color:var(--muted);}
+.wb-body strong{color:var(--ink);}
+
+/* ── VALUES ── */
+#values{background:var(--dark);padding:130px 60px;border-top:none;}
+.val-label{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,242,237,.22);display:block;margin-bottom:64px;}
+.val-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(245,242,237,.06);}
+.val-cell{background:var(--dark);padding:52px 48px;position:relative;overflow:hidden;transition:background .28s;}
+.val-cell::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .42s cubic-bezier(.22,1,.36,1);}
+.val-cell:hover{background:#1a1a1a;}
+.val-cell:hover::after{transform:scaleX(1);}
+.val-num{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,242,237,.2);display:block;margin-bottom:24px;}
+.val-title{font-family:var(--serif);font-size:clamp(22px,2.5vw,36px);font-weight:400;color:var(--dark-fg);letter-spacing:-0.02em;margin-bottom:16px;}
+.val-body{font-family:var(--body);font-size:14px;font-weight:300;line-height:1.9;color:rgba(245,242,237,.38);}
+
+/* ── PRINCIPAL ── */
+#principal{padding:130px 60px;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
+.pr-label{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:36px;}
+.pr-name{font-family:var(--serif);font-size:clamp(36px,5vw,72px);font-weight:400;line-height:1.05;letter-spacing:-0.03em;margin-bottom:12px;}
+.pr-title{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:40px;}
+.pr-body{font-family:var(--body);font-size:15px;font-weight:300;line-height:1.95;color:var(--muted);margin-bottom:24px;}
+.pr-body strong{color:var(--ink);}
+.pr-right{display:flex;flex-direction:column;gap:0;}
+.pr-fact{padding:22px 0;border-bottom:1px solid var(--rule);display:flex;gap:20px;align-items:baseline;}
+.pr-fact:first-child{border-top:1px solid var(--rule);}
+.pr-fact-key{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);flex:0 0 100px;}
+.pr-fact-val{font-family:var(--body);font-size:14px;font-weight:300;color:var(--ink);line-height:1.7;}
+
+/* ── CTA BAR ── */
+#cta-bar{background:var(--accent);padding:80px 60px;display:flex;align-items:center;justify-content:space-between;gap:48px;}
+.cta-bar-text{font-family:var(--serif);font-size:clamp(24px,3.5vw,48px);font-weight:400;letter-spacing:-0.02em;color:var(--dark-fg);line-height:1.15;}
+.cta-bar-text span{color:rgba(245,242,237,.4);}
+.cta-bar-btn{
+  display:inline-flex;align-items:center;gap:14px;flex-shrink:0;
+  font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);background:var(--dark-fg);padding:18px 36px;text-decoration:none;
+  transition:all .3s;
+}
+.cta-bar-btn:hover{background:var(--dark);color:var(--dark-fg);}
+.btn-arr{width:11px;height:11px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg);}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(10,10,10,.08);padding:32px 60px;background:var(--dark);display:flex;justify-content:space-between;align-items:center;}
+.fl{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,242,237,.5);}
+.fc{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:rgba(245,242,237,.25);}
+.footer-nav{display:flex;gap:28px;}
+.footer-nav a{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,242,237,.25);text-decoration:none;transition:color .2s;}
+.footer-nav a:hover{color:rgba(245,242,237,.6);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  #hero{grid-template-columns:1fr;gap:48px;padding:calc(64px + 40px) 24px 60px;align-items:start;}
+  #who{grid-template-columns:1fr;gap:48px;padding:80px 24px;}
+  .who-sticky{position:static;}
+  #manifesto,#values,#principal{padding-left:24px!important;padding-right:24px!important;}
+  #principal{grid-template-columns:1fr;gap:48px;}
+  .val-grid{grid-template-columns:1fr;}
+  #cta-bar{flex-direction:column;align-items:flex-start;padding:60px 24px;}
+  footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center;}
+  .footer-nav{justify-content:center;}
+  .hero-stat-row{flex-wrap:wrap;gap:24px;}
+}
+</style>
+</head>
+<body>
+
+<div id="dot"></div>
+<div id="ring"></div>
+
+<header id="site-header">
+  <a href="index.html" class="header-logo">
+    <div class="logo-box">B</div>
+    <span class="logo-wordmark">Boney for Brands</span>
+  </a>
+  <div class="header-right">
+    <nav class="header-nav">
+      <a href="about.html" class="active">About</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a href="mailto:hello@boneyforbrands.com?subject=Brand Communication Audit" class="header-audit">
+      <span>Free Audit</span>
+    </a>
+  </div>
+  <button class="header-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <span class="hero-eyebrow">Who We Are</span>
+    <h1 class="hero-headline">
+      We think.<br>
+      You <span class="ac">stand out.</span>
+    </h1>
+  </div>
+  <div class="hero-right">
+    <p class="hero-body">Boney for Brands is a <strong>boutique brand consultancy</strong> built on one belief: that the clearest thinking produces the most distinctive brands. We're not a volume shop. We take fewer clients, go deeper, and stay until the strategy is actually working.</p>
+    <div class="hero-stat-row">
+      <div class="hs"><div class="hs-num">12+</div><div class="hs-label">Years Strategizing</div></div>
+      <div class="hs"><div class="hs-num">D2C</div><div class="hs-label">Core Expertise</div></div>
+      <div class="hs"><div class="hs-num">India</div><div class="hs-label">& Global Markets</div></div>
+    </div>
+  </div>
+  <div class="hero-bg-letter">B</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-t">
+    <span class="ti">Boutique. On Purpose.</span>
+    <span class="ti">Senior Thinking Always</span>
+    <span class="ti">No Hand-Offs</span>
+    <span class="ti">Real Conversations</span>
+    <span class="ti">Consumer-First</span>
+    <span class="ti">Clarity Over Cleverness</span>
+    <span class="ti">Boutique. On Purpose.</span>
+    <span class="ti">Senior Thinking Always</span>
+    <span class="ti">No Hand-Offs</span>
+    <span class="ti">Real Conversations</span>
+    <span class="ti">Consumer-First</span>
+    <span class="ti">Clarity Over Cleverness</span>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <span class="mf-label rv">What We Believe</span>
+  <div class="mf-lines">
+    <div class="mf-line rv"><span class="mf-line-num">01</span>A brand without a point of view is just decoration.</div>
+    <div class="mf-line rv d1 ac-line"><span class="mf-line-num">02</span>Looking good is easy. Being remembered is strategy.</div>
+    <div class="mf-line rv d2"><span class="mf-line-num">03</span>Audience understanding is the only unfair advantage.</div>
+    <div class="mf-line rv d3 ac-line"><span class="mf-line-num">04</span>Clarity isn't a creative constraint. It's the goal.</div>
+    <div class="mf-line rv d1"><span class="mf-line-num">05</span>The AI era makes sharp thinking more valuable, not less.</div>
+  </div>
+</section>
+
+<!-- WHO WE ARE -->
+<section id="who">
+  <div class="who-sticky rv">
+    <span class="who-label">The Practice</span>
+    <h2 class="who-head">Built to be<br>different by<br><span class="ac">design.</span></h2>
+  </div>
+  <div class="who-right">
+    <div class="who-block rv d1">
+      <span class="wb-tag">Origin</span>
+      <h3 class="wb-title">Started with one question</h3>
+      <p class="wb-body">Why do so many brands with great products fail to connect? Not for lack of effort — but for lack of <strong>strategic clarity</strong>. Boney for Brands was founded to fix exactly that. To give growing brands the same quality of thinking that only large companies could afford — without the overhead, the hand-offs, or the bureaucracy.</p>
+    </div>
+    <div class="who-block rv d2">
+      <span class="wb-tag">How We Work</span>
+      <h3 class="wb-title">Fewer clients. Deeper work.</h3>
+      <p class="wb-body">We deliberately limit the number of clients we take at any time. That's not a constraint — it's a <strong>commitment to quality</strong>. Every engagement is led by the principal consultant. You get the senior brain, every time, on every call, across every deliverable.</p>
+    </div>
+    <div class="who-block rv d3">
+      <span class="wb-tag">The Model</span>
+      <h3 class="wb-title">A curated bench of specialists.</h3>
+      <p class="wb-body">When a brief demands it, we bring in handpicked specialists — each vetted, each senior, each briefed properly. <strong>Not a roster. Not a vendor list.</strong> A curated group of people who actually raise the quality of the work.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section id="values">
+  <span class="val-label rv">What Drives Us</span>
+  <div class="val-grid">
+    <div class="val-cell rv">
+      <span class="val-num">Value 01</span>
+      <h3 class="val-title">Honest Before Flattering</h3>
+      <p class="val-body">We'll tell you what the brand needs to hear — not what sounds good in a deck. That sometimes means uncomfortable truths. It always leads to better outcomes.</p>
+    </div>
+    <div class="val-cell rv d1">
+      <span class="val-num">Value 02</span>
+      <h3 class="val-title">Consumer First, Always</h3>
+      <p class="val-body">Every recommendation starts by asking: what does the audience actually need to feel, believe, or do? If it doesn't serve them, it doesn't serve the brand.</p>
+    </div>
+    <div class="val-cell rv d2">
+      <span class="val-num">Value 03</span>
+      <h3 class="val-title">Earned, Not Assumed</h3>
+      <p class="val-body">Positioning, trust, recall — none of it is given. We help brands earn their place in the audience's world through consistency, clarity, and genuine relevance.</p>
+    </div>
+    <div class="val-cell rv d3">
+      <span class="val-num">Value 04</span>
+      <h3 class="val-title">Thinking Over Templates</h3>
+      <p class="val-body">No framework gets applied without first asking if it's the right tool for this specific brand, category, and moment. Every solution is built from scratch.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPAL -->
+<section id="principal">
+  <div class="rv">
+    <span class="pr-label">The Principal</span>
+    <h2 class="pr-name">Rohan<br>Boney.</h2>
+    <span class="pr-title">Founder & Principal Consultant</span>
+    <p class="pr-body">Over a decade spent inside D2C, lifestyle, wellness, and consumer categories — across strategy, creative direction, and brand architecture. <strong>Obsessed with why some brands stick and most don't.</strong></p>
+    <p class="pr-body">Before founding Boney for Brands, held senior roles building brand direction for some of India's most recognised consumer names. Now applies that institutional experience to the brands that need it most — the ones still figuring out who they are.</p>
+  </div>
+  <div class="pr-right rv d1">
+    <div class="pr-fact">
+      <span class="pr-fact-key">Expertise</span>
+      <span class="pr-fact-val">Brand Strategy, Creative Direction, GTM, Consumer Insight</span>
+    </div>
+    <div class="pr-fact">
+      <span class="pr-fact-key">Categories</span>
+      <span class="pr-fact-val">D2C, Lifestyle, Wellness, Food & Bev, Personal Care, Tech</span>
+    </div>
+    <div class="pr-fact">
+      <span class="pr-fact-key">Markets</span>
+      <span class="pr-fact-val">India-first. Global-ready.</span>
+    </div>
+    <div class="pr-fact">
+      <span class="pr-fact-key">Approach</span>
+      <span class="pr-fact-val">Principle-led. Audience-rooted. No-fluff delivery.</span>
+    </div>
+    <div class="pr-fact">
+      <span class="pr-fact-key">Philosophy</span>
+      <span class="pr-fact-val">"The brand that understands its audience better wins. Always."</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAR -->
+<section id="cta-bar">
+  <div class="cta-bar-text rv">Ready to build something<br><span>worth remembering?</span></div>
+  <a href="contact.html" class="cta-bar-btn rv d2">Start the Conversation <div class="btn-arr"></div></a>
+</section>
+
+<footer>
+  <div class="fl">Boney for Brands</div>
+  <div class="footer-nav">
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="fc">© 2025 · Boutique Brand Consultancy · India</div>
+</footer>
+
+<script>
+/* CURSOR */
+if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+  const dot=document.getElementById('dot'),ring=document.getElementById('ring');
+  let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.transform=`translate(${mx}px,${my}px)`;});
+  (function loop(){rx+=(mx-rx)*.09;ry+=(my-ry)*.09;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(loop);})();
+}
+document.querySelectorAll('a,.val-cell,.who-block,.mf-line,.pr-fact,.cta-bar-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='var(--accent)';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(10,10,10,.2)';});
+});
+
+/* SCROLL REVEAL */
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.07});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
