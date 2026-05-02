@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Services — Boney for Brands</title>
+<!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Poppins:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -29,14 +37,7 @@ strong{color:var(--accent);font-weight:500;}
 #dot{position:fixed;z-index:9999;top:0;left:0;width:8px;height:8px;border-radius:50%;background:var(--bg);mix-blend-mode:difference;pointer-events:none;transform:translate(-50%,-50%);}
 #ring{position:fixed;z-index:9998;top:0;left:0;width:36px;height:36px;border-radius:50%;border:1px solid rgba(10,10,10,.2);pointer-events:none;transform:translate(-50%,-50%);transition:width .4s cubic-bezier(.22,1,.36,1),height .4s cubic-bezier(.22,1,.36,1),border-color .3s;}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(10,10,10,.06);background:rgba(245,242,237,.92);backdrop-filter:blur(12px);}
-.nav-logo{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:none;}
-.nav-links{display:flex;gap:40px;align-items:center;}
-.nav-links a{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
-.nav-links a:hover,.nav-links a.active{color:var(--ink);}
-.nav-links a.active{border-bottom:1px solid var(--accent);padding-bottom:2px;color:var(--accent);}
-.nav-cta{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#F5F2ED;background:#0A0A0A;padding:10px 22px;text-decoration:none;transition:background .25s,color .25s;}
-.nav-cta:hover{background:var(--accent);color:#F5F2ED;}
+
 
 .rv{opacity:0;transform:translateY(20px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);}
 .rv.on{opacity:1;transform:translateY(0);}
@@ -155,8 +156,6 @@ footer{border-top:1px solid rgba(10,10,10,.08);padding:32px 60px;background:var(
 .footer-nav a:hover{color:rgba(245,242,237,.6);}
 
 @media(max-width:900px){
-  nav{padding:16px 24px;}
-  .nav-links{display:none;}
   #hero{padding:120px 24px 60px;}
   .hero-sub{grid-template-columns:1fr;gap:28px;}
   .hero-count{text-align:left;}
@@ -170,6 +169,28 @@ footer{border-top:1px solid rgba(10,10,10,.08);padding:32px 60px;background:var(
   footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center;}
   .footer-nav{justify-content:center;}
 }
+/* HEADER */
+#site-header{position:fixed;top:0;left:0;right:0;z-index:1000;height:74px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding:0 100px;}
+.header-logo{display:flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0;}
+.logo-box{width:34px;height:34px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-0.02em;transition:background .25s,color .25s,border-color .25s;}
+.header-logo:hover .logo-box{background:var(--accent);border-color:var(--accent);color:#fff;}
+.logo-wordmark{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);transition:color .2s;}
+.header-logo:hover .logo-wordmark{color:var(--accent);}
+.header-right{display:flex;align-items:center;gap:40px;}
+.header-nav{display:flex;align-items:center;gap:36px;}
+.header-nav a{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.header-nav a:hover,.header-nav a.active{color:var(--ink);}
+.header-nav a.active{color:var(--accent);}
+.header-audit{position:relative;display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;padding:10px 22px;border:1px solid var(--ink);overflow:hidden;transition:color .32s;flex-shrink:0;}
+.header-audit::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .36s cubic-bezier(.77,0,.18,1);}
+.header-audit:hover::before{transform:translateX(0);}
+.header-audit:hover{color:#fff;}
+.header-audit span{position:relative;z-index:1;}
+.header-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.header-hamburger span{display:block;width:22px;height:1.5px;background:var(--ink);}
+body{padding-top:74px;}
+@media(hover:none),(pointer:coarse){body{cursor:auto;}#dot,#ring{display:none!important;}}
+@media(max-width:900px){#site-header{padding:0 24px;}.header-right{display:none;}.header-hamburger{display:flex;}body{padding-top:51px;}}
 </style>
 </head>
 <body>
