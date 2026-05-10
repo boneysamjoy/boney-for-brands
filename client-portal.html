@@ -17,7 +17,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;}
-.screen{display:none;}
+
 
 /* ══════════════════════
    LOGIN — SPLIT SCREEN
@@ -541,7 +541,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 <body>
 
 <!-- ══ LOGIN ══ -->
-<div id="screen-login" class="screen active">
+<div id="screen-login" class="screen" style="display:grid;grid-template-columns:1fr 1fr;">
   <div class="login-left">
     <div class="login-left-bg"></div>
     <div class="login-grid-lines"></div>
@@ -574,7 +574,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 </div>
 
 <!-- ══ LOADING ══ -->
-<div id="screen-loading" class="screen">
+<div id="screen-loading" class="screen" style="display:none;">
   <canvas id="ld-canvas"></canvas>
   <div class="ld-lines">
     <div class="ld-line" id="ll0"><div class="ld-dot active" id="ld0"></div><span class="ld-txt" id="lt0">Loading your brand workspace...</span></div>
@@ -585,7 +585,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 </div>
 
 <!-- ══ DASHBOARD ══ -->
-<div id="screen-dashboard" class="screen">
+<div id="screen-dashboard" class="screen" style="display:none;">
   <header id="dash-header">
     <div class="dh-logo">
       <div class="dh-logo-icon">BJ</div>
@@ -823,7 +823,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 </div>
 
 <!-- ══ QUESTIONNAIRE ══ -->
-<div id="screen-quiz" class="screen">
+<div id="screen-quiz" class="screen" style="display:none;">
   <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quiz-pf" style="width:0%"></div></div>
   <div class="quiz-top-bar">
     <div class="qtb-logo">Boney <span>for</span> Brands</div>
@@ -837,7 +837,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
 </div>
 
 <!-- ══ DONE ══ -->
-<div id="screen-done" class="screen">
+<div id="screen-done" class="screen" style="display:none;">
   <div class="done-ring"><div class="done-ring-inner"><div class="done-check"></div></div></div>
   <p class="done-tag">Submitted Successfully</p>
   <h1 class="done-title">We've got everything.</h1>
@@ -976,21 +976,14 @@ function startSphere(){
 }
 
 /* SCREENS */
-const SCREEN_DISPLAY={
-  'screen-login':'grid',
-  'screen-loading':'flex',
-  'screen-dashboard':'flex',
-  'screen-quiz':'block',
-  'screen-done':'flex',
-};
 function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>{
-    s.classList.remove('active');
-    s.style.display='none';
+  ['screen-login','screen-loading','screen-dashboard','screen-quiz','screen-done'].forEach(sid=>{
+    const s=document.getElementById(sid);
+    if(s){s.style.display='none';}
   });
+  const displayMap={'screen-login':'grid','screen-loading':'flex','screen-dashboard':'flex','screen-quiz':'block','screen-done':'flex'};
   const el=document.getElementById(id);
-  el.classList.add('active');
-  el.style.display=SCREEN_DISPLAY[id]||'block';
+  if(el){el.style.display=displayMap[id]||'block';}
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
