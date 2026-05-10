@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Portal — Boney for Brands</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F1EA;
+  --ink: #0D0D0D;
+  --muted: #6B6460;
+  --accent: #025df0;
+  --rule: rgba(13,13,13,0.09);
+  --card: #EDEAE2;
+  --serif: 'Libre Caslon Text', Georgia, serif;
+  --mono: 'DM Mono', monospace;
+  --body: 'Poppins', sans-serif;
+  --success: #1a9e5c;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#111111; --ink:#F0EDE8; --muted:#9A9490;
+    --accent:#4d8eff; --rule:rgba(240,237,232,0.1); --card:#1E1E1E;
+  }
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;}
+.screen.active{display:flex;}
+
+/* ── LOGIN ── */
+#screen-login{align-items:center;justify-content:center;padding:40px 24px;flex-direction:column;}
+.login-logo{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:56px;text-align:center;}
+.login-box{width:100%;max-width:420px;}
+.login-title{font-family:var(--serif);font-size:clamp(32px,5vw,48px);font-weight:400;line-height:1.1;letter-spacing:-0.025em;margin-bottom:8px;}
+.login-title em{font-style:italic;color:var(--accent);}
+.login-sub{font-family:var(--body);font-size:14px;font-weight:300;color:var(--muted);margin-bottom:48px;line-height:1.7;}
+.login-field{margin-bottom:16px;}
+.login-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px;}
+.login-input{width:100%;padding:14px 18px;border:1px solid var(--rule);background:var(--card);font-family:var(--body);font-size:15px;color:var(--ink);outline:none;transition:border-color .2s;border-radius:0;}
+.login-input:focus{border-color:var(--ink);}
+.login-input::placeholder{color:var(--muted);}
+.login-btn{width:100%;margin-top:8px;padding:16px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--bg);background:var(--ink);border:none;cursor:pointer;position:relative;overflow:hidden;transition:color .32s;}
+.login-btn::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .36s cubic-bezier(.77,0,.18,1);}
+.login-btn:hover::before{transform:translateX(0);}
+.login-btn span{position:relative;z-index:1;}
+.login-error{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#c0392b;margin-top:12px;display:none;}
+.login-error.show{display:block;}
+.login-loading{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:12px;display:none;}
+.login-loading.show{display:block;}
+
+/* ── WELCOME ── */
+#screen-welcome{flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;text-align:center;}
+.welcome-tag{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:24px;opacity:0;animation:fadeUp .6s .1s both;}
+.welcome-title{font-family:var(--serif);font-size:clamp(36px,5.5vw,72px);font-weight:400;line-height:1.08;letter-spacing:-0.025em;margin-bottom:20px;opacity:0;animation:fadeUp .8s .2s both;}
+.welcome-title em{font-style:italic;color:var(--accent);}
+.welcome-desc{font-family:var(--body);font-size:16px;font-weight:300;line-height:1.85;color:var(--muted);max-width:480px;margin:0 auto 48px;opacity:0;animation:fadeUp .7s .35s both;}
+.welcome-steps{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-bottom:56px;opacity:0;animation:fadeUp .7s .45s both;}
+.welcome-step{display:flex;flex-direction:column;align-items:center;gap:10px;max-width:140px;}
+.step-num{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);}
+.step-text{font-family:var(--body);font-size:13px;font-weight:300;color:var(--muted);text-align:center;line-height:1.5;}
+.welcome-btn{display:inline-flex;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--bg);background:var(--ink);border:none;padding:18px 40px;cursor:pointer;position:relative;overflow:hidden;transition:color .35s;opacity:0;animation:fadeUp .7s .55s both;}
+.welcome-btn::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .38s cubic-bezier(.77,0,.18,1);}
+.welcome-btn:hover::before{transform:translateX(0);}
+.welcome-btn span{position:relative;z-index:1;}
+.welcome-arrow{position:relative;z-index:1;width:12px;height:12px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg);}
+
+/* ── QUESTIONNAIRE ── */
+#screen-quiz{flex-direction:column;padding:0;}
+.quiz-header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--rule);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 60px;}
+.qh-logo{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);}
+.qh-logo span{color:var(--accent);}
+.qh-client{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.qh-progress{position:fixed;top:64px;left:0;right:0;z-index:99;height:2px;background:var(--rule);}
+.qh-progress-fill{height:100%;background:var(--accent);transition:width .6s cubic-bezier(.22,1,.36,1);}
+
+.quiz-body{padding:120px 60px 80px;max-width:860px;margin:0 auto;width:100%;}
+
+/* Section header */
+.section-intro{margin-bottom:64px;padding-bottom:48px;border-bottom:1px solid var(--rule);}
+.section-num{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:12px;}
+.section-title{font-family:var(--serif);font-size:clamp(28px,4vw,48px);font-weight:400;line-height:1.15;letter-spacing:-0.025em;margin-bottom:12px;}
+.section-title em{font-style:italic;}
+.section-desc{font-family:var(--body);font-size:15px;font-weight:300;color:var(--muted);line-height:1.8;}
+
+/* Questions */
+.question-block{margin-bottom:56px;}
+.q-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px;}
+.q-text{font-family:var(--serif);font-size:clamp(18px,2.2vw,24px);font-weight:400;line-height:1.3;letter-spacing:-0.01em;margin-bottom:28px;}
+
+/* Options */
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.opt-btn{padding:18px 22px;border:1px solid var(--rule);background:var(--card);cursor:pointer;text-align:left;position:relative;overflow:hidden;transition:border-color .2s;}
+.opt-btn::before{content:'';position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .28s cubic-bezier(.77,0,.18,1);}
+.opt-btn:hover::before{transform:translateY(0);}
+.opt-btn.selected{border-color:var(--ink);background:var(--ink);}
+.opt-btn:hover .opt-main,.opt-btn:hover .opt-sub,.opt-btn.selected .opt-main,.opt-btn.selected .opt-sub{color:var(--bg);}
+.opt-main{font-family:var(--serif);font-size:15px;font-weight:400;color:var(--ink);display:block;margin-bottom:3px;position:relative;z-index:1;transition:color .2s;}
+.opt-sub{font-family:var(--body);font-size:12px;font-weight:300;color:var(--muted);line-height:1.4;position:relative;z-index:1;transition:color .2s;}
+
+/* Slider */
+.slider-wrap{margin-top:4px;}
+.slider-row{display:grid;grid-template-columns:130px 1fr 130px;align-items:center;gap:20px;margin-bottom:28px;}
+.sl-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color .25s;}
+.sl-label.left{text-align:right;}
+.sl-label.active{color:var(--ink);}
+.sl-track{position:relative;height:2px;background:var(--rule);cursor:pointer;border-radius:1px;}
+.sl-fill{position:absolute;top:0;left:0;height:100%;background:rgba(2,93,240,0.2);border-radius:1px;pointer-events:none;}
+.sl-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:var(--ink);cursor:grab;transition:box-shadow .2s,background .2s;}
+.sl-dot:active{cursor:grabbing;}
+.sl-dot.placed{box-shadow:0 0 0 5px rgba(2,93,240,0.15),0 0 18px rgba(2,93,240,0.25);background:var(--accent);}
+
+/* Text input */
+.text-input{width:100%;padding:14px 18px;border:1px solid var(--rule);background:var(--card);font-family:var(--body);font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;resize:none;}
+.text-input:focus{border-color:var(--ink);}
+.text-input::placeholder{color:var(--muted);}
+
+/* Multi-select tags */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:10px;}
+.tag-btn{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);padding:10px 18px;cursor:pointer;background:var(--card);transition:all .2s;}
+.tag-btn.selected{border-color:var(--accent);color:var(--accent);background:rgba(2,93,240,0.05);}
+
+/* Section nav */
+.section-nav{display:flex;align-items:center;justify-content:space-between;margin-top:48px;padding-top:40px;border-top:1px solid var(--rule);}
+.nav-prev{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:8px;}
+.nav-prev:hover{color:var(--ink);}
+.nav-prev::before{content:'←';}
+.nav-next{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:none;border:1px solid var(--ink);padding:14px 32px;cursor:pointer;position:relative;overflow:hidden;transition:color .32s;}
+.nav-next::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .36s cubic-bezier(.77,0,.18,1);}
+.nav-next:hover::before{transform:translateX(0);}
+.nav-next:hover{color:#fff;}
+.nav-next span{position:relative;z-index:1;}
+
+/* ── CONFIRMATION ── */
+#screen-done{flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;text-align:center;}
+.done-icon{width:56px;height:56px;border-radius:50%;background:rgba(26,158,92,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 32px;}
+.done-check{width:24px;height:14px;border-bottom:2.5px solid var(--success);border-left:2.5px solid var(--success);transform:rotate(-45deg);margin-top:4px;}
+.done-tag{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--success);margin-bottom:20px;opacity:0;animation:fadeUp .6s .1s both;}
+.done-title{font-family:var(--serif);font-size:clamp(32px,5vw,60px);font-weight:400;line-height:1.1;letter-spacing:-0.025em;margin-bottom:16px;opacity:0;animation:fadeUp .8s .2s both;}
+.done-title em{font-style:italic;color:var(--accent);}
+.done-desc{font-family:var(--body);font-size:16px;font-weight:300;line-height:1.85;color:var(--muted);max-width:460px;margin:0 auto;opacity:0;animation:fadeUp .7s .35s both;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:768px){
+  .quiz-header{padding:0 24px;}
+  .quiz-body{padding:100px 24px 60px;}
+  .opts-grid{grid-template-columns:1fr;}
+  .slider-row{grid-template-columns:70px 1fr 70px;gap:12px;}
+  .sl-label{font-size:9px;}
+  .section-nav{flex-direction:column;gap:16px;align-items:flex-start;}
+  .nav-next{width:100%;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="screen-login" class="screen active">
+  <div class="login-logo">Boney <span style="color:var(--accent)">for</span> Brands — Client Portal</div>
+  <div class="login-box">
+    <h1 class="login-title">Welcome<br><em>back.</em></h1>
+    <p class="login-sub">Sign in with the credentials we shared with you to access your brand onboarding.</p>
+    <div class="login-field">
+      <label class="login-label">Username</label>
+      <input type="text" class="login-input" id="login-username" placeholder="Enter your username" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label class="login-label">Password</label>
+      <input type="password" class="login-input" id="login-password" placeholder="Enter your password" autocomplete="current-password">
+    </div>
+    <button class="login-btn" onclick="doLogin()"><span>Sign In →</span></button>
+    <p class="login-error" id="login-error">Incorrect credentials. Please try again.</p>
+    <p class="login-loading" id="login-loading">Verifying...</p>
+  </div>
+</div>
+
+<!-- ── WELCOME ── -->
+<div id="screen-welcome" class="screen">
+  <p class="welcome-tag">You're in</p>
+  <h1 class="welcome-title">Let's get to know<br><em>your brand.</em></h1>
+  <p class="welcome-desc">This questionnaire helps us understand your brand deeply before we start work. It takes about 10 minutes — be as honest as possible.</p>
+  <div class="welcome-steps">
+    <div class="welcome-step"><span class="step-num">01</span><span class="step-text">Brand Basics</span></div>
+    <div class="welcome-step"><span class="step-num">02</span><span class="step-text">Your Audience</span></div>
+    <div class="welcome-step"><span class="step-num">03</span><span class="step-text">Competition</span></div>
+    <div class="welcome-step"><span class="step-num">04</span><span class="step-text">Brand Personality</span></div>
+    <div class="welcome-step"><span class="step-num">05</span><span class="step-text">Goals & Assets</span></div>
+  </div>
+  <button class="welcome-btn" onclick="startQuiz()">
+    <span>Begin Onboarding</span>
+    <div class="welcome-arrow"></div>
+  </button>
+</div>
+
+<!-- ── QUESTIONNAIRE ── -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-header">
+    <div class="qh-logo">Boney <span>for</span> Brands</div>
+    <div class="qh-client" id="qh-client-name"></div>
+  </div>
+  <div class="qh-progress"><div class="qh-progress-fill" id="prog-fill" style="width:0%"></div></div>
+  <div class="quiz-body" id="quiz-body"></div>
+</div>
+
+<!-- ── DONE ── -->
+<div id="screen-done" class="screen">
+  <div class="done-icon"><div class="done-check"></div></div>
+  <p class="done-tag">Submitted successfully</p>
+  <h1 class="done-title">We've got<br><em>everything.</em></h1>
+  <p class="done-desc">Thank you for completing the onboarding. We'll review your answers and be in touch within 48 hours to schedule your first session.</p>
+</div>
+
+<script>
+/* ── CONFIG — calls our secure Vercel API proxy, token is server-side ── */
+const API = '/api/portal';
+
+/* ── STATE ── */
+let currentClient = null;
+let currentSection = 0;
+let answers = {};
+let sliderVals = {};
+let multiSelects = {};
+
+/* ── SECTIONS ── */
+const SECTIONS = [
+  {
+    num:'01', title:'Brand <em>Basics</em>', desc:'Tell us about your brand — the fundamentals we need to understand before anything else.',
+    questions:[
+      { id:'brand_name', type:'text', label:'Brand Name', q:'What is your brand called?', placeholder:'Enter your brand name' },
+      { id:'category', type:'options', label:'Category', q:'Which category does your brand operate in?',
+        opts:[
+          {l:'D2C / E-commerce',     s:'You sell directly to consumers online'},
+          {l:'FMCG / Retail',        s:'You sell through retail and distribution'},
+          {l:'Health & Wellness',    s:'Supplements, fitness, mental health'},
+          {l:'Fashion & Lifestyle',  s:'Clothing, accessories, home'},
+          {l:'Food & Beverage',      s:'Products people eat or drink'},
+          {l:'Tech / SaaS',          s:'Software or technology product'},
+          {l:'Services / Consulting',s:'You sell expertise or services'},
+          {l:'Other',                s:'Something not on this list'},
+        ]
+      },
+      { id:'stage', type:'options', label:'Brand Stage', q:'Where is your brand right now?',
+        opts:[
+          {l:'Pre-launch',           s:'Not live yet — building toward launch'},
+          {l:'Early stage',          s:'Live but less than 1 year old'},
+          {l:'Growing',              s:'1–3 years, gaining traction'},
+          {l:'Scaling',              s:'3+ years, now accelerating'},
+          {l:'Established',          s:'Known brand looking to evolve'},
+        ]
+      },
+      { id:'geography', type:'options', label:'Market', q:'Which market are you primarily focused on?',
+        opts:[
+          {l:'Pan India',            s:'All of India'},
+          {l:'Metros only',          s:'Delhi, Mumbai, Bangalore, Chennai, Hyderabad'},
+          {l:'Tier 2 & 3 cities',    s:'Beyond the metros'},
+          {l:'South India',          s:'Regional focus'},
+          {l:'North India',          s:'Regional focus'},
+          {l:'International',        s:'Outside India'},
+        ]
+      },
+    ]
+  },
+  {
+    num:'02', title:'Your <em>Audience</em>', desc:'Who are you building this brand for? Be specific — "everyone" is not an audience.',
+    questions:[
+      { id:'audience_age', type:'options', label:'Primary Age Group', q:'Who is your core customer?',
+        opts:[
+          {l:'18–24',  s:'Gen Z — digital natives, trend-driven'},
+          {l:'25–34',  s:'Millennials — career-building, brand-aware'},
+          {l:'35–45',  s:'Established adults — quality-focused'},
+          {l:'45+',    s:'Mature consumers — trust and reliability'},
+          {l:'Mixed',  s:'Broad age range'},
+        ]
+      },
+      { id:'audience_gender', type:'options', label:'Primary Gender', q:'Who skews more toward your brand?',
+        opts:[
+          {l:'Primarily male',       s:''},
+          {l:'Primarily female',     s:''},
+          {l:'Equal split',          s:''},
+          {l:'Non-binary / inclusive',s:''},
+        ]
+      },
+      { id:'audience_motivation', type:'options', label:'Core Motivation', q:'What is your customer\'s deepest motivation when they buy from you?',
+        opts:[
+          {l:'Self-improvement',     s:'They want to become better'},
+          {l:'Social belonging',     s:'They want to fit in or stand out'},
+          {l:'Health & wellness',    s:'They want to feel good'},
+          {l:'Status & aspiration',  s:'They want others to notice'},
+          {l:'Value for money',      s:'They want the best deal'},
+          {l:'Convenience',          s:'They want easy and fast'},
+        ]
+      },
+      { id:'audience_insight', type:'text_long', label:'Audience Insight', q:'In one or two lines — what does your customer want that they can\'t easily say out loud?', placeholder:'e.g. They want to feel like they\'re winning at life without anyone knowing how hard they\'re trying' },
+    ]
+  },
+  {
+    num:'03', title:'The <em>Competition</em>', desc:'Understanding your competitive landscape helps us find the whitespace your brand can own.',
+    questions:[
+      { id:'competitors', type:'text', label:'Top Competitors', q:'Name your top 2–3 competitors.', placeholder:'e.g. Brand A, Brand B, Brand C' },
+      { id:'comp_strength', type:'options', label:'Their Strength', q:'What do competitors currently own in the market?',
+        opts:[
+          {l:'Price — they\'re cheaper',         s:'They win on cost and volume'},
+          {l:'Trust — they\'ve been around',      s:'Legacy and recognition is their moat'},
+          {l:'Distribution — they\'re everywhere',s:'Availability is their main advantage'},
+          {l:'Marketing — they\'re louder',       s:'They outspend everyone on visibility'},
+          {l:'Product — they\'re genuinely better',s:'Quality is their differentiator'},
+        ]
+      },
+      { id:'comp_gap', type:'options', label:'Their Gap', q:'Where do competitors consistently fall short?',
+        opts:[
+          {l:'They\'re generic — no personality', s:'Safe, bland, interchangeable'},
+          {l:'They overclaim and underdeliver',    s:'Promise and reality don\'t match'},
+          {l:'They ignore a specific audience',    s:'Leaving a group underserved'},
+          {l:'They\'re stuck in the past',         s:'Not evolving with the market'},
+          {l:'They\'re too expensive',             s:'Premium but not accessible'},
+        ]
+      },
+      { id:'usp', type:'text_long', label:'Your Difference', q:'What does your brand do that no competitor does — or does better than anyone?', placeholder:'Be specific. Generic answers like "quality" or "customer service" are not useful here.' },
+    ]
+  },
+  {
+    num:'04', title:'Brand <em>Personality</em>', desc:'Place your brand on each spectrum — where it honestly sits, not where you wish it were.',
+    questions:[
+      { id:'personality_sliders', type:'sliders', label:'', q:'',
+        sliders:[
+          {l:'Serious',      r:'Playful',       key:'tone'},
+          {l:'Functional',   r:'Emotional',     key:'appeal'},
+          {l:'Mainstream',   r:'Disruptive',    key:'position'},
+          {l:'Premium',      r:'Accessible',    key:'price_signal'},
+          {l:'Loud',         r:'Quiet',         key:'volume'},
+          {l:'Traditional',  r:'Modern',        key:'time'},
+        ]
+      },
+      { id:'brand_voice', type:'options', label:'Brand Voice', q:'Which line could your brand have written?',
+        opts:[
+          {l:'"You\'ve got this."',         s:'Motivating, belief-driven'},
+          {l:'"We\'re not for everyone."',  s:'Bold, confident, takes a stance'},
+          {l:'"Made for real life."',        s:'Honest, unpretentious, warm'},
+          {l:'"See it differently."',        s:'Curious, visionary, provocative'},
+          {l:'"The details matter."',        s:'Precise, craft-focused, considered'},
+        ]
+      },
+      { id:'brand_not', type:'options', label:'Anti-personality', q:'What should your brand never feel like?',
+        opts:[
+          {l:'Corporate and stiff',          s:'Formal, distant, impersonal'},
+          {l:'Preachy or self-righteous',     s:'Tells people how to live'},
+          {l:'Cheap or disposable',           s:'Low quality feel'},
+          {l:'Confusing or unclear',          s:'Complicated to understand'},
+          {l:'Generic and forgettable',       s:'Looks like everyone else'},
+        ]
+      },
+      { id:'brand_analogies', type:'tags', label:'Brand Analogies', q:'Which of these brands share the energy you want? (Select all that apply)',
+        tags:['Nike','Apple','Amul','Zomato','Sabyasachi','Dabur','boAt','Paper Boat','Royal Enfield','Tata','The Whole Truth','Nykaa','Zepto','Tanishq','Haldiram\'s']
+      },
+    ]
+  },
+  {
+    num:'05', title:'Goals & <em>Assets</em>', desc:'What you want to achieve — and what we\'re working with.',
+    questions:[
+      { id:'primary_goal', type:'options', label:'Primary Goal', q:'What is the single most important thing you need from this engagement?',
+        opts:[
+          {l:'Build the brand from scratch',        s:'Identity, positioning, voice — all of it'},
+          {l:'Reposition an existing brand',        s:'Change how the market sees us'},
+          {l:'Launch a new product or range',       s:'Go-to-market strategy and execution'},
+          {l:'Fix inconsistent communication',      s:'We\'re all over the place — need clarity'},
+          {l:'Enter a new market or audience',      s:'Expand beyond our current base'},
+        ]
+      },
+      { id:'timeline', type:'options', label:'Timeline', q:'What is your timeline expectation?',
+        opts:[
+          {l:'Urgent — within 1 month',   s:'We have a launch or deadline coming up'},
+          {l:'Short — 1 to 3 months',     s:'We need to move quickly but not urgently'},
+          {l:'Medium — 3 to 6 months',    s:'We want to do this properly'},
+          {l:'Long — 6+ months',          s:'This is a sustained engagement'},
+        ]
+      },
+      { id:'assets_have', type:'tags', label:'What You Have', q:'What do you already have? (Select all that apply)',
+        tags:['Logo','Brand guidelines','Website','Social media presence','Packaging','Photography','Video content','Tagline','Brand story','Product samples']
+      },
+      { id:'assets_need', type:'tags', label:'What You Need', q:'What do you need us to help create? (Select all that apply)',
+        tags:['Brand strategy','Positioning statement','Visual identity','Tone of voice','Campaign concept','Social media direction','Content strategy','Launch plan','Packaging direction','Brand guidelines']
+      },
+      { id:'anything_else', type:'text_long', label:'Anything Else', q:'Is there anything important we should know about your brand, your situation, or your expectations that we haven\'t asked?', placeholder:'No wrong answers here — the more context the better.' },
+    ]
+  },
+];
+
+/* ── LOGIN ── */
+async function doLogin(){
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value.trim();
+  if(!username||!password){ showLoginError('Please enter both username and password.'); return; }
+
+  const errEl = document.getElementById('login-error');
+  const loadEl = document.getElementById('login-loading');
+  errEl.classList.remove('show');
+  loadEl.classList.add('show');
+
+  try {
+    const res = await fetch(`${API}?action=login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await res.json();
+    loadEl.classList.remove('show');
+
+    if(data.success){
+      currentClient = { name: data.name, brand: data.brand };
+      showScreen('screen-welcome');
+      document.getElementById('qh-client-name').textContent = data.name;
+    } else {
+      showLoginError('Incorrect credentials. Please try again.');
+    }
+  } catch(e) {
+    loadEl.classList.remove('show');
+    showLoginError('Something went wrong. Please try again.');
+  }
+}
+
+function showLoginError(msg){
+  const el = document.getElementById('login-error');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+// Allow Enter key on login
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter' && document.getElementById('screen-login').classList.contains('active')) doLogin();
+});
+
+/* ── SCREENS ── */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startQuiz(){
+  showScreen('screen-quiz');
+  renderSection(0);
+}
+
+/* ── RENDER SECTION ── */
+function renderSection(idx){
+  currentSection = idx;
+  const sec = SECTIONS[idx];
+  const isLast = idx === SECTIONS.length - 1;
+  const progress = ((idx+1)/SECTIONS.length)*100;
+  document.getElementById('prog-fill').style.width = progress+'%';
+
+  let html = `<div class="section-intro">
+    <span class="section-num">${sec.num} / 0${SECTIONS.length}</span>
+    <h2 class="section-title">${sec.title}</h2>
+    <p class="section-desc">${sec.desc}</p>
+  </div>`;
+
+  sec.questions.forEach((q,qi)=>{
+    html += renderQuestion(q, idx, qi);
+  });
+
+  html += `<div class="section-nav">
+    <button class="nav-prev" ${idx===0?'style="opacity:0;pointer-events:none"':''} onclick="prevSection()">Previous</button>
+    <button class="nav-next" onclick="nextSection()"><span>${isLast ? 'Submit Onboarding →' : 'Next Section →'}</span></button>
+  </div>`;
+
+  const body = document.getElementById('quiz-body');
+  body.style.opacity='0';
+  body.innerHTML = html;
+  setTimeout(()=>{
+    body.style.transition='opacity .4s';
+    body.style.opacity='1';
+    initSliders(idx, sec);
+  }, 50);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderQuestion(q, sidx, qidx){
+  const key = q.id;
+  let h = `<div class="question-block">`;
+
+  if(q.type !== 'sliders'){
+    h += `<span class="q-label">${q.label}</span><h3 class="q-text">${q.q}</h3>`;
+  }
+
+  if(q.type === 'text'){
+    const val = answers[key]||'';
+    h += `<input type="text" class="text-input" id="inp-${key}" placeholder="${q.placeholder}" value="${val}" oninput="answers['${key}']=this.value">`;
+  }
+  else if(q.type === 'text_long'){
+    const val = answers[key]||'';
+    h += `<textarea class="text-input" id="inp-${key}" rows="4" placeholder="${q.placeholder}" oninput="answers['${key}']=this.value">${val}</textarea>`;
+  }
+  else if(q.type === 'options'){
+    h += `<div class="opts-grid">`;
+    q.opts.forEach((o,oi)=>{
+      const sel = answers[key]===o.l ? 'selected' : '';
+      h += `<button class="opt-btn ${sel}" onclick="selectOpt('${key}',${oi},this,'${o.l.replace(/'/g,"\\'")}')">
+        <span class="opt-main">${o.l}</span>${o.s?`<span class="opt-sub">${o.s}</span>`:''}
+      </button>`;
+    });
+    h += `</div>`;
+  }
+  else if(q.type === 'sliders'){
+    h += `<span class="q-label">Brand Personality Spectrums</span><h3 class="q-text">Place your brand honestly on each scale.</h3><div class="slider-wrap">`;
+    q.sliders.forEach((sl,si)=>{
+      const val = sliderVals[sl.key]??0.5;
+      h += `<div class="slider-row">
+        <span class="sl-label left" id="sll-${sl.key}">${sl.l}</span>
+        <div class="sl-track" id="slt-${sl.key}">
+          <div class="sl-fill" id="slf-${sl.key}" style="width:${val*100}%"></div>
+          <div class="sl-dot ${val!==0.5?'placed':''}" id="sld-${sl.key}" style="left:${val*100}%"></div>
+        </div>
+        <span class="sl-label right" id="slr-${sl.key}">${sl.r}</span>
+      </div>`;
+    });
+    h += `</div>`;
+  }
+  else if(q.type === 'tags'){
+    const selected = multiSelects[key]||[];
+    h += `<div class="tags-wrap">`;
+    q.tags.forEach(tag=>{
+      const sel = selected.includes(tag)?'selected':'';
+      h += `<button class="tag-btn ${sel}" onclick="toggleTag('${key}','${tag.replace(/'/g,"\\'")}',this)">${tag}</button>`;
+    });
+    h += `</div>`;
+  }
+
+  h += `</div>`;
+  return h;
+}
+
+function initSliders(sidx, sec){
+  sec.questions.forEach(q=>{
+    if(q.type!=='sliders') return;
+    q.sliders.forEach(sl=>{
+      const track = document.getElementById(`slt-${sl.key}`);
+      const dot   = document.getElementById(`sld-${sl.key}`);
+      const fill  = document.getElementById(`slf-${sl.key}`);
+      const ll    = document.getElementById(`sll-${sl.key}`);
+      const lr    = document.getElementById(`slr-${sl.key}`);
+      if(!track) return;
+      let dragging=false;
+      function setVal(e){
+        const rect=track.getBoundingClientRect();
+        const x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+        const val=Math.max(0.02,Math.min(0.98,x/rect.width));
+        sliderVals[sl.key]=val;
+        dot.style.left=(val*100)+'%';
+        fill.style.width=(val*100)+'%';
+        dot.classList.add('placed');
+        ll.classList.toggle('active',val<0.38);
+        lr.classList.toggle('active',val>0.62);
+      }
+      track.addEventListener('mousedown',e=>{dragging=true;setVal(e);});
+      track.addEventListener('touchstart',e=>{dragging=true;setVal(e);},{passive:true});
+      document.addEventListener('mousemove',e=>{if(dragging)setVal(e);});
+      document.addEventListener('touchmove',e=>{if(dragging)setVal(e);},{passive:true});
+      document.addEventListener('mouseup',()=>dragging=false);
+      document.addEventListener('touchend',()=>dragging=false);
+    });
+  });
+}
+
+function selectOpt(key,oi,el,val){
+  const parent = el.closest('.opts-grid');
+  parent.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[key]=val;
+}
+
+function toggleTag(key,tag,el){
+  if(!multiSelects[key]) multiSelects[key]=[];
+  const idx=multiSelects[key].indexOf(tag);
+  if(idx===-1){ multiSelects[key].push(tag); el.classList.add('selected'); }
+  else { multiSelects[key].splice(idx,1); el.classList.remove('selected'); }
+}
+
+function prevSection(){ if(currentSection>0) renderSection(currentSection-1); }
+
+function nextSection(){
+  if(currentSection===SECTIONS.length-1){ submitOnboarding(); return; }
+  renderSection(currentSection+1);
+}
+
+/* ── SUBMIT ── */
+async function submitOnboarding(){
+  const btn = document.querySelector('.nav-next');
+  btn.innerHTML = '<span>Submitting...</span>';
+  btn.style.pointerEvents='none';
+
+  // Build personality string from sliders
+  const personality = Object.entries(sliderVals).map(([k,v])=>{
+    const pct=Math.round(v*100);
+    return `${k}: ${pct}%`;
+  }).join(' | ');
+
+  // Build multi-select strings
+  const assetsHave=(multiSelects['assets_have']||[]).join(', ');
+  const assetsNeed=(multiSelects['assets_need']||[]).join(', ');
+  const brandAnalogies=(multiSelects['brand_analogies']||[]).join(', ');
+
+  const record = {
+    fields: {
+      'Client Name': currentClient.name,
+      'Brand': answers['brand_name']||currentClient.brand,
+      'Submitted': new Date().toISOString().split('T')[0],
+      'Stage': `Category: ${answers['category']||''} | Stage: ${answers['stage']||''} | Market: ${answers['geography']||''}`,
+      'Audience': `Age: ${answers['audience_age']||''} | Gender: ${answers['audience_gender']||''} | Motivation: ${answers['audience_motivation']||''} | Insight: ${answers['audience_insight']||''}`,
+      'Competition': `Competitors: ${answers['competitors']||''} | Their strength: ${answers['comp_strength']||''} | Their gap: ${answers['comp_gap']||''} | Our difference: ${answers['usp']||''}`,
+      'Personality': `${personality} | Voice: ${answers['brand_voice']||''} | Not: ${answers['brand_not']||''} | Analogies: ${brandAnalogies}`,
+      'Goals': `Goal: ${answers['primary_goal']||''} | Timeline: ${answers['timeline']||''}`,
+      'Assets': `Have: ${assetsHave} | Need: ${assetsNeed} | Other: ${answers['anything_else']||''}`,
+    }
+  };
+
+  try {
+    const res = await fetch(`${API}?action=submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        'Client Name': currentClient.name,
+        'Brand': answers['brand_name']||currentClient.brand,
+        'Submitted': new Date().toISOString().split('T')[0],
+        'Stage': `Category: ${answers['category']||''} | Stage: ${answers['stage']||''} | Market: ${answers['geography']||''}`,
+        'Audience': `Age: ${answers['audience_age']||''} | Gender: ${answers['audience_gender']||''} | Motivation: ${answers['audience_motivation']||''} | Insight: ${answers['audience_insight']||''}`,
+        'Competition': `Competitors: ${answers['competitors']||''} | Their strength: ${answers['comp_strength']||''} | Their gap: ${answers['comp_gap']||''} | Our difference: ${answers['usp']||''}`,
+        'Personality': `${personality} | Voice: ${answers['brand_voice']||''} | Not: ${answers['brand_not']||''} | Analogies: ${brandAnalogies}`,
+        'Goals': `Goal: ${answers['primary_goal']||''} | Timeline: ${answers['timeline']||''}`,
+        'Assets': `Have: ${assetsHave} | Need: ${assetsNeed} | Other: ${answers['anything_else']||''}`,
+      }),
+    });
+    await res.json();
+    showScreen('screen-done');
+  } catch(e){
+    btn.innerHTML='<span>Submit Onboarding →</span>';
+    btn.style.pointerEvents='auto';
+    alert('Something went wrong. Please try again.');
+  }
+}
+</script>
+</body>
+</html>
