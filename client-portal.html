@@ -12,258 +12,304 @@
   --ink: #09090B;
   --muted: #71717A;
   --light: #A1A1AA;
-  --accent: #09090B;
-  --blue: #2563EB;
+  --accent: #3D9BE9;
+  --accent-dark: #2280CC;
   --green: #16A34A;
   --orange: #EA580C;
   --red: #DC2626;
-  --amber: #D97706;
   --rule: #E4E4E7;
   --sans: 'Inter', sans-serif;
   --mono: 'DM Mono', monospace;
 }
-
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body { background:var(--bg2); color:var(--ink); font-family:var(--sans); min-height:100vh; -webkit-font-smoothing:antialiased; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg2);color:var(--ink);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;}
 
 /* ── BJC HEADER ── */
-#bjc-header {
-  position: fixed; top:0; left:0; right:0; z-index:200;
-  height: 68px; background: #fff; border-bottom: 1px solid var(--rule);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px;
+#bjc-header{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:64px;background:#fff;border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:space-between;padding:0 40px;
 }
-.bjc-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-.bjc-logo-icon {
-  width: 40px; height: 40px;
-  background: #000; display:flex; align-items:center; justify-content:center;
-  font-family: var(--sans); font-weight:700; color:#fff; font-size:14px; letter-spacing:-.5px;
-  position: relative;
+.bjc-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.bjc-logo-icon{
+  width:36px;height:36px;background:#09090B;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:#fff;font-size:13px;letter-spacing:-.5px;
+  position:relative;
 }
-.bjc-logo-icon::after {
-  content:''; position:absolute; bottom:0; right:0;
-  width:10px; height:10px; background:#fff;
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+.bjc-logo-icon::after{
+  content:'';position:absolute;bottom:0;right:0;
+  width:9px;height:9px;background:#fff;
+  clip-path:polygon(100% 0,100% 100%,0 100%);
 }
-.bjc-logo-text { line-height:1.2; }
-.bjc-logo-text .l1 { font-size:11px; font-weight:600; letter-spacing:.02em; color:var(--ink); }
-.bjc-logo-text .l2 { font-size:9px; font-weight:400; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; }
-.bjc-nav { display:flex; align-items:center; gap:32px; }
-.bjc-nav a { font-size:13px; color:var(--muted); text-decoration:none; transition:color .2s; }
-.bjc-nav a:hover { color:var(--ink); }
-.bjc-nav a.active { color:var(--ink); font-weight:500; }
-.bjc-client-tag {
-  display:flex; align-items:center; gap:8px;
-  font-size:12px; color:var(--muted); font-family:var(--mono);
-}
-.bjc-client-dot { width:7px; height:7px; border-radius:50%; background:var(--green); }
+.bjc-logo-text .l1{font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--ink);}
+.bjc-logo-text .l2{font-size:9px;font-weight:400;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;}
+.bjc-nav{display:flex;align-items:center;gap:28px;}
+.bjc-nav a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+.bjc-nav a:hover{color:var(--ink);}
+.bjc-client-tag{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:var(--mono);}
+.bjc-client-dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
 
 /* ── SCREENS ── */
-.screen { display:none; }
-.screen.active { display:block; }
+.screen{display:none;min-height:100vh;}
+.screen.active{display:block;}
 
-/* ── LOGIN ── */
-#screen-login {
-  min-height:100vh; display:none; align-items:center; justify-content:center;
-  padding:40px 24px; background:var(--bg2);
+/* ══════════════════════════════
+   LOGIN
+══════════════════════════════ */
+#screen-login{
+  display:none;align-items:center;justify-content:center;
+  padding:40px 24px;background:var(--bg2);
 }
-#screen-login.active { display:flex; }
-.login-card {
-  background:var(--bg); border:1px solid var(--rule); width:100%; max-width:400px;
-  padding:48px 40px;
-}
-.login-brand { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:32px; }
-.login-title { font-size:28px; font-weight:600; letter-spacing:-.03em; margin-bottom:6px; }
-.login-sub { font-size:14px; color:var(--muted); margin-bottom:36px; line-height:1.6; }
-.login-field { margin-bottom:14px; }
-.login-label { font-size:11px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:6px; }
-.login-input { width:100%; padding:11px 14px; border:1px solid var(--rule); background:var(--bg2); font-family:var(--sans); font-size:14px; color:var(--ink); outline:none; transition:border-color .2s; border-radius:4px; }
-.login-input:focus { border-color:var(--ink); background:#fff; }
-.login-input::placeholder { color:var(--light); }
-.login-btn { width:100%; margin-top:8px; padding:12px; background:var(--ink); color:#fff; border:none; font-family:var(--sans); font-size:14px; font-weight:500; cursor:pointer; border-radius:4px; transition:opacity .2s; }
-.login-btn:hover { opacity:.85; }
-.login-error { font-size:12px; color:var(--red); margin-top:10px; display:none; }
-.login-error.show { display:block; }
-.login-loading { font-size:12px; color:var(--muted); font-family:var(--mono); margin-top:10px; display:none; }
-.login-loading.show { display:block; }
+#screen-login.active{display:flex;}
+.login-card{background:#fff;border:1px solid var(--rule);width:100%;max-width:400px;padding:48px 40px;}
+.login-brand{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:32px;}
+.login-title{font-size:28px;font-weight:600;letter-spacing:-.03em;margin-bottom:6px;}
+.login-sub{font-size:14px;color:var(--muted);margin-bottom:36px;line-height:1.6;}
+.login-field{margin-bottom:14px;}
+.login-label{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;}
+.login-input{width:100%;padding:11px 14px;border:1px solid var(--rule);background:var(--bg2);font-family:var(--sans);font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;border-radius:4px;}
+.login-input:focus{border-color:var(--ink);background:#fff;}
+.login-input::placeholder{color:var(--light);}
+.login-btn{width:100%;margin-top:8px;padding:13px;background:var(--accent);color:#fff;border:none;font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;border-radius:4px;transition:background .2s;}
+.login-btn:hover{background:var(--accent-dark);}
+.login-error{font-size:12px;color:var(--red);margin-top:10px;display:none;}
+.login-error.show{display:block;}
 
-/* ── DASHBOARD ── */
-#screen-dashboard {
-  padding-top:68px; min-height:100vh;
+/* ══════════════════════════════
+   LOADING SCREEN
+══════════════════════════════ */
+#screen-loading{
+  display:none;min-height:100vh;background:#09090B;
+  flex-direction:column;align-items:center;justify-content:center;gap:32px;
 }
-.dash-inner { max-width:1200px; margin:0 auto; padding:36px 40px 80px; }
+#screen-loading.active{display:flex;}
+.loading-sphere-wrap{position:relative;width:180px;height:180px;}
+#loading-canvas{width:180px;height:180px;display:block;}
+.loading-status{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.loading-line{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0);opacity:0;
+  display:flex;align-items:center;gap:10px;
+  transition:opacity .5s;
+}
+.loading-line.show{opacity:1;color:rgba(255,255,255,.5);}
+.loading-line.done{color:rgba(255,255,255,.85);}
+.loading-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.loading-dot.done{background:#3aff8a;}
+.loading-dot.active{animation:ldPulse 1s ease-in-out infinite;}
+@keyframes ldPulse{0%,100%{opacity:1;}50%{opacity:.25;}}
 
-/* Welcome bar */
-.dash-welcome { margin-bottom:32px; }
-.dash-welcome-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; }
-.dash-welcome-name { font-size:26px; font-weight:600; letter-spacing:-.02em; }
-.dash-welcome-sub { font-size:14px; color:var(--muted); line-height:1.6; }
-.dash-verified-tag {
-  display:inline-flex; align-items:center; gap:6px;
-  background:#FEF3C7; border:1px solid #FDE68A; color:#92400E;
-  font-size:11px; font-weight:500; padding:6px 12px; border-radius:100px;
-}
-.dash-verified-tag::before { content:'⚠'; font-size:11px; }
+/* ══════════════════════════════
+   DASHBOARD
+══════════════════════════════ */
+#screen-dashboard{padding-top:64px;}
+.dash-inner{max-width:1140px;margin:0 auto;padding:40px 40px 80px;}
 
-/* Section progress pills */
-.dash-progress { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:36px; }
-.prog-pill {
-  display:flex; align-items:center; gap:6px;
-  font-size:12px; font-weight:500; padding:6px 14px; border-radius:100px;
-  border:1px solid var(--rule); background:#fff; cursor:pointer; transition:all .2s;
-}
-.prog-pill:hover { border-color:var(--ink); }
-.prog-pill.done { background:#F0FDF4; border-color:#86EFAC; color:var(--green); }
-.prog-pill.active { background:var(--ink); color:#fff; border-color:var(--ink); }
-.prog-dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+/* Welcome row */
+.dash-welcome{margin-bottom:28px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;}
+.dash-welcome-left{}
+.dash-client-name{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px;}
+.dash-client-sub{font-size:14px;color:var(--muted);}
 
-/* Insights banner */
-.insights-banner {
-  background:var(--ink); color:#fff; padding:20px 24px; margin-bottom:28px;
-  border-radius:6px; display:flex; align-items:center; justify-content:space-between;
+/* ── BIG CTA BUTTON ── */
+.dash-cta-block{
+  background:var(--accent);border-radius:10px;
+  padding:28px 36px;margin-bottom:36px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  cursor:pointer;transition:background .2s;
+  position:relative;overflow:hidden;
 }
-.ib-left { display:flex; flex-direction:column; gap:4px; }
-.ib-label { font-size:10px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.5); }
-.ib-text { font-size:15px; font-weight:500; line-height:1.5; }
-.ib-text em { color:#FDE68A; font-style:normal; }
-.ib-cta { font-size:12px; font-weight:500; color:rgba(255,255,255,.6); white-space:nowrap; padding-left:24px; border-left:1px solid rgba(255,255,255,.15); margin-left:24px; }
+.dash-cta-block::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.08),transparent);
+}
+.dash-cta-block:hover{background:var(--accent-dark);}
+.dash-cta-left{position:relative;z-index:1;}
+.dash-cta-tag{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:6px;}
+.dash-cta-title{font-size:22px;font-weight:700;letter-spacing:-.02em;color:#fff;margin-bottom:4px;}
+.dash-cta-sub{font-size:14px;color:rgba(255,255,255,.75);}
+.dash-cta-arrow{
+  position:relative;z-index:1;
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .2s;
+}
+.dash-cta-block:hover .dash-cta-arrow{background:rgba(255,255,255,.25);}
+.dash-cta-arrow svg{width:22px;height:22px;stroke:#fff;stroke-width:2;fill:none;}
+
+/* Boney's insight banner */
+.insight-banner{
+  background:var(--ink);border-radius:8px;padding:20px 24px;margin-bottom:28px;
+  display:flex;align-items:flex-start;gap:16px;
+}
+.ib-icon{width:32px;height:32px;border-radius:50%;background:rgba(61,155,233,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;}
+.ib-body{}
+.ib-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+.ib-text{font-size:14px;color:rgba(255,255,255,.85);line-height:1.65;}
+.ib-text em{color:#FDE68A;font-style:normal;font-weight:500;}
+
+/* Section divider */
+.section-divider{display:flex;align-items:center;gap:16px;margin:32px 0 20px;}
+.sd-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.sd-line{flex:1;height:1px;background:var(--rule);}
 
 /* Dashboard grid */
-.dash-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px; }
-.dash-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-.dash-grid-full { display:grid; grid-template-columns:1fr; gap:16px; }
+.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;}
+.dash-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
 
 /* Cards */
-.card {
-  background:#fff; border:1px solid var(--rule); border-radius:8px;
-  padding:24px; position:relative; transition:box-shadow .2s;
-}
-.card:hover { box-shadow:0 2px 12px rgba(0,0,0,.06); }
-.card-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; }
-.card-title { font-size:13px; font-weight:600; letter-spacing:-.01em; }
-.card-sub { font-size:12px; color:var(--muted); margin-top:2px; }
-.card-badge {
-  font-size:10px; font-weight:500; letter-spacing:.06em; text-transform:uppercase;
-  padding:3px 8px; border-radius:100px;
-}
-.badge-pre { background:#F0F9FF; color:#0369A1; }
-.badge-pending { background:#FEF9C3; color:#854D0E; }
-.badge-insight { background:#FFF1F2; color:#BE123C; }
-.badge-answered { background:#F0FDF4; color:#15803D; }
+.card{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:24px;}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;}
+.card-title{font-size:13px;font-weight:600;}
+.card-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.card-badge{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:100px;}
+.badge-data{background:#EFF6FF;color:#1D4ED8;}
+.badge-insight{background:#FFF1F2;color:#BE123C;}
 
-/* Stat items */
-.stat-row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--rule); }
-.stat-row:last-child { border-bottom:none; padding-bottom:0; }
-.stat-key { font-size:13px; color:var(--muted); }
-.stat-val { font-size:13px; font-weight:600; }
-.stat-val.green { color:var(--green); }
-.stat-val.red { color:var(--red); }
-.stat-val.orange { color:var(--orange); }
-.stat-val.blue { color:var(--blue); }
+/* Stats */
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--rule);}
+.stat-row:last-child{border-bottom:none;padding-bottom:0;}
+.stat-key{font-size:13px;color:var(--muted);}
+.stat-val{font-size:13px;font-weight:600;}
+.val-blue{color:var(--accent);}
+.val-green{color:var(--green);}
+.val-red{color:var(--red);}
+.val-orange{color:var(--orange);}
 
-/* Insight callout */
-.insight-callout {
-  background:#FFF7ED; border:1px solid #FDBA74; border-radius:6px;
-  padding:14px 16px; margin-top:16px;
-}
-.ic-label { font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--orange); margin-bottom:4px; }
-.ic-text { font-size:13px; line-height:1.65; color:var(--ink); }
+/* Insight callout inside card */
+.card-insight{background:#FFF7ED;border:1px solid #FDBA74;border-radius:6px;padding:12px 14px;margin-top:14px;}
+.ci-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:3px;}
+.ci-text{font-size:12px;line-height:1.65;color:var(--ink);}
 
 /* Competitor table */
-.comp-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; }
-.comp-col { padding:12px 0; border-bottom:1px solid var(--rule); }
-.comp-col:last-child { text-align:right; }
-.comp-col.header { font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
-.comp-col.data { font-size:13px; }
-.comp-name { font-weight:600; }
-
-/* Spectrum display */
-.spectrum-display { margin-top:8px; }
-.spec-row-d { display:grid; grid-template-columns:100px 1fr 100px; align-items:center; gap:12px; margin-bottom:14px; }
-.spec-label-d { font-size:11px; color:var(--muted); font-family:var(--mono); }
-.spec-label-d.right { text-align:right; }
-.spec-track-d { height:3px; background:var(--rule); border-radius:2px; position:relative; }
-.spec-dot-d { position:absolute; top:50%; transform:translate(-50%,-50%); width:10px; height:10px; border-radius:50%; background:var(--ink); }
-
-/* Action cards */
-.action-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:4px; }
-.action-card {
-  padding:16px; border:1px solid var(--rule); border-radius:6px;
-  cursor:pointer; transition:all .2s; background:#fff; text-align:left;
-}
-.action-card:hover { border-color:var(--ink); background:#FAFAFA; }
-.action-card.selected { border-color:var(--ink); background:var(--ink); }
-.action-card.selected .ac-label, .action-card.selected .ac-sub { color:#fff; }
-.ac-label { font-size:14px; font-weight:500; color:var(--ink); margin-bottom:3px; }
-.ac-sub { font-size:12px; color:var(--muted); line-height:1.4; }
-
-/* Answer section */
-.ans-section { margin-top:24px; padding-top:20px; border-top:1px solid var(--rule); }
-.ans-title { font-size:13px; font-weight:600; margin-bottom:6px; }
-.ans-sub { font-size:12px; color:var(--muted); margin-bottom:16px; line-height:1.5; }
-.ans-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.ans-opt {
-  padding:14px 16px; border:1px solid var(--rule); border-radius:6px;
-  cursor:pointer; transition:all .22s; background:#fff; text-align:left;
-  position:relative; overflow:hidden;
-}
-.ans-opt::before { content:''; position:absolute; inset:0; background:var(--ink); transform:translateY(101%); transition:transform .28s cubic-bezier(.77,0,.18,1); }
-.ans-opt:hover::before { transform:translateY(0); }
-.ans-opt.selected { border-color:var(--ink); background:var(--ink); }
-.ans-opt:hover .ao-main, .ans-opt:hover .ao-sub { color:#fff; }
-.ans-opt.selected .ao-main, .ans-opt.selected .ao-sub { color:#fff; }
-.ao-main { font-size:13px; font-weight:500; color:var(--ink); position:relative; z-index:1; transition:color .2s; display:block; margin-bottom:2px; }
-.ao-sub { font-size:12px; color:var(--muted); position:relative; z-index:1; transition:color .2s; line-height:1.4; }
-
-/* Slider in dashboard */
-.dash-slider-row { display:grid; grid-template-columns:90px 1fr 90px; align-items:center; gap:14px; margin-bottom:16px; }
-.dsl-label { font-size:11px; color:var(--muted); font-family:var(--mono); letter-spacing:.04em; }
-.dsl-label.right { text-align:right; }
-.dsl-track { position:relative; height:2px; background:var(--rule); cursor:pointer; border-radius:1px; }
-.dsl-fill { position:absolute; top:0; left:0; height:100%; background:rgba(9,9,11,.15); border-radius:1px; pointer-events:none; }
-.dsl-dot { position:absolute; top:50%; transform:translate(-50%,-50%); width:14px; height:14px; border-radius:50%; background:var(--ink); cursor:grab; transition:box-shadow .2s; }
-.dsl-dot:active { cursor:grabbing; }
-.dsl-dot.placed { box-shadow:0 0 0 4px rgba(9,9,11,.1); }
-
-/* Save button */
-.save-btn {
-  margin-top:20px; padding:11px 28px; background:var(--ink); color:#fff;
-  border:none; font-family:var(--sans); font-size:13px; font-weight:500;
-  cursor:pointer; border-radius:4px; transition:opacity .2s;
-}
-.save-btn:hover { opacity:.8; }
-.save-btn.saved { background:var(--green); }
+.comp-head{display:grid;grid-template-columns:1fr 1.2fr 1.2fr;gap:0;padding-bottom:10px;border-bottom:1px solid var(--rule);margin-bottom:4px;}
+.comp-col-h{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.comp-row{display:grid;grid-template-columns:1fr 1.2fr 1.2fr;gap:0;padding:10px 0;border-bottom:1px solid var(--rule);}
+.comp-row:last-child{border-bottom:none;padding-bottom:0;}
+.comp-name{font-size:13px;font-weight:600;}
+.comp-owner{font-size:11px;color:var(--muted);}
+.comp-cell{font-size:12px;color:var(--ink);padding-right:8px;line-height:1.4;}
+.comp-gap{font-size:12px;color:var(--orange);line-height:1.4;}
 
 /* Pending note */
-.pending-note {
-  margin-top:12px; padding:12px 16px;
-  background:var(--bg2); border-radius:6px;
-  font-size:12px; color:var(--muted); line-height:1.6;
+.pending-note{margin-top:14px;padding:10px 14px;background:var(--bg2);border-radius:6px;font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* ══════════════════════════════
+   QUESTIONNAIRE SCREEN
+══════════════════════════════ */
+#screen-quiz{padding-top:64px;background:var(--bg2);}
+.quiz-progress-bar{position:fixed;top:64px;left:0;right:0;z-index:150;height:3px;background:var(--rule);}
+.quiz-progress-fill{height:100%;background:var(--accent);transition:width .6s cubic-bezier(.22,1,.36,1);}
+
+.quiz-body{max-width:820px;margin:0 auto;padding:48px 40px 80px;}
+
+/* Section header */
+.quiz-sec-tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:10px;}
+.quiz-sec-num{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:10px;}
+.quiz-sec-title{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;}
+.quiz-sec-desc{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:44px;}
+
+/* Question block */
+.qblock{margin-bottom:48px;}
+.q-label{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px;}
+.q-text{font-size:20px;font-weight:600;letter-spacing:-.015em;line-height:1.3;margin-bottom:6px;}
+.q-sub{font-size:14px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+
+/* Options */
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.opt{
+  padding:18px 20px;border:1.5px solid var(--rule);border-radius:8px;
+  background:#fff;cursor:pointer;text-align:left;
+  position:relative;overflow:hidden;transition:border-color .2s,box-shadow .2s;
 }
+.opt::before{content:'';position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .28s cubic-bezier(.77,0,.18,1);}
+.opt:hover::before{transform:translateY(0);}
+.opt.selected{border-color:var(--accent);background:var(--accent);}
+.opt:hover .om,.opt:hover .os{color:#fff;}
+.opt.selected .om,.opt.selected .os{color:#fff;}
+.opt.selected::before{transform:translateY(101%);}
+.om{font-size:14px;font-weight:600;color:var(--ink);display:block;margin-bottom:3px;position:relative;z-index:1;transition:color .2s;}
+.os{font-size:12px;color:var(--muted);line-height:1.4;position:relative;z-index:1;transition:color .2s;}
 
-/* ── SLIDE TRANSITION ── */
-.slide-enter { animation: slideInRight .38s cubic-bezier(.22,1,.36,1) both; }
-.slide-exit  { animation: slideOutLeft .28s cubic-bezier(.77,0,.18,1) both; }
-.slide-enter-left { animation: slideInLeft .38s cubic-bezier(.22,1,.36,1) both; }
-.slide-exit-right { animation: slideOutRight .28s cubic-bezier(.77,0,.18,1) both; }
+/* Multi-select tags */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:10px;}
+.tag-opt{
+  font-size:13px;font-weight:500;padding:10px 18px;border-radius:100px;
+  border:1.5px solid var(--rule);background:#fff;cursor:pointer;transition:all .2s;color:var(--ink);
+}
+.tag-opt.selected{border-color:var(--accent);background:var(--accent);color:#fff;}
 
-@keyframes slideInRight  { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:none} }
-@keyframes slideOutLeft  { from{opacity:1;transform:none} to{opacity:0;transform:translateX(-40px)} }
-@keyframes slideInLeft   { from{opacity:0;transform:translateX(-40px)} to{opacity:1;transform:none} }
-@keyframes slideOutRight { from{opacity:1;transform:none} to{opacity:0;transform:translateX(40px)} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+/* Sliders */
+.slider-block{margin-bottom:28px;}
+.sl-row{display:grid;grid-template-columns:110px 1fr 110px;align-items:center;gap:16px;margin-bottom:20px;}
+.sl-lab{font-size:12px;color:var(--muted);font-family:var(--mono);letter-spacing:.04em;}
+.sl-lab.right{text-align:right;}
+.sl-lab.active{color:var(--ink);font-weight:500;}
+.sl-track{position:relative;height:2px;background:var(--rule);cursor:pointer;border-radius:2px;}
+.sl-fill{position:absolute;top:0;left:0;height:100%;background:rgba(61,155,233,.25);border-radius:2px;pointer-events:none;}
+.sl-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:grab;box-shadow:0 0 0 3px rgba(61,155,233,.2);}
+.sl-dot:active{cursor:grabbing;}
+
+/* Nav */
+.quiz-nav{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:32px;border-top:1px solid var(--rule);}
+.nav-prev-btn{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:8px;}
+.nav-prev-btn:hover{color:var(--ink);}
+.nav-prev-btn::before{content:'←';}
+.nav-next-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;background:var(--accent);border:none;
+  padding:14px 28px;cursor:pointer;border-radius:6px;transition:background .2s;
+}
+.nav-next-btn:hover{background:var(--accent-dark);}
+
+/* Scan anim */
+.scan-anim{height:24px;margin-bottom:12px;position:relative;overflow:hidden;}
+.scan-line-el{position:absolute;top:0;left:-60%;width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:scanPass .5s ease-out forwards;}
+.scan-dots{display:flex;gap:5px;align-items:center;height:24px;}
+.sdot{width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:0;animation:dotApp .4s ease forwards;}
+.sdot:nth-child(1){animation-delay:.05s;}.sdot:nth-child(2){animation-delay:.13s;}.sdot:nth-child(3){animation-delay:.21s;}
+@keyframes scanPass{from{left:-60%;}to{left:100%;}}
+@keyframes dotApp{0%{opacity:0;transform:scale(0);}60%{opacity:1;transform:scale(1.5);}100%{opacity:.3;transform:scale(1);}}
+
+/* ══════════════════════════════
+   DONE SCREEN
+══════════════════════════════ */
+#screen-done{
+  display:none;min-height:100vh;align-items:center;justify-content:center;
+  flex-direction:column;text-align:center;padding:60px 24px;background:var(--bg2);
+}
+#screen-done.active{display:flex;}
+.done-check-icon{width:60px;height:60px;border-radius:50%;background:rgba(61,155,233,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;}
+.done-checkmark{width:24px;height:14px;border-bottom:3px solid var(--accent);border-left:3px solid var(--accent);transform:rotate(-45deg);margin-top:4px;}
+.done-tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s both;}
+.done-title{font-size:clamp(32px,5vw,52px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:14px;opacity:0;animation:fadeUp .8s .2s both;}
+.done-desc{font-size:16px;color:var(--muted);max-width:440px;line-height:1.75;opacity:0;animation:fadeUp .7s .35s both;}
+.done-back{margin-top:36px;padding:12px 28px;background:var(--accent);color:#fff;border:none;font-size:14px;font-weight:500;cursor:pointer;border-radius:6px;opacity:0;animation:fadeUp .7s .5s both;}
+
+/* ── TRANSITIONS ── */
+.slide-in{animation:slideIn .4s cubic-bezier(.22,1,.36,1) both;}
+.slide-out{animation:slideOut .28s cubic-bezier(.77,0,.18,1) both;}
+.fade-in{animation:fadeIn .4s ease both;}
+@keyframes slideIn{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
+@keyframes slideOut{from{opacity:1;transform:none}to{opacity:0;transform:translateX(-36px)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
 /* Mobile */
 @media(max-width:768px){
-  #bjc-header { padding:0 20px; }
-  .bjc-nav { display:none; }
-  .dash-inner { padding:24px 20px 60px; }
-  .dash-grid, .action-cards { grid-template-columns:1fr; }
-  .dash-grid-2 { grid-template-columns:1fr; }
-  .ans-grid { grid-template-columns:1fr; }
-  .comp-row { grid-template-columns:1fr 1fr; }
-  .spec-row-d { grid-template-columns:70px 1fr 70px; }
+  #bjc-header{padding:0 20px;}
+  .bjc-nav{display:none;}
+  .dash-inner,.quiz-body{padding-left:20px;padding-right:20px;}
+  .dash-grid,.dash-grid-2{grid-template-columns:1fr;}
+  .opts-grid{grid-template-columns:1fr;}
+  .sl-row{grid-template-columns:70px 1fr 70px;gap:10px;}
+  .dash-cta-block{flex-direction:column;align-items:flex-start;}
+  .comp-head,.comp-row{grid-template-columns:1fr 1fr;}
+  .comp-col-h:last-child,.comp-gap{display:none;}
 }
 </style>
 </head>
@@ -296,7 +342,7 @@ body { background:var(--bg2); color:var(--ink); font-family:var(--sans); min-hei
   <div class="login-card">
     <p class="login-brand">Boney Joy Consulting — Client Portal</p>
     <h1 class="login-title">Welcome back.</h1>
-    <p class="login-sub">Sign in with the credentials shared with you to access your brand workspace.</p>
+    <p class="login-sub">Sign in with the credentials we shared with you to access your brand workspace.</p>
     <div class="login-field">
       <label class="login-label">Username</label>
       <input type="text" class="login-input" id="login-username" placeholder="Enter username" autocomplete="username">
@@ -305,9 +351,19 @@ body { background:var(--bg2); color:var(--ink); font-family:var(--sans); min-hei
       <label class="login-label">Password</label>
       <input type="password" class="login-input" id="login-password" placeholder="Enter password" autocomplete="current-password">
     </div>
-    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
     <p class="login-error" id="login-error">Incorrect credentials. Please try again.</p>
-    <p class="login-loading" id="login-loading">Verifying...</p>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="screen-loading" class="screen">
+  <canvas id="loading-canvas"></canvas>
+  <div class="loading-status">
+    <div class="loading-line" id="ll-0"><div class="loading-dot active" id="ld-0"></div><span>Loading your brand workspace...</span></div>
+    <div class="loading-line" id="ll-1"><div class="loading-dot" id="ld-1"></div><span>Pulling performance insights...</span></div>
+    <div class="loading-line" id="ll-2"><div class="loading-dot" id="ld-2"></div><span>Analysing competitive landscape...</span></div>
+    <div class="loading-line" id="ll-3"><div class="loading-dot" id="ld-3"></div><span>Your dashboard is ready.</span></div>
   </div>
 </div>
 
@@ -317,503 +373,567 @@ body { background:var(--bg2); color:var(--ink); font-family:var(--sans); min-hei
 
     <!-- Welcome -->
     <div class="dash-welcome">
-      <div class="dash-welcome-top">
-        <div>
-          <h1 class="dash-welcome-name" id="dash-welcome-name">Welcome, Neuherbs.</h1>
-          <p class="dash-welcome-sub">Your brand strategy workspace — built by Boney Joy Consulting.</p>
-        </div>
-        <div class="dash-verified-tag">Data pending team verification</div>
+      <div class="dash-welcome-left">
+        <h1 class="dash-client-name" id="dash-client-name">Neuherbs</h1>
+        <p class="dash-client-sub">Brand Strategy Workspace · Boney Joy Consulting</p>
       </div>
     </div>
 
-    <!-- Insights banner -->
-    <div class="insights-banner">
-      <div class="ib-left">
-        <span class="ib-label">Boney's Opening Insight</span>
-        <span class="ib-text">Your Instagram reaches <em>83% men</em> — but your top content (1.2M, 1.1M views) is <em>women's health</em>. There's a brand signal you're building that your positioning hasn't caught up to yet.</span>
+    <!-- BIG CTA -->
+    <div class="dash-cta-block" onclick="startQuiz()">
+      <div class="dash-cta-left">
+        <div class="dash-cta-tag">Client Questionnaire</div>
+        <div class="dash-cta-title">Begin your Brand Questionnaire</div>
+        <div class="dash-cta-sub">5 sections · ~10 minutes · Shapes your entire brand strategy</div>
       </div>
-      <span class="ib-cta">Review below →</span>
-    </div>
-
-    <!-- Section pills -->
-    <div class="dash-progress">
-      <div class="prog-pill active" onclick="scrollToSection('s-basics')"><div class="prog-dot"></div>Brand Basics</div>
-      <div class="prog-pill" onclick="scrollToSection('s-audience')"><div class="prog-dot"></div>Audience</div>
-      <div class="prog-pill" onclick="scrollToSection('s-competition')"><div class="prog-dot"></div>Competition</div>
-      <div class="prog-pill" onclick="scrollToSection('s-personality')"><div class="prog-dot"></div>Brand Personality</div>
-      <div class="prog-pill" onclick="scrollToSection('s-goals')"><div class="prog-dot"></div>Goals & Assets</div>
-    </div>
-
-    <!-- ── SECTION 1: BRAND BASICS ── -->
-    <div id="s-basics" style="margin-bottom:16px;">
-      <div class="dash-grid">
-        <div class="card">
-          <div class="card-header">
-            <div><div class="card-title">Brand Overview</div><div class="card-sub">Pre-populated · Neuherbs</div></div>
-            <span class="card-badge badge-pre">Pre-filled</span>
-          </div>
-          <div class="stat-row"><span class="stat-key">Founded</span><span class="stat-val">2015, Noida</span></div>
-          <div class="stat-row"><span class="stat-key">Customers</span><span class="stat-val green">2.5M+</span></div>
-          <div class="stat-row"><span class="stat-key">Products</span><span class="stat-val">70+ across 10 categories</span></div>
-          <div class="stat-row"><span class="stat-key">Funding</span><span class="stat-val">Bootstrapped</span></div>
-          <div class="stat-row"><span class="stat-key">Amazon India 2024</span><span class="stat-val green">#1 Chosen Brand</span></div>
-          <div class="pending-note">✦ Founders: Amit Kumar Tyagi, Namit Kumar Tyagi. HQ: E-51, Sector 3, Noida.</div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div><div class="card-title">Website Performance</div><div class="card-sub">Last 6 months</div></div>
-            <span class="card-badge badge-pre">Pre-filled</span>
-          </div>
-          <div class="stat-row"><span class="stat-key">Total Traffic</span><span class="stat-val blue">8,65,677</span></div>
-          <div class="stat-row"><span class="stat-key">Conversion Rate</span><span class="stat-val green">4.2%</span></div>
-          <div class="stat-row"><span class="stat-key">Homepage Bounce</span><span class="stat-val orange">45.53%</span></div>
-          <div class="stat-row"><span class="stat-key">Product Page Bounce</span><span class="stat-val red">68.82%</span></div>
-          <div class="stat-row"><span class="stat-key">Checkout Bounce</span><span class="stat-val orange">33.71%</span></div>
-          <div class="insight-callout">
-            <div class="ic-label">Boney's Read</div>
-            <div class="ic-text">Product page bounce of 68.82% is the biggest leak. People are curious but not convinced. This is a communication problem — not a product problem.</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div><div class="card-title">Sales Snapshot</div><div class="card-sub">Last 3 months</div></div>
-            <span class="card-badge badge-pre">Pre-filled</span>
-          </div>
-          <div class="stat-row"><span class="stat-key">Revenue</span><span class="stat-val blue">₹1.76 Cr</span></div>
-          <div class="stat-row"><span class="stat-key">Repeat Rate</span><span class="stat-val orange">31.4%</span></div>
-          <div class="stat-row"><span class="stat-key">Hero SKU</span><span class="stat-val">Deep Sea Fish Oil</span></div>
-          <div class="stat-row"><span class="stat-key">Highest Repeat</span><span class="stat-val green">True Vitamin Women (65%)</span></div>
-          <div class="stat-row"><span class="stat-key">Top Cities</span><span class="stat-val">Delhi, Mumbai, Bengaluru</span></div>
-          <div class="insight-callout">
-            <div class="ic-label">Boney's Read</div>
-            <div class="ic-text">True Vitamin Women has the highest loyalty at 65%. That's a signal. The women's segment retains harder — but is it being invested in proportionally?</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Brand Basics Question -->
-      <div class="card" style="animation:fadeUp .5s both;">
-        <div class="card-header">
-          <div><div class="card-title">Brand Basics — Your Input</div><div class="card-sub">Confirm or correct what we know</div></div>
-          <span class="card-badge badge-pending" id="badge-basics">Pending</span>
-        </div>
-        <div class="ans-section">
-          <div class="ans-title">How would you describe Neuherbs' current positioning in the market?</div>
-          <div class="ans-sub">Be honest — not aspirational. This shapes everything we build together.</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('basics-pos',0,this)"><span class="ao-main">Clean-label supplement brand</span><span class="ao-sub">Nature-derived, transparent, no false claims</span></button>
-            <button class="ans-opt" onclick="selectAns('basics-pos',1,this)"><span class="ao-main">Everyday wellness brand</span><span class="ao-sub">Accessible health for all Indians, daily use</span></button>
-            <button class="ans-opt" onclick="selectAns('basics-pos',2,this)"><span class="ao-main">Science-backed nutrition brand</span><span class="ao-sub">Formulation credibility and efficacy first</span></button>
-            <button class="ans-opt" onclick="selectAns('basics-pos',3,this)"><span class="ao-main">We haven't nailed it yet</span><span class="ao-sub">Still finding our most ownable territory</span></button>
-          </div>
-        </div>
-        <div class="ans-section">
-          <div class="ans-title">Which channel is your biggest growth driver right now?</div>
-          <div class="ans-sub">Where is Neuherbs actually winning?</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('basics-channel',0,this)"><span class="ao-main">Amazon / Flipkart</span><span class="ao-sub">Marketplace is where we convert best</span></button>
-            <button class="ans-opt" onclick="selectAns('basics-channel',1,this)"><span class="ao-main">D2C Website</span><span class="ao-sub">Our own channel is where we invest most</span></button>
-            <button class="ans-opt" onclick="selectAns('basics-channel',2,this)"><span class="ao-main">Instagram / Meta ads</span><span class="ao-sub">Social is driving the most discovery</span></button>
-            <button class="ans-opt" onclick="selectAns('basics-channel',3,this)"><span class="ao-main">Google Search</span><span class="ao-sub">Intent-led — people search and find us</span></button>
-          </div>
-        </div>
-        <button class="save-btn" id="save-basics" onclick="saveSection('basics')">Save Answers</button>
-        <div class="pending-note">Data verified and updated by the Boney Joy Consulting team within 48 hours of submission.</div>
+      <div class="dash-cta-arrow">
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </div>
     </div>
 
-    <!-- ── SECTION 2: AUDIENCE ── -->
-    <div id="s-audience" style="margin-bottom:16px;">
-      <div class="dash-grid-2">
-        <div class="card">
-          <div class="card-header">
-            <div><div class="card-title">Audience Demographics</div><div class="card-sub">Instagram + Purchase data</div></div>
-            <span class="card-badge badge-pre">Pre-filled</span>
-          </div>
-          <div style="margin-bottom:16px;">
-            <div class="stat-row"><span class="stat-key">Age 18–24</span><span class="stat-val blue">34.3% buyers · 53.3% IG</span></div>
-            <div class="stat-row"><span class="stat-key">Age 25–34</span><span class="stat-val blue">31.6% buyers · 34.2% IG</span></div>
-            <div class="stat-row"><span class="stat-key">Age 35–44</span><span class="stat-val">16.7% buyers · 7.9% IG</span></div>
-            <div class="stat-row"><span class="stat-key">Male (buyers)</span><span class="stat-val">76.6%</span></div>
-            <div class="stat-row"><span class="stat-key">Female (buyers)</span><span class="stat-val">23.4%</span></div>
-            <div class="stat-row"><span class="stat-key">Male (Instagram)</span><span class="stat-val">83%</span></div>
-            <div class="stat-row"><span class="stat-key">Female (Instagram)</span><span class="stat-val">17%</span></div>
-          </div>
-          <div class="insight-callout">
-            <div class="ic-label">Strategic Tension</div>
-            <div class="ic-text">Your top content (women's health, 1.2M views) is building a female audience — but your buyer base is 76.6% male. Either your content strategy is misaligned, or there's an underserved women's market sitting right there.</div>
-          </div>
-        </div>
+    <!-- Boney's opening insight -->
+    <div class="insight-banner">
+      <div class="ib-icon">💡</div>
+      <div class="ib-body">
+        <div class="ib-label">Boney's Opening Insight</div>
+        <div class="ib-text">Your Instagram reaches <em>83% men</em> — but your top content (1.2M, 1.1M views) is women's health. Your <em>True Vitamin Women</em> has the highest repeat rate at 65%. There's a brand signal being built that your current positioning hasn't caught up to. This is what we need to resolve.</div>
+      </div>
+    </div>
 
-        <div class="card">
-          <div class="card-header">
-            <div><div class="card-title">Cart & Conversion</div><div class="card-sub">Purchase behaviour</div></div>
-            <span class="card-badge badge-insight">Needs Attention</span>
-          </div>
-          <div class="stat-row"><span class="stat-key">Add to Cart</span><span class="stat-val blue">1,23,214</span></div>
-          <div class="stat-row"><span class="stat-key">Cart Abandonment</span><span class="stat-val red">69.9%</span></div>
-          <div class="stat-row"><span class="stat-key">Drop at Checkout</span><span class="stat-val red">33.71%</span></div>
-          <div class="stat-row"><span class="stat-key">Prepaid Selected</span><span class="stat-val orange">26.16%</span></div>
-          <div class="stat-row"><span class="stat-key">Retargeting Active</span><span class="stat-val green">Yes (IG + WA)</span></div>
-          <div class="stat-row"><span class="stat-key">IG Views (30d)</span><span class="stat-val blue">59.97 Lakh</span></div>
-          <div class="insight-callout">
-            <div class="ic-label">Boney's Read</div>
-            <div class="ic-text">69.9% cart abandonment with 93.7% ad-driven views means you're buying attention but not converting trust. The brand communication at the consideration stage has a gap.</div>
-          </div>
+    <!-- INSIGHTS SECTION -->
+    <div class="section-divider"><div class="sd-line"></div><span class="sd-label">Brand Insights — Boney's Pre-Analysis</span><div class="sd-line"></div></div>
+
+    <div class="dash-grid">
+
+      <div class="card">
+        <div class="card-head">
+          <div><div class="card-title">Brand Overview</div><div class="card-sub">Neuherbs — verified data</div></div>
+          <span class="card-badge badge-data">Data</span>
+        </div>
+        <div class="stat-row"><span class="stat-key">Founded</span><span class="stat-val">2015 · Noida</span></div>
+        <div class="stat-row"><span class="stat-key">Customers</span><span class="stat-val val-green">2.5M+</span></div>
+        <div class="stat-row"><span class="stat-key">Products</span><span class="stat-val">70+ · 10 categories</span></div>
+        <div class="stat-row"><span class="stat-key">Funding</span><span class="stat-val">Bootstrapped</span></div>
+        <div class="stat-row"><span class="stat-key">Amazon India 2024</span><span class="stat-val val-green">#1 Chosen Brand</span></div>
+        <div class="stat-row"><span class="stat-key">Hero SKU</span><span class="stat-val">Deep Sea Fish Oil</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div><div class="card-title">Website Performance</div><div class="card-sub">Last 6 months</div></div>
+          <span class="card-badge badge-data">Data</span>
+        </div>
+        <div class="stat-row"><span class="stat-key">Total Traffic</span><span class="stat-val val-blue">8,65,677</span></div>
+        <div class="stat-row"><span class="stat-key">Conversion Rate</span><span class="stat-val val-green">4.2%</span></div>
+        <div class="stat-row"><span class="stat-key">Homepage Bounce</span><span class="stat-val val-orange">45.53%</span></div>
+        <div class="stat-row"><span class="stat-key">Product Page Bounce</span><span class="stat-val val-red">68.82%</span></div>
+        <div class="stat-row"><span class="stat-key">Cart Abandonment</span><span class="stat-val val-red">69.9%</span></div>
+        <div class="stat-row"><span class="stat-key">Best Platform</span><span class="stat-val">Google Search</span></div>
+        <div class="card-insight">
+          <div class="ci-label">Read</div>
+          <div class="ci-text">68.82% product page bounce is a communication failure — not a product failure. People are curious but not convinced. That's your most urgent fix.</div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-header">
-          <div><div class="card-title">Audience — Your Input</div><div class="card-sub">Help us understand who you're really building for</div></div>
-          <span class="card-badge badge-pending" id="badge-audience">Pending</span>
+        <div class="card-head">
+          <div><div class="card-title">Sales & Retention</div><div class="card-sub">Last 3 months</div></div>
+          <span class="card-badge badge-data">Data</span>
         </div>
-        <div class="ans-section">
-          <div class="ans-title">Who is Neuherbs' core customer — if you had to pick one?</div>
-          <div class="ans-sub">Not the full range. The one person who gets the most out of what you make.</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('aud-core',0,this)"><span class="ao-main">Urban male, 22–32</span><span class="ao-sub">Gym-going, fitness-aware, supplement literate</span></button>
-            <button class="ans-opt" onclick="selectAns('aud-core',1,this)"><span class="ao-main">Urban female, 25–35</span><span class="ao-sub">Health-conscious, skin + wellness focused</span></button>
-            <button class="ans-opt" onclick="selectAns('aud-core',2,this)"><span class="ao-main">Both equally</span><span class="ao-sub">Multi-category brand for all adults</span></button>
-            <button class="ans-opt" onclick="selectAns('aud-core',3,this)"><span class="ao-main">Family health buyer, 30–45</span><span class="ao-sub">Buys for the household, quality-driven</span></button>
-          </div>
+        <div class="stat-row"><span class="stat-key">Revenue</span><span class="stat-val val-blue">₹1.76 Cr</span></div>
+        <div class="stat-row"><span class="stat-key">Repeat Rate</span><span class="stat-val val-orange">31.4%</span></div>
+        <div class="stat-row"><span class="stat-key">Best Repeat SKU</span><span class="stat-val val-green">True Vitamin Women 65%</span></div>
+        <div class="stat-row"><span class="stat-key">Fish Oil Repeat</span><span class="stat-val">26.3%</span></div>
+        <div class="stat-row"><span class="stat-key">Top Cities</span><span class="stat-val">Delhi · Mumbai · Bengaluru</span></div>
+        <div class="stat-row"><span class="stat-key">Add to Cart</span><span class="stat-val">1,23,214</span></div>
+        <div class="card-insight">
+          <div class="ci-label">Read</div>
+          <div class="ci-text">True Vitamin Women has 2.5x better retention than Fish Oil. The brand's most loyal customers are women — but is the brand built for them?</div>
         </div>
-        <div class="ans-section">
-          <div class="ans-title">What does your customer believe before they buy Neuherbs?</div>
-          <div class="ans-sub">The existing belief or behaviour that makes them receptive to you.</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('aud-belief',0,this)"><span class="ao-main">"I need to supplement my diet"</span><span class="ao-sub">Aware of nutritional gaps, actively seeking</span></button>
-            <button class="ans-opt" onclick="selectAns('aud-belief',1,this)"><span class="ao-main">"Natural is safer than pharma"</span><span class="ao-sub">Prefers clean label over clinical brands</span></button>
-            <button class="ans-opt" onclick="selectAns('aud-belief',2,this)"><span class="ao-main">"I want to perform better"</span><span class="ao-sub">Fitness-motivated, results-driven</span></button>
-            <button class="ans-opt" onclick="selectAns('aud-belief',3,this)"><span class="ao-main">"I saw it online and trust the reviews"</span><span class="ao-sub">Discovery-led, social proof driven</span></button>
-          </div>
-        </div>
-        <div class="ans-section">
-          <div class="ans-title">What do you want Neuherbs to mean to a woman customer?</div>
-          <div class="ans-sub">Given the content performance data — this is a real strategic question.</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('aud-women',0,this)"><span class="ao-main">A trusted wellness companion</span><span class="ao-sub">For her daily health — skin, hormones, energy</span></button>
-            <button class="ans-opt" onclick="selectAns('aud-women',1,this)"><span class="ao-main">A science-first supplement brand</span><span class="ao-sub">Clean, credible, she can trust the label</span></button>
-            <button class="ans-opt" onclick="selectAns('aud-women',2,this)"><span class="ao-main">Not our primary focus right now</span><span class="ao-sub">We're focused on the male audience first</span></button>
-            <button class="ans-opt" onclick="selectAns('aud-women',3,this)"><span class="ao-main">We haven't defined this yet</span><span class="ao-sub">Open question — need to figure it out</span></button>
-          </div>
-        </div>
-        <button class="save-btn" id="save-audience" onclick="saveSection('audience')">Save Answers</button>
-        <div class="pending-note">Data verified and updated by the Boney Joy Consulting team within 48 hours of submission.</div>
       </div>
     </div>
 
-    <!-- ── SECTION 3: COMPETITION ── -->
-    <div id="s-competition" style="margin-bottom:16px;">
+    <div class="dash-grid-2" style="margin-top:16px;">
       <div class="card">
-        <div class="card-header">
-          <div><div class="card-title">Competitive Landscape</div><div class="card-sub">India D2C supplements — Boney's analysis</div></div>
-          <span class="card-badge badge-pre">Pre-filled</span>
+        <div class="card-head">
+          <div><div class="card-title">Audience Demographics</div><div class="card-sub">Purchase + Instagram data</div></div>
+          <span class="card-badge badge-insight">Strategic Tension</span>
         </div>
-        <div class="comp-row">
-          <div class="comp-col header">Brand</div>
-          <div class="comp-col header">What they own</div>
-          <div class="comp-col header">Their gap</div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-col data"><span class="comp-name">OZiva</span><br><span style="font-size:11px;color:var(--muted)">Acquired by HUL</span></div>
-          <div class="comp-col data">Women's health, plant-based</div>
-          <div class="comp-col data" style="text-align:right;color:var(--orange)">Revenue stagnant at ₹104Cr. Losing edge post-acquisition.</div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-col data"><span class="comp-name">MuscleBlaze</span><br><span style="font-size:11px;color:var(--muted)">HealthKart</span></div>
-          <div class="comp-col data">Performance, protein, gym</div>
-          <div class="comp-col data" style="text-align:right;color:var(--orange)">Hyper-masculine. Zero play in everyday wellness.</div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-col data"><span class="comp-name">Wellbeing Nutrition</span><br><span style="font-size:11px;color:var(--muted)">HUL-backed</span></div>
-          <div class="comp-col data">Premium, science-forward, melts</div>
-          <div class="comp-col data" style="text-align:right;color:var(--orange)">Expensive. Metro-only. Not mass accessible.</div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-col data"><span class="comp-name">Plix</span><br><span style="font-size:11px;color:var(--muted)">Plant-based</span></div>
-          <div class="comp-col data">Functional gummies, skin + gut</div>
-          <div class="comp-col data" style="text-align:right;color:var(--orange)">Trend-led. Low repeat. Category narrow.</div>
-        </div>
-        <div class="comp-row">
-          <div class="comp-col data"><span class="comp-name">TrueBasics</span><br><span style="font-size:11px;color:var(--muted)">HealthKart</span></div>
-          <div class="comp-col data">Daily vitamins, mainstream</div>
-          <div class="comp-col data" style="text-align:right;color:var(--orange)">Generic positioning. No distinct personality.</div>
-        </div>
-        <div class="insight-callout">
-          <div class="ic-label">The Whitespace</div>
-          <div class="ic-text">OZiva owns women's plant-based. MuscleBlaze owns male performance. Nobody owns <strong>"everyday clean nutrition for health-aware Indians who want trusted, transparent wellness — not fitness theatre."</strong> That's Neuherbs' opening — if you take it.</div>
+        <div class="stat-row"><span class="stat-key">Age 18–24 (buyers)</span><span class="stat-val">34.3%</span></div>
+        <div class="stat-row"><span class="stat-key">Age 25–34 (buyers)</span><span class="stat-val">31.6%</span></div>
+        <div class="stat-row"><span class="stat-key">Male buyers</span><span class="stat-val">76.6%</span></div>
+        <div class="stat-row"><span class="stat-key">Female buyers</span><span class="stat-val">23.4%</span></div>
+        <div class="stat-row"><span class="stat-key">Instagram — Men</span><span class="stat-val val-blue">83%</span></div>
+        <div class="stat-row"><span class="stat-key">Instagram — Women</span><span class="stat-val val-blue">17%</span></div>
+        <div class="stat-row"><span class="stat-key">IG Views (30 days)</span><span class="stat-val val-blue">59.97 Lakh</span></div>
+        <div class="stat-row"><span class="stat-key">Views from ads</span><span class="stat-val val-orange">93.7%</span></div>
+        <div class="card-insight">
+          <div class="ci-label">The Tension</div>
+          <div class="ci-text">93.7% of views come from ads — organic reach is almost nil. The brand hasn't built an audience that follows because it believes. That's the deeper brand problem.</div>
         </div>
       </div>
 
-      <div class="card" style="margin-top:16px;">
-        <div class="card-header">
-          <div><div class="card-title">Competition — Your Input</div><div class="card-sub">How you see the battlefield</div></div>
-          <span class="card-badge badge-pending" id="badge-competition">Pending</span>
-        </div>
-        <div class="ans-section">
-          <div class="ans-title">Which competitor do you lose to most often?</div>
-          <div class="ans-sub">Where do customers go when they don't choose Neuherbs?</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('comp-lose',0,this)"><span class="ao-main">OZiva</span><span class="ao-sub">Women's segment, plant-based</span></button>
-            <button class="ans-opt" onclick="selectAns('comp-lose',1,this)"><span class="ao-main">MuscleBlaze / HealthKart</span><span class="ao-sub">Performance and protein segment</span></button>
-            <button class="ans-opt" onclick="selectAns('comp-lose',2,this)"><span class="ao-main">Amazon's private labels</span><span class="ao-sub">Price-driven, convenience-first</span></button>
-            <button class="ans-opt" onclick="selectAns('comp-lose',3,this)"><span class="ao-main">We don't know — not tracking</span><span class="ao-sub">Haven't mapped this properly yet</span></button>
-          </div>
-        </div>
-        <div class="ans-section">
-          <div class="ans-title">What does Neuherbs do that no competitor does?</div>
-          <div class="ans-sub">Your most defensible advantage — be specific.</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('comp-edge',0,this)"><span class="ao-main">Clean-label across all categories</span><span class="ao-sub">No artificial additives anywhere in the range</span></button>
-            <button class="ans-opt" onclick="selectAns('comp-edge',1,this)"><span class="ao-main">Breadth without compromise</span><span class="ao-sub">70+ products, all meeting same quality standard</span></button>
-            <button class="ans-opt" onclick="selectAns('comp-edge',2,this)"><span class="ao-main">Price-to-quality ratio</span><span class="ao-sub">Premium quality at accessible price points</span></button>
-            <button class="ans-opt" onclick="selectAns('comp-edge',3,this)"><span class="ao-main">Amazon India trust and reach</span><span class="ao-sub">2.5M customers, #1 chosen brand 2024</span></button>
-          </div>
-        </div>
-        <button class="save-btn" id="save-competition" onclick="saveSection('competition')">Save Answers</button>
-        <div class="pending-note">Data verified and updated by the Boney Joy Consulting team within 48 hours of submission.</div>
-      </div>
-    </div>
-
-    <!-- ── SECTION 4: BRAND PERSONALITY ── -->
-    <div id="s-personality" style="margin-bottom:16px;">
       <div class="card">
-        <div class="card-header">
-          <div><div class="card-title">Brand Personality — Your Input</div><div class="card-sub">Place Neuherbs honestly on each scale</div></div>
-          <span class="card-badge badge-pending" id="badge-personality">Pending</span>
+        <div class="card-head">
+          <div><div class="card-title">Competitive Landscape</div><div class="card-sub">Boney's market read</div></div>
+          <span class="card-badge badge-insight">Analysis</span>
         </div>
-        <div class="ans-section">
-          <div class="ans-title">Drag each slider to where Neuherbs actually sits today.</div>
-          <div class="ans-sub">Not where you want it. Where it is. We'll use this to define the gap between perception and ambition.</div>
-          <div style="margin-top:24px;">
-            <div class="dash-slider-row"><span class="dsl-label">Serious</span><div class="dsl-track" id="dslT-tone"><div class="dsl-fill" id="dslF-tone" style="width:50%"></div><div class="dsl-dot" id="dslD-tone" style="left:50%"></div></div><span class="dsl-label right">Playful</span></div>
-            <div class="dash-slider-row"><span class="dsl-label">Functional</span><div class="dsl-track" id="dslT-appeal"><div class="dsl-fill" id="dslF-appeal" style="width:50%"></div><div class="dsl-dot" id="dslD-appeal" style="left:50%"></div></div><span class="dsl-label right">Emotional</span></div>
-            <div class="dash-slider-row"><span class="dsl-label">Mainstream</span><div class="dsl-track" id="dslT-position"><div class="dsl-fill" id="dslF-position" style="width:50%"></div><div class="dsl-dot" id="dslD-position" style="left:50%"></div></div><span class="dsl-label right">Disruptive</span></div>
-            <div class="dash-slider-row"><span class="dsl-label">Premium</span><div class="dsl-track" id="dslT-price"><div class="dsl-fill" id="dslF-price" style="width:50%"></div><div class="dsl-dot" id="dslD-price" style="left:50%"></div></div><span class="dsl-label right">Accessible</span></div>
-            <div class="dash-slider-row"><span class="dsl-label">Scientific</span><div class="dsl-track" id="dslT-cred"><div class="dsl-fill" id="dslF-cred" style="width:50%"></div><div class="dsl-dot" id="dslD-cred" style="left:50%"></div></div><span class="dsl-label right">Natural</span></div>
-          </div>
+        <div class="comp-head">
+          <div class="comp-col-h">Brand</div>
+          <div class="comp-col-h">They own</div>
+          <div class="comp-col-h">Their gap</div>
         </div>
-        <div class="ans-section">
-          <div class="ans-title">What should Neuherbs never feel like?</div>
-          <div class="ans-sub">Your anti-personality — what the brand must reject completely.</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('pers-not',0,this)"><span class="ao-main">Gym bro / performance-only</span><span class="ao-sub">Hyper-masculine, intimidating, exclusive</span></button>
-            <button class="ans-opt" onclick="selectAns('pers-not',1,this)"><span class="ao-main">Pharma / clinical</span><span class="ao-sub">Cold, jargon-heavy, distancing</span></button>
-            <button class="ans-opt" onclick="selectAns('pers-not',2,this)"><span class="ao-main">Preachy wellness brand</span><span class="ao-sub">Telling people how to live, moralising</span></button>
-            <button class="ans-opt" onclick="selectAns('pers-not',3,this)"><span class="ao-main">Generic discount supplement</span><span class="ao-sub">No personality, just price and volume</span></button>
-          </div>
+        <div class="comp-row">
+          <div><div class="comp-name">OZiva</div><div class="comp-owner">HUL-acquired</div></div>
+          <div class="comp-cell">Women's health, plant-based</div>
+          <div class="comp-gap">Revenue flat at ₹104Cr. Post-HUL identity blur.</div>
         </div>
-        <div class="ans-section">
-          <div class="ans-title">Which brand comes closest to the energy Neuherbs wants?</div>
-          <div class="ans-sub">Not the category — the feeling, the relationship with the customer.</div>
-          <div class="action-cards">
-            <div class="action-card" onclick="selectAction('pers-analogy',0,this)"><div class="ac-label">Dabur</div><div class="ac-sub">Trusted, Indian, household — built over generations</div></div>
-            <div class="action-card" onclick="selectAction('pers-analogy',1,this)"><div class="ac-label">Paper Boat</div><div class="ac-sub">Warm, honest, rooted — emotional without trying hard</div></div>
-            <div class="action-card" onclick="selectAction('pers-analogy',2,this)"><div class="ac-label">The Whole Truth</div><div class="ac-sub">Brutally transparent, label-proud, earned trust</div></div>
-            <div class="action-card" onclick="selectAction('pers-analogy',3,this)"><div class="ac-label">Himalaya</div><div class="ac-sub">Nature-backed, credible, safe — gentle authority</div></div>
-            <div class="action-card" onclick="selectAction('pers-analogy',4,this)"><div class="ac-label">Mamaearth</div><div class="ac-sub">Mass-reach, relatable, family-first, accessible</div></div>
-            <div class="action-card" onclick="selectAction('pers-analogy',5,this)"><div class="ac-label">None of these</div><div class="ac-sub">We want to carve a new territory entirely</div></div>
-          </div>
+        <div class="comp-row">
+          <div><div class="comp-name">MuscleBlaze</div><div class="comp-owner">HealthKart</div></div>
+          <div class="comp-cell">Male performance, protein</div>
+          <div class="comp-gap">Zero play in everyday wellness.</div>
         </div>
-        <button class="save-btn" id="save-personality" onclick="saveSection('personality')">Save Answers</button>
-        <div class="pending-note">Data verified and updated by the Boney Joy Consulting team within 48 hours of submission.</div>
+        <div class="comp-row">
+          <div><div class="comp-name">Wellbeing Nutrition</div><div class="comp-owner">HUL-backed</div></div>
+          <div class="comp-cell">Premium, science-led</div>
+          <div class="comp-gap">Expensive. Metro-only. Not mass.</div>
+        </div>
+        <div class="comp-row">
+          <div><div class="comp-name">Plix</div><div class="comp-owner">Plant-based</div></div>
+          <div class="comp-cell">Gummies, skin + gut</div>
+          <div class="comp-gap">Trend-led. Low repeat. Narrow.</div>
+        </div>
+        <div class="card-insight">
+          <div class="ci-label">The Whitespace</div>
+          <div class="ci-text">Nobody owns "clean, trusted, everyday nutrition for health-aware Indians." OZiva had it — HUL blurred it. That's Neuherbs' opening.</div>
+        </div>
       </div>
     </div>
 
-    <!-- ── SECTION 5: GOALS & ASSETS ── -->
-    <div id="s-goals" style="margin-bottom:16px;">
-      <div class="card">
-        <div class="card-header">
-          <div><div class="card-title">Goals & Assets — Your Input</div><div class="card-sub">What we're working toward together</div></div>
-          <span class="card-badge badge-pending" id="badge-goals">Pending</span>
-        </div>
-        <div class="ans-section">
-          <div class="ans-title">What is the single most important outcome from this engagement?</div>
-          <div class="ans-sub">If we achieve only one thing together — what should it be?</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('goal-primary',0,this)"><span class="ao-main">A sharp, ownable brand position</span><span class="ao-sub">Clear territory that no competitor can claim</span></button>
-            <button class="ans-opt" onclick="selectAns('goal-primary',1,this)"><span class="ao-main">A communication system that converts</span><span class="ao-sub">Messaging that fixes the product page drop-off</span></button>
-            <button class="ans-opt" onclick="selectAns('goal-primary',2,this)"><span class="ao-main">A brand that earns women's trust</span><span class="ao-sub">Intentional strategy for the women's segment</span></button>
-            <button class="ans-opt" onclick="selectAns('goal-primary',3,this)"><span class="ao-main">A visual identity that stands out</span><span class="ao-sub">Look that differentiates us on shelf and feed</span></button>
-          </div>
-        </div>
-        <div class="ans-section">
-          <div class="ans-title">What is the timeline you're working with?</div>
-          <div class="ans-grid">
-            <button class="ans-opt" onclick="selectAns('goal-timeline',0,this)"><span class="ao-main">Urgent — within 1 month</span><span class="ao-sub">Launch or campaign coming up</span></button>
-            <button class="ans-opt" onclick="selectAns('goal-timeline',1,this)"><span class="ao-main">Short — 1 to 3 months</span><span class="ao-sub">Moving quickly but deliberately</span></button>
-            <button class="ans-opt" onclick="selectAns('goal-timeline',2,this)"><span class="ao-main">Medium — 3 to 6 months</span><span class="ao-sub">Building it properly</span></button>
-            <button class="ans-opt" onclick="selectAns('goal-timeline',3,this)"><span class="ao-main">Sustained engagement</span><span class="ao-sub">This is a long-term partnership</span></button>
-          </div>
-        </div>
-        <div class="ans-section">
-          <div class="ans-title">What does Neuherbs already have?</div>
-          <div class="ans-sub">Select all that apply.</div>
-          <div class="action-cards">
-            <div class="action-card" onclick="toggleMulti('assets-have',0,this)"><div class="ac-label">Logo & identity</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-have',1,this)"><div class="ac-label">Brand guidelines</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-have',2,this)"><div class="ac-label">D2C website</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-have',3,this)"><div class="ac-label">Packaging</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-have',4,this)"><div class="ac-label">Content / creatives</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-have',5,this)"><div class="ac-label">Performance data</div></div>
-          </div>
-        </div>
-        <div class="ans-section">
-          <div class="ans-title">What do you need Boney to build or define?</div>
-          <div class="ans-sub">Select all that apply.</div>
-          <div class="action-cards">
-            <div class="action-card" onclick="toggleMulti('assets-need',0,this)"><div class="ac-label">Brand positioning</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-need',1,this)"><div class="ac-label">Tone of voice</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-need',2,this)"><div class="ac-label">Campaign concept</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-need',3,this)"><div class="ac-label">Visual direction</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-need',4,this)"><div class="ac-label">Content strategy</div></div>
-            <div class="action-card" onclick="toggleMulti('assets-need',5,this)"><div class="ac-label">Communication system</div></div>
-          </div>
-        </div>
-        <button class="save-btn" id="save-goals" onclick="saveSection('goals')">Save Answers</button>
-        <div class="pending-note">Data verified and updated by the Boney Joy Consulting team within 48 hours of submission.</div>
-      </div>
-    </div>
-
+    <div class="pending-note" style="margin-top:8px;">✦ All pre-filled data is based on Boney Joy Consulting's analysis of your shared data. It will be verified and updated in collaboration with your team during the engagement.</div>
   </div>
+</div>
+
+<!-- QUESTIONNAIRE -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-prog-fill" style="width:0%"></div></div>
+  <div class="quiz-body">
+    <div class="scan-anim" id="scan-anim"></div>
+    <div id="quiz-content"></div>
+  </div>
+</div>
+
+<!-- DONE -->
+<div id="screen-done" class="screen">
+  <div class="done-check-icon"><div class="done-checkmark"></div></div>
+  <p class="done-tag">Submitted</p>
+  <h1 class="done-title">We've got everything.</h1>
+  <p class="done-desc">Thank you. Boney will review your answers and be in touch within 48 hours to begin your brand strategy session.</p>
+  <button class="done-back" onclick="showScreen('screen-dashboard')">← Back to Dashboard</button>
 </div>
 
 <script>
 const API = '/api/portal';
 let currentClient = null;
+let currentSection = 0;
 const answerState = {};
 const sliderState = { tone:.5, appeal:.5, position:.5, price:.5, cred:.5 };
 const multiState = {};
-const sectionSaved = {};
+
+/* ── SECTIONS DATA ── */
+const SECTIONS = [
+  {
+    num:'01 / 05', tag:'Brand Basics',
+    title:'How do you see\nNeuherbs today?',
+    desc:'Before we define where you\'re going, we need to understand how you see where you are. Be honest — not aspirational.',
+    questions:[
+      { id:'basics-pos', label:'Current Positioning', text:'How would you describe Neuherbs\' positioning in the market right now?', sub:'Not what you want it to be. What it actually is today.',
+        opts:[
+          {l:'Clean-label supplement brand', s:'Nature-derived, transparent, no false claims'},
+          {l:'Everyday wellness for all Indians', s:'Accessible health, daily use, broad audience'},
+          {l:'Science-backed nutrition brand', s:'Formulation credibility and efficacy first'},
+          {l:'We haven\'t nailed it yet', s:'Still finding our most ownable territory'},
+        ]
+      },
+      { id:'basics-channel', label:'Growth Driver', text:'Which channel is your biggest growth driver right now?', sub:'Where is Neuherbs actually winning?',
+        opts:[
+          {l:'Amazon / Flipkart', s:'Marketplace is where we convert best'},
+          {l:'D2C Website', s:'Our own channel is our priority'},
+          {l:'Instagram / Meta ads', s:'Social is driving the most discovery'},
+          {l:'Google Search', s:'Intent-led — people search and find us'},
+        ]
+      },
+      { id:'basics-pride', label:'Biggest Asset', text:'What is Neuherbs\' single biggest asset that competitors can\'t easily copy?', sub:'Your most defensible advantage.',
+        opts:[
+          {l:'Clean-label credibility across all SKUs', s:'No artificial additives, anywhere in the range'},
+          {l:'2.5M customer base and Amazon trust', s:'Scale and marketplace authority'},
+          {l:'Price-to-quality ratio', s:'Premium quality at accessible Indian price points'},
+          {l:'Product range breadth', s:'70+ products — something for every need'},
+        ]
+      },
+    ]
+  },
+  {
+    num:'02 / 05', tag:'Your Audience',
+    title:'Who are you\nreally building for?',
+    desc:'Not the full range. Not "everyone." The one person who gets the most out of what Neuherbs makes.',
+    questions:[
+      { id:'aud-core', label:'Core Customer', text:'If you had to pick one — who is Neuherbs\' primary customer?', sub:'The person your brand is built around.',
+        opts:[
+          {l:'Urban male, 22–32', s:'Gym-aware, fitness-motivated, supplement-literate'},
+          {l:'Urban female, 25–35', s:'Health-conscious, skin + wellness focused'},
+          {l:'Health-aware family buyer, 30–45', s:'Buys for the household, quality-driven'},
+          {l:'Both men and women equally', s:'Multi-category brand — no single core audience'},
+        ]
+      },
+      { id:'aud-belief', label:'Buying Belief', text:'What does your customer believe before they buy Neuherbs?', sub:'The existing belief that makes them receptive to you.',
+        opts:[
+          {l:'"I need to supplement my diet"', s:'Aware of nutritional gaps, actively seeking'},
+          {l:'"Natural is safer than pharma"', s:'Prefers clean label over clinical brands'},
+          {l:'"I want to perform better"', s:'Fitness-motivated, results-driven'},
+          {l:'"I saw it online and trust the reviews"', s:'Discovery-led, social proof driven'},
+        ]
+      },
+      { id:'aud-women', label:'Women\'s Opportunity', text:'Given the data — True Vitamin Women has 65% repeat. What should Neuherbs mean to a woman customer?', sub:'This is a real strategic question. Take it seriously.',
+        opts:[
+          {l:'A trusted wellness companion', s:'For her daily health — skin, hormones, energy'},
+          {l:'A science-first supplement she can trust', s:'Clean, credible, the label says what it does'},
+          {l:'Not our primary focus right now', s:'We\'re focused on the male audience first'},
+          {l:'We haven\'t defined this yet', s:'Open question — one of the things we need to resolve'},
+        ]
+      },
+    ]
+  },
+  {
+    num:'03 / 05', tag:'Competition',
+    title:'How do you see\nthe battlefield?',
+    desc:'Your perspective on the competitive landscape — beyond what the data shows. What do you feel in the market every day?',
+    questions:[
+      { id:'comp-lose', label:'Who You Lose To', text:'Which competitor do you lose customers to most often?', sub:'Where do people go when they don\'t choose Neuherbs?',
+        opts:[
+          {l:'OZiva', s:'Women\'s segment, plant-based — especially post-HUL'},
+          {l:'MuscleBlaze / HealthKart', s:'Performance and protein segment'},
+          {l:'Amazon private labels', s:'Price-driven, convenience-first'},
+          {l:'We don\'t know — not tracking this', s:'Haven\'t mapped it properly yet'},
+        ]
+      },
+      { id:'comp-diff', label:'Real Difference', text:'What does Neuherbs do that no competitor actually does?', sub:'Be specific. "Quality" is not an answer.',
+        opts:[
+          {l:'Clean-label across every category', s:'No artificial additives anywhere in the range — unique at our scale'},
+          {l:'Breadth without compromise', s:'70+ products, all meeting the same clean standard'},
+          {l:'Accessible price point for clean label', s:'Making premium-quality supplements affordable'},
+          {l:'Honestly — we\'re still figuring this out', s:'Our differentiation isn\'t sharp enough yet'},
+        ]
+      },
+      { id:'comp-threat', label:'Biggest Threat', text:'What\'s the competitive threat you\'re most worried about?', sub:'The thing that keeps you up at night.',
+        opts:[
+          {l:'A funded competitor outspending us on ads', s:'Wellbeing Nutrition, Plix scaling fast'},
+          {l:'Amazon commoditising the category', s:'Private labels eating our margin and visibility'},
+          {l:'Not having a sharp enough brand position', s:'Looking like everyone else as the market grows'},
+          {l:'OZiva recovering under HUL', s:'They had the women\'s market — if they fix it, we lose'},
+        ]
+      },
+    ]
+  },
+  {
+    num:'04 / 05', tag:'Brand Personality',
+    title:'What should Neuherbs\nfeel like?',
+    desc:'Place the brand honestly on each scale. Then tell us what it must never become.',
+    questions:[
+      { id:'personality-sliders', label:'Brand Personality Spectrums', text:'Drag each dot to where Neuherbs actually sits today.', sub:'Not where you want it. Where it honestly is right now.',
+        type:'sliders',
+        sliders:[
+          {l:'Serious', r:'Playful', key:'tone'},
+          {l:'Functional', r:'Emotional', key:'appeal'},
+          {l:'Mainstream', r:'Disruptive', key:'position'},
+          {l:'Premium', r:'Accessible', key:'price'},
+          {l:'Scientific', r:'Natural', key:'cred'},
+        ]
+      },
+      { id:'pers-not', label:'Anti-Personality', text:'What should Neuherbs never feel like?', sub:'Your brand\'s hard boundary — what must be rejected completely.',
+        opts:[
+          {l:'Gym bro / performance-only', s:'Hyper-masculine, intimidating, exclusive'},
+          {l:'Pharma / clinical', s:'Cold, jargon-heavy, distancing'},
+          {l:'Preachy wellness brand', s:'Moralising, telling people how to live'},
+          {l:'Generic discount supplement', s:'No personality — just price and volume'},
+        ]
+      },
+      { id:'pers-analogy', label:'Brand Analogy', text:'Which brand comes closest to the energy Neuherbs wants?', sub:'Not the category — the feeling, the relationship with the customer.',
+        opts:[
+          {l:'Dabur', s:'Trusted, Indian, household — built over generations'},
+          {l:'Paper Boat', s:'Warm, honest, emotionally resonant without trying hard'},
+          {l:'The Whole Truth', s:'Brutally transparent, label-proud, earns trust through honesty'},
+          {l:'Himalaya', s:'Nature-backed, credible, gentle authority'},
+        ]
+      },
+    ]
+  },
+  {
+    num:'05 / 05', tag:'Goals & Assets',
+    title:'What are we\nbuilding together?',
+    desc:'What success looks like — and what we\'re working with.',
+    questions:[
+      { id:'goal-primary', label:'Primary Outcome', text:'If we achieve only one thing from this engagement — what should it be?', sub:'Be specific. This shapes the entire scope of work.',
+        opts:[
+          {l:'A sharp, ownable brand position', s:'Clear territory no competitor can claim'},
+          {l:'Communication that converts the product page', s:'Fix the 68.82% bounce — messaging that convinces'},
+          {l:'A deliberate strategy for the women\'s market', s:'Intentional — not accidental — women\'s positioning'},
+          {l:'A visual identity that stands out in feed', s:'Look that differentiates us on shelf and scroll'},
+        ]
+      },
+      { id:'goal-timeline', label:'Timeline', text:'What timeline are you working with?', sub:'',
+        opts:[
+          {l:'Urgent — within 1 month', s:'Launch or campaign coming up'},
+          {l:'Short — 1 to 3 months', s:'Moving quickly but deliberately'},
+          {l:'Medium — 3 to 6 months', s:'Building it properly'},
+          {l:'Long-term partnership', s:'Sustained engagement — evolving together'},
+        ]
+      },
+      { id:'assets-have', label:'What You Have', text:'What does Neuherbs already have?', sub:'Select all that apply.',
+        type:'multi',
+        tags:['Logo & visual identity','Brand guidelines','D2C website','Packaging','Photography / video content','Performance marketing data','Product range fully defined','Customer reviews & testimonials']
+      },
+      { id:'assets-need', label:'What We\'re Building', text:'What do you need Boney to define or create?', sub:'Select all that apply.',
+        type:'multi',
+        tags:['Brand positioning statement','Tone of voice','Campaign concept','Visual direction / refresh','Content strategy','Communication system for ads','Product page messaging','Brand guidelines update']
+      },
+    ]
+  },
+];
 
 /* ── LOGIN ── */
 async function doLogin(){
-  const username = document.getElementById('login-username').value.trim();
-  const password = document.getElementById('login-password').value.trim();
-  if(!username||!password){ showErr('Please enter both fields.'); return; }
+  const u=document.getElementById('login-username').value.trim();
+  const p=document.getElementById('login-password').value.trim();
+  if(!u||!p){showErr('Please enter both fields.');return;}
   document.getElementById('login-error').classList.remove('show');
-  document.getElementById('login-loading').classList.add('show');
-  try {
-    const res = await fetch(`${API}?action=login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
-    const data = await res.json();
-    document.getElementById('login-loading').classList.remove('show');
-    if(data.success){
-      currentClient = data;
-      showDashboard();
-    } else { showErr('Incorrect credentials. Please try again.'); }
-  } catch(e){ document.getElementById('login-loading').classList.remove('show'); showErr('Something went wrong.'); }
+  try{
+    const res=await fetch(`${API}?action=login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+    const data=await res.json();
+    if(data.success){currentClient=data;showLoading();}
+    else{showErr('Incorrect credentials. Please try again.');}
+  }catch(e){showErr('Something went wrong. Please try again.');}
+}
+function showErr(msg){const el=document.getElementById('login-error');el.textContent=msg;el.classList.add('show');}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('screen-login').classList.contains('active'))doLogin();});
+
+/* ── LOADING ── */
+function showLoading(){
+  showScreen('screen-loading');
+  startSphere();
+  const timings=[300,1000,2000,3000];
+  [0,1,2,3].forEach(i=>{
+    setTimeout(()=>{
+      document.getElementById(`ll-${i}`).classList.add('show');
+      if(i>0){document.getElementById(`ld-${i-1}`).classList.remove('active');document.getElementById(`ld-${i-1}`).classList.add('done');}
+      document.getElementById(`ld-${i}`).classList.add('active');
+      if(i===3){document.getElementById(`ld-3`).classList.remove('active');document.getElementById(`ld-3`).classList.add('done');}
+    },timings[i]);
+  });
+  setTimeout(()=>{showDashboard();},4200);
 }
 
-function showErr(msg){ const el=document.getElementById('login-error'); el.textContent=msg; el.classList.add('show'); }
-document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&document.getElementById('screen-login').classList.contains('active')) doLogin(); });
+function startSphere(){
+  const canvas=document.getElementById('loading-canvas');
+  const ctx=canvas.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=180*dpr;canvas.height=180*dpr;
+  ctx.scale(dpr,dpr);
+  const cx=90,cy=90,R=68;
+  const pts=Array.from({length:1400},()=>{
+    const u=Math.random()*Math.PI*2,v=Math.acos(2*Math.random()-1);
+    return{bx:Math.sin(v)*Math.cos(u),by:Math.sin(v)*Math.sin(u),bz:Math.cos(v),
+      dA:.02+Math.random()*.04,dS:.003+Math.random()*.008,dP:Math.random()*Math.PI*2,
+      sz:.5+Math.random()*1.1,al:.2+Math.random()*.5};
+  });
+  let rotY=0,frame=0;
+  function ry(x,y,z,a){return{x:x*Math.cos(a)+z*Math.sin(a),y,z:-x*Math.sin(a)+z*Math.cos(a)};}
+  function rx(x,y,z,a){return{x,y:y*Math.cos(a)-z*Math.sin(a),z:y*Math.sin(a)+z*Math.cos(a)};}
+  function draw(){
+    ctx.clearRect(0,0,180,180);
+    rotY+=.005;
+    const t=frame*.01;
+    const proj=pts.map(p=>{
+      const d=Math.sin(t*p.dS*60+p.dP)*p.dA;
+      let r=ry(p.bx*(1+d),p.by*(1+d),p.bz*(1+d),rotY);
+      r=rx(r.x,r.y,r.z,.2);
+      return{px:cx+r.x*R,py:cy+r.y*R,depth:(r.z+1)/2,p};
+    });
+    proj.sort((a,b)=>a.depth-b.depth);
+    proj.forEach(({px,py,depth,p})=>{
+      const al=p.al*(.15+depth*.85);
+      const sz=p.sz*(.4+depth*.6);
+      const df=Math.max(0,(Math.sqrt((px-cx)**2+(py-cy)**2)/R-.7)/.3);
+      if(df>.1){ctx.beginPath();ctx.arc(px,py,sz+.7,0,Math.PI*2);ctx.fillStyle=`rgba(61,155,233,${al*df*.5})`;ctx.fill();}
+      ctx.beginPath();ctx.arc(px,py,sz,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${al})`;ctx.fill();
+    });
+    frame++;requestAnimationFrame(draw);
+  }
+  draw();
+}
 
-/* ── SHOW DASHBOARD ── */
+/* ── SCREENS ── */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='';});
+  const el=document.getElementById(id);
+  el.classList.add('active');
+  if(id==='screen-login'){el.style.display='flex';}
+  else if(id==='screen-done'){el.style.display='flex';}
+  else if(id==='screen-loading'){el.style.display='flex';}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 function showDashboard(){
-  document.getElementById('screen-login').classList.remove('active');
-  document.getElementById('screen-dashboard').classList.add('active');
-  document.getElementById('screen-dashboard').classList.add('slide-enter');
-  const name = currentClient.name || 'Neuherbs';
-  document.getElementById('dash-welcome-name').textContent = `Welcome, ${name}.`;
+  showScreen('screen-dashboard');
+  document.getElementById('screen-dashboard').classList.add('fade-in');
+  const name=currentClient?.name||'Neuherbs';
+  document.getElementById('dash-client-name').textContent=name;
   document.getElementById('bjc-client-tag').style.display='flex';
-  document.getElementById('bjc-client-name-tag').textContent = name + ' · Active';
-  initSliders();
+  document.getElementById('bjc-client-name-tag').textContent=name+' · Active';
 }
 
-/* ── SCROLL TO SECTION ── */
-function scrollToSection(id){
-  const el = document.getElementById(id);
-  if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+/* ── QUIZ ── */
+function startQuiz(){
+  currentSection=0;
+  showScreen('screen-quiz');
+  renderSection(0);
 }
 
-/* ── ANSWER SELECTION ── */
-function selectAns(key, idx, el){
-  const grid = el.closest('.ans-grid');
-  grid.querySelectorAll('.ans-opt').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');
-  answerState[key] = idx;
+function triggerScan(){
+  const el=document.getElementById('scan-anim');
+  el.innerHTML='<div class="scan-line-el"></div><div class="scan-dots"><div class="sdot"></div><div class="sdot"></div><div class="sdot"></div></div>';
+  void el.offsetWidth;
 }
 
-function selectAction(key, idx, el){
-  const grid = el.closest('.action-cards');
-  grid.querySelectorAll('.action-card').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');
-  answerState[key] = idx;
-}
+function renderSection(idx){
+  const sec=SECTIONS[idx];
+  const progress=((idx+1)/SECTIONS.length)*100;
+  document.getElementById('quiz-prog-fill').style.width=progress+'%';
+  triggerScan();
+  const content=document.getElementById('quiz-content');
+  content.style.opacity='0';
 
-function toggleMulti(key, idx, el){
-  if(!multiState[key]) multiState[key]=[];
-  const i = multiState[key].indexOf(idx);
-  if(i===-1){ multiState[key].push(idx); el.classList.add('selected'); }
-  else { multiState[key].splice(i,1); el.classList.remove('selected'); }
-}
+  let html=`<span class="quiz-sec-num">${sec.num}</span>
+    <span class="quiz-sec-tag">${sec.tag}</span>
+    <h2 class="quiz-sec-title">${sec.title.replace('\n','<br>')}</h2>
+    <p class="quiz-sec-desc">${sec.desc}</p>`;
 
-/* ── SLIDERS ── */
-function initSliders(){
-  ['tone','appeal','position','price','cred'].forEach(key=>{
-    const track = document.getElementById(`dslT-${key}`);
-    const dot   = document.getElementById(`dslD-${key}`);
-    const fill  = document.getElementById(`dslF-${key}`);
-    if(!track) return;
-    let dragging=false;
-    function setVal(e){
-      const rect=track.getBoundingClientRect();
-      const x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
-      const val=Math.max(0.02,Math.min(0.98,x/rect.width));
-      sliderState[key]=val;
-      dot.style.left=(val*100)+'%';
-      fill.style.width=(val*100)+'%';
-      dot.classList.add('placed');
+  sec.questions.forEach((q,qi)=>{
+    html+=`<div class="qblock"><span class="q-label">${q.label}</span><h3 class="q-text">${q.text}</h3>${q.sub?`<p class="q-sub">${q.sub}</p>`:''}`;
+    if(!q.type||q.type==='opts'){
+      html+=`<div class="opts-grid">`;
+      q.opts.forEach((o,oi)=>{
+        const sel=answerState[q.id]===oi?'selected':'';
+        html+=`<button class="opt ${sel}" onclick="selectOpt('${q.id}',${oi},this)"><span class="om">${o.l}</span><span class="os">${o.s||''}</span></button>`;
+      });
+      html+=`</div>`;
+    } else if(q.type==='sliders'){
+      html+=`<div class="slider-block">`;
+      q.sliders.forEach(sl=>{
+        const v=sliderState[sl.key]??0.5;
+        html+=`<div class="sl-row">
+          <span class="sl-lab" id="sll-${sl.key}">${sl.l}</span>
+          <div class="sl-track" id="slt-${sl.key}">
+            <div class="sl-fill" id="slf-${sl.key}" style="width:${v*100}%"></div>
+            <div class="sl-dot" id="sld-${sl.key}" style="left:${v*100}%"></div>
+          </div>
+          <span class="sl-lab right" id="slr-${sl.key}">${sl.r}</span>
+        </div>`;
+      });
+      html+=`</div>`;
+    } else if(q.type==='multi'){
+      const sel=multiState[q.id]||[];
+      html+=`<div class="tags-wrap">`;
+      q.tags.forEach((tag,ti)=>{
+        const s=sel.includes(ti)?'selected':'';
+        html+=`<button class="tag-opt ${s}" onclick="toggleTag('${q.id}',${ti},this)">${tag}</button>`;
+      });
+      html+=`</div>`;
     }
-    track.addEventListener('mousedown',e=>{dragging=true;setVal(e);});
-    track.addEventListener('touchstart',e=>{dragging=true;setVal(e);},{passive:true});
-    document.addEventListener('mousemove',e=>{if(dragging)setVal(e);});
-    document.addEventListener('touchmove',e=>{if(dragging)setVal(e);},{passive:true});
-    document.addEventListener('mouseup',()=>dragging=false);
-    document.addEventListener('touchend',()=>dragging=false);
+    html+=`</div>`;
+  });
+
+  const isLast=idx===SECTIONS.length-1;
+  html+=`<div class="quiz-nav">
+    <button class="nav-prev-btn" ${idx===0?'style="opacity:0;pointer-events:none"':''} onclick="prevSection()">Previous</button>
+    <button class="nav-next-btn" onclick="nextSection()">${isLast?'Submit Answers →':'Next Section →'}</button>
+  </div>`;
+
+  setTimeout(()=>{
+    content.innerHTML=html;
+    content.style.transition='opacity .4s';
+    content.style.opacity='1';
+    content.classList.add('slide-in');
+    if(idx===3) initSliders(sec);
+  },180);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function selectOpt(id,idx,el){
+  el.closest('.opts-grid').querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  answerState[id]=idx;
+}
+
+function toggleTag(id,idx,el){
+  if(!multiState[id])multiState[id]=[];
+  const i=multiState[id].indexOf(idx);
+  if(i===-1){multiState[id].push(idx);el.classList.add('selected');}
+  else{multiState[id].splice(i,1);el.classList.remove('selected');}
+}
+
+function initSliders(sec){
+  sec.questions.forEach(q=>{
+    if(q.type!=='sliders')return;
+    q.sliders.forEach(sl=>{
+      const track=document.getElementById(`slt-${sl.key}`);
+      const dot=document.getElementById(`sld-${sl.key}`);
+      const fill=document.getElementById(`slf-${sl.key}`);
+      const ll=document.getElementById(`sll-${sl.key}`);
+      const lr=document.getElementById(`slr-${sl.key}`);
+      if(!track)return;
+      let drag=false;
+      function setV(e){
+        const r=track.getBoundingClientRect();
+        const x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+        const v=Math.max(.02,Math.min(.98,x/r.width));
+        sliderState[sl.key]=v;dot.style.left=(v*100)+'%';fill.style.width=(v*100)+'%';
+        ll.classList.toggle('active',v<.38);lr.classList.toggle('active',v>.62);
+      }
+      track.addEventListener('mousedown',e=>{drag=true;setV(e);});
+      track.addEventListener('touchstart',e=>{drag=true;setV(e);},{passive:true});
+      document.addEventListener('mousemove',e=>{if(drag)setV(e);});
+      document.addEventListener('touchmove',e=>{if(drag)setV(e);},{passive:true});
+      document.addEventListener('mouseup',()=>drag=false);
+      document.addEventListener('touchend',()=>drag=false);
+    });
   });
 }
 
-/* ── SAVE SECTION ── */
-async function saveSection(section){
-  const btn = document.getElementById(`save-${section}`);
-  const badge = document.getElementById(`badge-${section}`);
-  btn.textContent = 'Saving...';
-  btn.style.pointerEvents='none';
+function nextSection(){
+  if(currentSection===SECTIONS.length-1){submitAnswers();return;}
+  currentSection++;renderSection(currentSection);
+}
+function prevSection(){if(currentSection===0)return;currentSection--;renderSection(currentSection);}
 
-  // Build payload
-  const payload = {
-    'Client Name': currentClient.name || 'Neuherbs',
-    'Brand': currentClient.brand || 'Neuherbs',
-    'Submitted': new Date().toISOString().split('T')[0],
-    'Section': section,
-    'Answers': JSON.stringify({...answerState, sliders:sliderState, multi:multiState}),
-    'Stage': section,
-    'Audience': JSON.stringify(answerState),
-    'Competition': JSON.stringify(answerState),
-    'Personality': JSON.stringify(sliderState),
-    'Goals': JSON.stringify({...answerState, ...multiState}),
-    'Assets': JSON.stringify(multiState),
+async function submitAnswers(){
+  const btn=document.querySelector('.nav-next-btn');
+  btn.textContent='Submitting...';btn.style.pointerEvents='none';
+  const payload={
+    'Client Name':currentClient?.name||'Neuherbs',
+    'Brand':currentClient?.brand||'Neuherbs',
+    'Submitted':new Date().toISOString().split('T')[0],
+    'Stage':JSON.stringify(answerState),
+    'Audience':JSON.stringify(answerState),
+    'Competition':JSON.stringify(answerState),
+    'Personality':JSON.stringify({...answerState,...sliderState}),
+    'Goals':JSON.stringify({...answerState,...multiState}),
+    'Assets':JSON.stringify(multiState),
   };
-
-  try {
+  try{
     await fetch(`${API}?action=submit`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    btn.textContent='✓ Saved';
-    btn.classList.add('saved');
-    if(badge){ badge.textContent='Answered'; badge.className='card-badge badge-answered'; }
-    // Update progress pill
-    document.querySelectorAll('.prog-pill').forEach(p=>{
-      if(p.textContent.toLowerCase().includes(section.replace('-',' ').toLowerCase().split(' ')[0])){
-        p.classList.add('done');
-      }
-    });
-  } catch(e){
-    btn.textContent='Save Answers';
-    btn.style.pointerEvents='auto';
-    alert('Could not save. Please try again.');
-  }
+    showScreen('screen-done');
+  }catch(e){btn.textContent='Submit Answers →';btn.style.pointerEvents='auto';alert('Could not submit. Please try again.');}
 }
 </script>
 </body>
