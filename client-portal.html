@@ -979,11 +979,17 @@ function startSphere(){
 function showScreen(id){
   ['screen-login','screen-loading','screen-dashboard','screen-quiz','screen-done'].forEach(sid=>{
     const s=document.getElementById(sid);
-    if(s){s.style.display='none';}
+    if(s){s.style.cssText='display:none';}
   });
-  const displayMap={'screen-login':'grid','screen-loading':'flex','screen-dashboard':'flex','screen-quiz':'block','screen-done':'flex'};
+  const styles={
+    'screen-login':'display:grid;grid-template-columns:1fr 1fr;min-height:100vh;',
+    'screen-loading':'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#0E0E10;gap:40px;',
+    'screen-dashboard':'display:flex;flex-direction:column;min-height:100vh;',
+    'screen-quiz':'display:block;min-height:100vh;background:#0E0E10;',
+    'screen-done':'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#0E0E10;text-align:center;padding:60px 24px;',
+  };
   const el=document.getElementById(id);
-  if(el){el.style.display=displayMap[id]||'block';}
+  if(el){el.style.cssText=styles[id]||'display:block';}
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
