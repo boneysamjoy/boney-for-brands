@@ -446,12 +446,16 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 </head>
 <body>
 
+<!-- GLOBAL LOGO BAR -->
+<div id="global-logo" style="position:fixed;top:0;left:0;z-index:999;padding:14px 24px;pointer-events:none;">
+  <img src="assets/images/Boney logo white.png" alt="Boney Joy Consulting" style="height:28px;display:block;">
+</div>
+
 <!-- LOGIN -->
 <div id="pg-login">
   <div class="lg-left">
     <div class="lg-left-glow"></div>
     <div class="lg-grid"></div>
-    <div style="position:relative;z-index:1;margin-bottom:32px;"><img src="assets/images/Boney logo white.png" alt="Boney Joy Consulting" style="height:32px;display:block;"></div>
     <canvas id="login-sphere"></canvas>
     <div class="lg-tagline">
       From being <strong>seen</strong><br>
@@ -478,7 +482,6 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 
 <!-- LOADING -->
 <div id="pg-loading">
-  <div style="margin-bottom:8px;"><img src="assets/images/Boney logo white.png" alt="Boney Joy Consulting" style="height:32px;display:block;"></div>
   <canvas id="ld-cv"></canvas>
   <div class="ld-lines">
     <div class="ld-row" id="lr0"><div class="ld-dot pulse" id="ld0"></div><span class="ld-txt" id="lt0">Loading your brand workspace...</span></div>
@@ -491,9 +494,7 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 <!-- DASHBOARD -->
 <div id="pg-dashboard">
   <header class="dh">
-    <div class="dh-logo">
-      <img src="assets/images/Boney logo white.png" alt="Boney Joy Consulting" style="height:32px;display:block;">
-    </div>
+    <div class="dh-logo"></div>
     <nav class="dh-nav">
       <a href="https://www.boneyjoyconsulting.com" target="_blank">Home</a>
       <a href="https://www.boneyjoyconsulting.com/about-us" target="_blank">About Us</a>
@@ -508,7 +509,6 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 
   <div class="dash-wrap">
     <aside class="dash-side">
-      <div style="padding:4px 10px 20px;"><img src="assets/images/Boney logo white.png" alt="Boney Joy Consulting" style="height:32px;display:block;"></div>
       <div class="ds-lbl">Workspace</div>
       <div class="ds-item on">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="currentColor"><rect x="1" y="1" width="5.5" height="5.5" rx="1"/><rect x="8.5" y="1" width="5.5" height="5.5" rx="1"/><rect x="1" y="8.5" width="5.5" height="5.5" rx="1"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1"/></svg>
@@ -693,7 +693,7 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 <div id="pg-quiz">
   <div class="qz-prog"><div class="qz-prog-fill" id="qz-pf" style="width:0%"></div></div>
   <div class="qz-bar">
-    <div class="qz-logo"><img src="assets/images/Boney logo white.png" alt="Boney Joy Consulting" style="height:32px;display:block;"></div>
+    <div class="qz-logo"></div>
     <span class="qz-sec" id="qz-sec-lbl">Brand Questionnaire</span>
     <button class="qz-back" onclick="go('pg-dashboard')">← Back</button>
   </div>
@@ -704,7 +704,6 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 
 <!-- DONE -->
 <div id="pg-done">
-  <div style="margin-bottom:32px;"><img src="assets/images/Boney logo white.png" alt="Boney Joy Consulting" style="height:32px;display:block;"></div>
   <div class="done-ring"><div class="done-inner"><div class="done-check"></div></div></div>
   <p class="done-tag">Submitted Successfully</p>
   <h1 class="done-title">We've got everything.</h1>
