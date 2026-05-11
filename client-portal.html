@@ -177,30 +177,43 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 
 /* CTA block */
 .dash-cta{
-  background:linear-gradient(135deg,#1565C0 0%,var(--accent) 100%);
+  background:var(--dark);
   border-radius:12px;padding:24px 28px;margin-bottom:22px;
   display:flex;align-items:center;justify-content:space-between;
   cursor:pointer;transition:opacity .2s;
+  position:relative;overflow:hidden;
+  box-shadow:0 0 0 0 rgba(61,155,233,0.4);
+  animation:ctaPulse 2.5s ease-in-out infinite;
 }
-.dash-cta:hover{opacity:.9;}
-.cta-ey{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:5px;}
-.cta-ttl{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:3px;}
-.cta-sub{font-size:13px;color:rgba(255,255,255,.65);}
+@keyframes ctaPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(61,155,233,0.25);}
+  50%{box-shadow:0 0 0 8px rgba(61,155,233,0);}
+}
+.dash-cta:hover{opacity:.88;}
+.cta-ey{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:5px;}
+.cta-ttl{font-size:20px;font-weight:700;color:var(--accent);letter-spacing:-.02em;margin-bottom:3px;}
+.cta-sub{font-size:13px;color:rgba(255,255,255,.5);}
 .cta-arr{
-  width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);
-  display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;
+  width:46px;height:46px;border-radius:50%;background:rgba(61,155,233,.15);
+  display:flex;align-items:center;justify-content:center;border:1px solid rgba(61,155,233,.3);cursor:pointer;
 }
-.cta-arr svg{width:20px;height:20px;stroke:#fff;stroke-width:2.5;fill:none;}
+.cta-arr svg{width:20px;height:20px;stroke:var(--accent);stroke-width:2.5;fill:none;}
 
 /* Insight strip */
 .ins-strip{
   background:var(--dark);border-radius:10px;padding:16px 20px;
-  margin-bottom:22px;display:flex;align-items:flex-start;gap:12px;
+  margin-bottom:22px;display:flex;align-items:center;gap:12px;
 }
-.ins-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px;}
+.ins-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 .ins-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:3px;}
 .ins-txt{font-size:13px;color:rgba(255,255,255,.72);line-height:1.65;}
 .ins-txt em{color:#fde68a;font-style:normal;font-weight:500;}
+.ins-waiting{font-size:13px;color:rgba(255,255,255,.45);font-family:var(--mono);letter-spacing:.04em;display:flex;align-items:center;gap:2px;}
+.ins-waiting-dots span{animation:dotBlink 1.4s ease-in-out infinite;opacity:0;}
+.ins-waiting-dots span:nth-child(1){animation-delay:0s;}
+.ins-waiting-dots span:nth-child(2){animation-delay:.3s;}
+.ins-waiting-dots span:nth-child(3){animation-delay:.6s;}
+@keyframes dotBlink{0%,80%,100%{opacity:0;}40%{opacity:1;}}
 
 /* Section heading */
 .sec-h{
@@ -210,7 +223,7 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 .sec-h::after{content:'';flex:1;height:1px;background:var(--faint);}
 
 /* Stat cards row */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;}
 .sc{
   background:var(--white);border:1px solid var(--faint);border-radius:10px;
   padding:18px;position:relative;overflow:hidden;
@@ -538,6 +551,7 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
     <main class="dash-main">
       <div class="dash-head">
         <div>
+          <p style="font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Client's Portal</p>
           <h1 id="dash-ttl">Neuherbs — Brand Workspace</h1>
           <p>Strategy Engagement · Boney Joy Consulting</p>
         </div>
@@ -561,7 +575,7 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
         <div class="ins-dot"></div>
         <div>
           <div class="ins-lbl">Boney's Opening Insight</div>
-          <div class="ins-txt">Instagram reaches <em>83% men</em> — but top content (1.2M, 1.1M views) is women's health. <em>True Vitamin Women</em> has 65% repeat — highest in the range. There's a brand signal being built that your positioning hasn't caught up to. This is what we resolve together.</div>
+          <div class="ins-waiting">Awaiting Boney's Verification<span class="ins-waiting-dots"><span>.</span><span>.</span><span>.</span></span></div>
         </div>
       </div>
 
@@ -573,12 +587,6 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
           <div class="sc-val green">2.5M+</div>
           <div class="sc-sub">Loyal customer base</div>
           <span class="sc-badge up">↑ Growing</span>
-        </div>
-        <div class="sc c-blue">
-          <div class="sc-lbl">Amazon India 2024</div>
-          <div class="sc-val blue">#1</div>
-          <div class="sc-sub">Chosen supplement brand</div>
-          <span class="sc-badge up">Verified</span>
         </div>
         <div class="sc c-orange">
           <div class="sc-lbl">Products</div>
