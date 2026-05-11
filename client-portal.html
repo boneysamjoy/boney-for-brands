@@ -7,589 +7,487 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F0F2F5; --white:#FFFFFF; --ink:#09090B;
-  --muted:#71717A; --light:#A1A1AA; --faint:#E4E4E7;
   --accent:#3D9BE9; --accent-d:#2280CC;
+  --ink:#09090B; --muted:#71717A; --light:#A1A1AA;
+  --bg:#F0F2F5; --white:#fff; --faint:#E4E4E7;
   --dark:#0E0E10; --dark2:#18181B; --dark3:#27272A;
   --green:#16A34A; --orange:#EA580C; --red:#DC2626;
   --sans:'Inter',sans-serif; --mono:'DM Mono',monospace;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 
-
-/* ══════════════════════
-   LOGIN — SPLIT SCREEN
-══════════════════════ */
-#screen-login{
-  display:none;min-height:100vh;
+/* ── SHARED BUTTON ── */
+.btn-accent{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 24px;background:var(--accent);color:#fff;
+  border:none;border-radius:6px;font-family:var(--sans);
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:background .2s;width:100%;justify-content:center;
 }
-#screen-login.active{display:grid;grid-template-columns:1fr 1fr;}
+.btn-accent:hover{background:var(--accent-d);}
 
-/* Left panel — dark with BJ mark */
-.login-left{
+/* ══════════════════
+   LOGIN
+══════════════════ */
+#pg-login{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:100vh;
+}
+.lg-left{
   background:var(--dark);
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   padding:60px;position:relative;overflow:hidden;
 }
-.login-left-bg{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse at 30% 40%, rgba(61,155,233,0.12) 0%, transparent 60%),
-             radial-gradient(ellipse at 80% 80%, rgba(61,155,233,0.06) 0%, transparent 50%);
+.lg-left-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 40%,rgba(61,155,233,.14) 0%,transparent 60%);
 }
-.login-grid-lines{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size:60px 60px;
+.lg-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:56px 56px;
 }
-.login-mark{
-  position:relative;z-index:1;
-  display:flex;flex-direction:column;align-items:center;gap:24px;
+.lg-star{
+  width:72px;height:72px;position:relative;z-index:1;
+  animation:spin 14s linear infinite;
 }
-/* Animated starburst mark */
-.login-star{
-  width:80px;height:80px;position:relative;
-  animation:starSpin 12s linear infinite;
+.lg-star::before,.lg-star::after{
+  content:'';position:absolute;inset:0;background:#fff;
+  clip-path:polygon(50% 0%,53% 47%,100% 50%,53% 53%,50% 100%,47% 53%,0 50%,47% 47%);
 }
-.login-star::before,.login-star::after{
-  content:'';position:absolute;inset:0;
-  background:var(--white);
-  clip-path:polygon(50% 0%,53% 47%,100% 50%,53% 53%,50% 100%,47% 53%,0% 50%,47% 47%);
+.lg-star::after{transform:rotate(45deg);opacity:.4;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.lg-tagline{
+  position:relative;z-index:1;margin-top:28px;
+  font-size:18px;font-weight:300;color:rgba(255,255,255,.75);
+  text-align:center;line-height:1.6;max-width:260px;
 }
-.login-star::after{transform:rotate(45deg);opacity:.5;}
-@keyframes starSpin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-.login-brand-name{
-  font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(255,255,255,.6);text-align:center;position:relative;z-index:1;
-}
-.login-tagline{
-  font-size:20px;font-weight:300;color:rgba(255,255,255,.85);
-  text-align:center;line-height:1.5;max-width:280px;position:relative;z-index:1;
-  margin-top:8px;letter-spacing:-.01em;
-}
-.login-tagline strong{font-weight:600;color:#fff;}
+.lg-tagline strong{font-weight:600;color:#fff;}
 
-/* Right panel — dark form */
-.login-right{
+.lg-right{
   background:var(--dark2);
   display:flex;flex-direction:column;
-  align-items:flex-start;justify-content:center;
-  padding:80px 72px;
+  justify-content:center;padding:80px 72px;
 }
-.login-eyebrow{
-  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:24px;
+.lg-eyebrow{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:20px;
 }
-.login-title{
-  font-size:42px;font-weight:700;letter-spacing:-.04em;
-  color:#fff;margin-bottom:8px;
-}
-.login-sub{font-size:14px;color:rgba(255,255,255,.45);margin-bottom:48px;line-height:1.6;}
-.lf{margin-bottom:16px;}
-.lf label{
+.lg-title{font-size:40px;font-weight:700;letter-spacing:-.04em;color:#fff;margin-bottom:6px;}
+.lg-sub{font-size:14px;color:rgba(255,255,255,.4);margin-bottom:44px;line-height:1.6;}
+.lg-field{margin-bottom:14px;}
+.lg-label{
   font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
-  color:rgba(255,255,255,.4);display:block;margin-bottom:8px;
+  color:rgba(255,255,255,.35);display:block;margin-bottom:7px;
 }
-.lf input{
-  width:100%;padding:13px 16px;
+.lg-input{
+  width:100%;padding:13px 16px;border-radius:6px;
   background:var(--dark3);border:1px solid rgba(255,255,255,.08);
-  border-radius:6px;font-family:var(--sans);font-size:14px;color:#fff;outline:none;
+  font-family:var(--sans);font-size:14px;color:#fff;outline:none;
   transition:border-color .2s;
 }
-.lf input:focus{border-color:var(--accent);}
-.lf input::placeholder{color:rgba(255,255,255,.2);}
-.login-btn{
-  margin-top:8px;width:100%;padding:14px;
-  background:var(--accent);color:#fff;border:none;
-  font-family:var(--sans);font-size:14px;font-weight:600;
-  border-radius:6px;cursor:pointer;transition:background .2s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.login-btn:hover{background:var(--accent-d);}
-.login-err{font-size:12px;color:#f87171;margin-top:10px;display:none;}
-.login-err.show{display:block;}
+.lg-input:focus{border-color:var(--accent);}
+.lg-input::placeholder{color:rgba(255,255,255,.2);}
+.lg-err{font-size:12px;color:#f87171;margin-top:10px;display:none;}
+.lg-err.show{display:block;}
 
-/* ══════════════════════
+/* ══════════════════
    LOADING
-══════════════════════ */
-#screen-loading{
-  display:none;min-height:100vh;background:var(--dark);
-  flex-direction:column;align-items:center;justify-content:center;gap:40px;
+══════════════════ */
+#pg-loading{
+  display:none;min-height:100vh;
+  background:var(--dark);
+  flex-direction:column;align-items:center;justify-content:center;gap:36px;
 }
-#screen-loading.active{display:flex;}
-#ld-canvas{width:200px;height:200px;display:block;}
-.ld-lines{display:flex;flex-direction:column;gap:14px;}
-.ld-line{
-  display:flex;align-items:center;gap:12px;
-  opacity:0;transition:opacity .5s;
-}
-.ld-line.show{opacity:1;}
+#ld-cv{width:180px;height:180px;display:block;}
+.ld-lines{display:flex;flex-direction:column;gap:12px;}
+.ld-row{display:flex;align-items:center;gap:10px;opacity:0;transition:opacity .5s;}
+.ld-row.show{opacity:1;}
 .ld-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 .ld-dot.done{background:#4ade80;}
-.ld-dot.active{animation:dp 1s ease-in-out infinite;}
-@keyframes dp{0%,100%{opacity:1;}50%{opacity:.2;}}
-.ld-txt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.ld-dot.pulse{animation:ldp 1s ease-in-out infinite;}
+@keyframes ldp{0%,100%{opacity:1;}50%{opacity:.2;}}
+.ld-txt{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.35);}
 .ld-txt.done{color:rgba(255,255,255,.8);}
 
-/* ══════════════════════
-   DASHBOARD LAYOUT
-══════════════════════ */
-#screen-dashboard{display:none;min-height:100vh;}
-#screen-dashboard.active{display:flex;flex-direction:column;}
+/* ══════════════════
+   DASHBOARD
+══════════════════ */
+#pg-dashboard{display:none;min-height:100vh;flex-direction:column;}
 
-/* Top header bar */
-#dash-header{
-  position:fixed;top:0;left:0;right:0;z-index:200;height:60px;
+/* Header */
+.dh{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:60px;
   background:var(--dark);border-bottom:1px solid rgba(255,255,255,.06);
   display:flex;align-items:center;justify-content:space-between;padding:0 28px;
 }
 .dh-logo{display:flex;align-items:center;gap:10px;}
-.dh-logo-icon{
+.dh-icon{
   width:32px;height:32px;background:var(--accent);border-radius:6px;
   display:flex;align-items:center;justify-content:center;
-  font-weight:700;color:#fff;font-size:12px;letter-spacing:-.5px;
+  font-weight:700;color:#fff;font-size:12px;
 }
-.dh-logo-text .l1{font-size:11px;font-weight:600;color:#fff;letter-spacing:.04em;}
-.dh-logo-text .l2{font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;}
-.dh-nav{display:flex;align-items:center;gap:4px;}
+.dh-name .l1{font-size:11px;font-weight:600;color:#fff;letter-spacing:.04em;}
+.dh-name .l2{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;}
 .dh-nav a{
-  font-size:12px;color:rgba(255,255,255,.45);text-decoration:none;
-  padding:6px 12px;border-radius:6px;transition:all .2s;
+  font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;
+  margin-left:4px;padding:6px 10px;border-radius:6px;transition:all .2s;
 }
 .dh-nav a:hover{color:#fff;background:rgba(255,255,255,.06);}
-.dh-right{display:flex;align-items:center;gap:16px;}
-.dh-client{
-  display:flex;align-items:center;gap:8px;
-  background:rgba(255,255,255,.06);border-radius:100px;padding:6px 14px 6px 10px;
+.dh-tag{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.06);border-radius:100px;padding:5px 12px 5px 9px;
 }
-.dh-client-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;}
-.dh-client-name{font-size:12px;color:rgba(255,255,255,.7);font-family:var(--mono);}
+.dh-tag-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;}
+.dh-tag-txt{font-size:12px;color:rgba(255,255,255,.6);font-family:var(--mono);}
 
-/* Dashboard body */
-.dash-body{
-  margin-top:60px;
-  display:flex;flex:1;
+/* Layout */
+.dash-wrap{display:flex;flex:1;margin-top:60px;}
+.dash-side{
+  width:210px;flex-shrink:0;background:var(--dark2);
+  position:fixed;top:60px;bottom:0;left:0;padding:20px 12px;overflow-y:auto;
+  border-right:1px solid rgba(255,255,255,.05);
 }
-
-/* Sidebar */
-.dash-sidebar{
-  width:220px;flex-shrink:0;
-  background:var(--dark2);border-right:1px solid rgba(255,255,255,.05);
-  padding:24px 16px;position:fixed;top:60px;bottom:0;left:0;
-  overflow-y:auto;
-}
-.ds-section-label{
+.ds-lbl{
   font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(255,255,255,.25);padding:0 12px;margin-bottom:8px;margin-top:20px;
+  color:rgba(255,255,255,.22);padding:0 10px;margin:18px 0 6px;
 }
-.ds-section-label:first-child{margin-top:0;}
+.ds-lbl:first-child{margin-top:0;}
 .ds-item{
-  display:flex;align-items:center;gap:10px;
-  padding:9px 12px;border-radius:8px;cursor:pointer;
-  font-size:13px;color:rgba(255,255,255,.45);
-  transition:all .2s;margin-bottom:2px;
-  text-decoration:none;
+  display:flex;align-items:center;gap:9px;padding:9px 10px;
+  border-radius:7px;font-size:13px;color:rgba(255,255,255,.4);
+  cursor:pointer;transition:all .2s;margin-bottom:1px;text-decoration:none;
 }
-.ds-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8);}
-.ds-item.active{background:rgba(61,155,233,.15);color:var(--accent);}
-.ds-item-icon{width:16px;height:16px;opacity:.6;flex-shrink:0;}
-.ds-item.active .ds-item-icon{opacity:1;}
+.ds-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);}
+.ds-item.on{background:rgba(61,155,233,.14);color:var(--accent);}
 .ds-badge{
   margin-left:auto;font-size:10px;font-weight:600;
   background:var(--accent);color:#fff;padding:2px 7px;border-radius:100px;
 }
+.dash-main{margin-left:210px;flex:1;padding:28px 28px 80px;background:var(--bg);}
 
-/* Main content */
-.dash-main{margin-left:220px;flex:1;padding:28px 28px 80px;}
-
-/* Welcome row */
-.dash-welcome-row{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:24px;
-}
-.dash-welcome-left h1{font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--ink);}
-.dash-welcome-left p{font-size:13px;color:var(--muted);margin-top:2px;}
-.dash-date{font-size:12px;color:var(--muted);font-family:var(--mono);}
+/* Welcome */
+.dash-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;}
+.dash-head h1{font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--ink);}
+.dash-head p{font-size:13px;color:var(--muted);margin-top:2px;}
+.dash-date{font-size:12px;color:var(--muted);font-family:var(--mono);margin-top:4px;}
 
 /* CTA block */
 .dash-cta{
-  background:linear-gradient(135deg,#1a6fc4 0%,var(--accent) 60%,#5bb8ff 100%);
-  border-radius:14px;padding:28px 32px;margin-bottom:24px;
+  background:linear-gradient(135deg,#1565C0 0%,var(--accent) 100%);
+  border-radius:12px;padding:24px 28px;margin-bottom:22px;
   display:flex;align-items:center;justify-content:space-between;
-  cursor:pointer;transition:opacity .2s;position:relative;overflow:hidden;
+  cursor:pointer;transition:opacity .2s;
 }
-.dash-cta:hover{opacity:.92;}
-.dash-cta::before{
-  content:'';position:absolute;right:-40px;top:-40px;
-  width:220px;height:220px;border-radius:50%;
-  background:rgba(255,255,255,.06);
+.dash-cta:hover{opacity:.9;}
+.cta-ey{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:5px;}
+.cta-ttl{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:3px;}
+.cta-sub{font-size:13px;color:rgba(255,255,255,.65);}
+.cta-arr{
+  width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;
 }
-.dash-cta::after{
-  content:'';position:absolute;right:60px;bottom:-60px;
-  width:160px;height:160px;border-radius:50%;
-  background:rgba(255,255,255,.04);
-}
-.cta-left{position:relative;z-index:1;}
-.cta-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:6px;}
-.cta-title{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:4px;}
-.cta-sub{font-size:13px;color:rgba(255,255,255,.7);}
-.cta-right{
-  position:relative;z-index:1;
-  display:flex;align-items:center;gap:12px;
-}
-.cta-pill{
-  background:rgba(255,255,255,.15);border-radius:100px;
-  padding:8px 16px;font-size:12px;color:#fff;font-weight:500;
-  backdrop-filter:blur(8px);
-}
-.cta-arrow-btn{
-  width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);
-  display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(8px);border:none;cursor:pointer;transition:background .2s;
-}
-.cta-arrow-btn:hover{background:rgba(255,255,255,.3);}
-.cta-arrow-btn svg{width:20px;height:20px;stroke:#fff;stroke-width:2.5;fill:none;}
+.cta-arr svg{width:20px;height:20px;stroke:#fff;stroke-width:2.5;fill:none;}
 
-/* Insight banner */
-.insight-strip{
-  background:var(--dark);border-radius:10px;
-  padding:18px 22px;margin-bottom:24px;
-  display:flex;align-items:flex-start;gap:14px;
+/* Insight strip */
+.ins-strip{
+  background:var(--dark);border-radius:10px;padding:16px 20px;
+  margin-bottom:22px;display:flex;align-items:flex-start;gap:12px;
 }
-.is-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--accent);flex-shrink:0;margin-top:5px;
-}
-.is-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
-.is-text{font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;}
-.is-text em{color:#fde68a;font-style:normal;font-weight:500;}
+.ins-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px;}
+.ins-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:3px;}
+.ins-txt{font-size:13px;color:rgba(255,255,255,.72);line-height:1.65;}
+.ins-txt em{color:#fde68a;font-style:normal;font-weight:500;}
 
-/* Section label */
-.sec-label{
+/* Section heading */
+.sec-h{
   font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:16px;margin-top:32px;display:flex;align-items:center;gap:12px;
+  color:var(--muted);display:flex;align-items:center;gap:12px;margin:26px 0 14px;
 }
-.sec-label::after{content:'';flex:1;height:1px;background:var(--faint);}
+.sec-h::after{content:'';flex:1;height:1px;background:var(--faint);}
 
-/* Stats row — large number cards */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px;}
-.stat-card{
-  background:var(--white);border:1px solid var(--faint);border-radius:12px;
-  padding:20px;position:relative;overflow:hidden;
+/* Stat cards row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px;}
+.sc{
+  background:var(--white);border:1px solid var(--faint);border-radius:10px;
+  padding:18px;position:relative;overflow:hidden;
 }
-.stat-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.sc.c-blue::before{background:var(--accent);}
+.sc.c-green::before{background:var(--green);}
+.sc.c-orange::before{background:var(--orange);}
+.sc.c-red::before{background:var(--red);}
+.sc-lbl{font-size:11px;color:var(--muted);margin-bottom:7px;}
+.sc-val{font-size:24px;font-weight:700;letter-spacing:-.03em;line-height:1;}
+.sc-val.blue{color:var(--accent);}
+.sc-val.green{color:var(--green);}
+.sc-val.orange{color:var(--orange);}
+.sc-val.red{color:var(--red);}
+.sc-sub{font-size:11px;color:var(--muted);margin-top:5px;}
+.sc-badge{
+  position:absolute;top:14px;right:14px;
+  font-size:10px;font-weight:600;padding:2px 8px;border-radius:100px;
 }
-.stat-card.blue::before{background:var(--accent);}
-.stat-card.green::before{background:var(--green);}
-.stat-card.red::before{background:var(--red);}
-.stat-card.orange::before{background:var(--orange);}
-.sc-label{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:8px;}
-.sc-value{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1;}
-.sc-value.blue{color:var(--accent);}
-.sc-value.green{color:var(--green);}
-.sc-value.red{color:var(--red);}
-.sc-value.orange{color:var(--orange);}
-.sc-sub{font-size:11px;color:var(--muted);margin-top:6px;}
-.sc-tag{
-  position:absolute;top:16px;right:16px;
-  font-size:10px;font-weight:600;padding:3px 8px;border-radius:100px;
-}
-.sc-tag.up{background:#F0FDF4;color:var(--green);}
-.sc-tag.down{background:#FEF2F2;color:var(--red);}
-.sc-tag.warn{background:#FFF7ED;color:var(--orange);}
+.sc-badge.up{background:#F0FDF4;color:var(--green);}
+.sc-badge.warn{background:#FFF7ED;color:var(--orange);}
+.sc-badge.down{background:#FEF2F2;color:var(--red);}
 
-/* Donut chart card */
-.donut-card{
-  background:var(--white);border:1px solid var(--faint);border-radius:12px;
-  padding:20px;display:flex;flex-direction:column;gap:16px;
-}
-.donut-wrap{display:flex;align-items:center;gap:20px;}
-.donut-svg{flex-shrink:0;}
-.donut-legend{display:flex;flex-direction:column;gap:8px;}
-.dl-item{display:flex;align-items:center;gap:8px;}
-.dl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.dl-label{font-size:12px;color:var(--muted);}
-.dl-val{font-size:12px;font-weight:600;color:var(--ink);margin-left:auto;}
-
-/* Grid layouts */
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px;}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.grid-2-1{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px;}
+/* Grids */
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
 
 /* Data card */
-.data-card{
-  background:var(--white);border:1px solid var(--faint);border-radius:12px;padding:20px;
-}
-.dc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
-.dc-title{font-size:13px;font-weight:600;}
+.dc{background:var(--white);border:1px solid var(--faint);border-radius:10px;padding:18px;}
+.dc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.dc-ttl{font-size:13px;font-weight:600;color:var(--ink);}
 .dc-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-.dc-badge{
-  font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
-  padding:3px 9px;border-radius:100px;
-}
-.badge-blue{background:#EFF6FF;color:#1D4ED8;}
-.badge-warn{background:#FFF7ED;color:var(--orange);}
-.badge-red{background:#FEF2F2;color:var(--red);}
+.dc-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:100px;}
+.b-blue{background:#EFF6FF;color:#1D4ED8;}
+.b-warn{background:#FFF7ED;color:var(--orange);}
+.b-red{background:#FEF2F2;color:var(--red);}
 
 /* Data rows */
-.dr{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--faint);}
+.dr{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--faint);}
 .dr:last-child{border-bottom:none;padding-bottom:0;}
 .dk{font-size:12px;color:var(--muted);}
 .dv{font-size:12px;font-weight:600;color:var(--ink);}
-.dv.blue{color:var(--accent);}
-.dv.green{color:var(--green);}
-.dv.red{color:var(--red);}
-.dv.orange{color:var(--orange);}
+.dv.bl{color:var(--accent);}
+.dv.gr{color:var(--green);}
+.dv.rd{color:var(--red);}
+.dv.or{color:var(--orange);}
 
-/* Progress bar row */
-.pb-row{margin-bottom:12px;}
-.pb-head{display:flex;justify-content:space-between;margin-bottom:5px;}
-.pb-label{font-size:12px;color:var(--muted);}
+/* Progress bars */
+.pb{margin-bottom:10px;}
+.pb-head{display:flex;justify-content:space-between;margin-bottom:4px;}
+.pb-lbl{font-size:12px;color:var(--muted);}
 .pb-val{font-size:12px;font-weight:600;}
 .pb-track{height:6px;background:var(--faint);border-radius:3px;overflow:hidden;}
-.pb-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.22,1,.36,1);}
+.pb-fill{height:100%;border-radius:3px;}
 
-/* Insight callout */
+/* Mini stat pair */
+.mini-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.mini{background:var(--faint);border-radius:8px;padding:10px;text-align:center;}
+.mini-val{font-size:18px;font-weight:700;}
+.mini-lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* Callout */
 .callout{
-  background:#FFF7ED;border-left:3px solid var(--orange);
-  border-radius:0 8px 8px 0;padding:12px 14px;margin-top:14px;
+  border-left:3px solid var(--orange);border-radius:0 7px 7px 0;
+  background:#FFF7ED;padding:10px 12px;margin-top:12px;
 }
-.callout.blue{background:#EFF6FF;border-left-color:var(--accent);}
-.cl-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:3px;}
-.callout.blue .cl-label{color:var(--accent);}
-.cl-text{font-size:12px;line-height:1.65;color:var(--ink);}
+.callout.bl{border-left-color:var(--accent);background:#EFF6FF;}
+.cl-lbl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:2px;}
+.callout.bl .cl-lbl{color:var(--accent);}
+.cl-txt{font-size:12px;line-height:1.65;color:var(--ink);}
 
 /* Competitor table */
-.comp-table{width:100%;}
-.ct-head{display:grid;grid-template-columns:1.2fr 1.4fr 1.4fr;gap:0;padding-bottom:10px;border-bottom:1px solid var(--faint);}
-.ct-hcell{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
-.ct-row{display:grid;grid-template-columns:1.2fr 1.4fr 1.4fr;gap:0;padding:10px 0;border-bottom:1px solid var(--faint);}
-.ct-row:last-child{border-bottom:none;padding-bottom:0;}
-.ct-name{font-size:13px;font-weight:600;color:var(--ink);}
-.ct-owner{font-size:11px;color:var(--muted);}
-.ct-cell{font-size:12px;color:var(--ink);line-height:1.4;padding-right:8px;}
-.ct-gap{font-size:12px;color:var(--orange);line-height:1.4;}
+.comp-head{display:grid;grid-template-columns:1.2fr 1.4fr 1.4fr;padding-bottom:8px;border-bottom:1px solid var(--faint);}
+.comp-hc{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.comp-row{display:grid;grid-template-columns:1.2fr 1.4fr 1.4fr;padding:9px 0;border-bottom:1px solid var(--faint);}
+.comp-row:last-child{border-bottom:none;padding-bottom:0;}
+.comp-name{font-size:13px;font-weight:600;color:var(--ink);}
+.comp-own{font-size:11px;color:var(--muted);}
+.comp-cell{font-size:12px;color:var(--ink);line-height:1.4;padding-right:8px;}
+.comp-gap{font-size:12px;color:var(--orange);line-height:1.4;}
 
 /* Pending note */
 .pending{
-  background:var(--faint);border-radius:8px;
-  padding:12px 16px;margin-top:16px;
-  font-size:12px;color:var(--muted);line-height:1.6;display:flex;align-items:flex-start;gap:8px;
+  display:flex;align-items:flex-start;gap:8px;
+  background:var(--faint);border-radius:8px;padding:12px 14px;
+  margin-top:16px;font-size:12px;color:var(--muted);line-height:1.6;
 }
-.pending::before{content:'⚠';font-size:12px;flex-shrink:0;margin-top:1px;}
 
-/* ══════════════════════
-   QUESTIONNAIRE — DARK
-══════════════════════ */
-#screen-quiz{display:none;min-height:100vh;background:var(--dark);}
-#screen-quiz.active{display:block;}
-.quiz-prog-bar{position:fixed;top:0;left:0;right:0;z-index:300;height:3px;background:rgba(255,255,255,.08);}
-.quiz-prog-fill{height:100%;background:var(--accent);transition:width .6s cubic-bezier(.22,1,.36,1);}
-.quiz-top-bar{
-  position:fixed;top:3px;left:0;right:0;z-index:299;height:56px;
+/* ══════════════════
+   QUESTIONNAIRE
+══════════════════ */
+#pg-quiz{
+  display:none;min-height:100vh;
+  background:var(--dark);flex-direction:column;
+}
+.qz-prog{position:fixed;top:0;left:0;right:0;z-index:200;height:3px;background:rgba(255,255,255,.08);}
+.qz-prog-fill{height:100%;background:var(--accent);transition:width .6s cubic-bezier(.22,1,.36,1);}
+.qz-bar{
+  position:fixed;top:3px;left:0;right:0;z-index:199;height:56px;
   background:var(--dark);border-bottom:1px solid rgba(255,255,255,.06);
-  display:flex;align-items:center;justify-content:space-between;padding:0 40px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 36px;
 }
-.qtb-logo{font-size:13px;font-weight:600;color:rgba(255,255,255,.7);}
-.qtb-logo span{color:var(--accent);}
-.qtb-back{
+.qz-logo{font-size:13px;font-weight:600;color:rgba(255,255,255,.6);}
+.qz-logo span{color:var(--accent);}
+.qz-sec{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.qz-back{
   font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(255,255,255,.35);background:none;border:none;cursor:pointer;
-  transition:color .2s;display:flex;align-items:center;gap:6px;
+  color:rgba(255,255,255,.3);background:none;border:none;cursor:pointer;transition:color .2s;
 }
-.qtb-back:hover{color:rgba(255,255,255,.7);}
-.qtb-section{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.qz-back:hover{color:rgba(255,255,255,.7);}
 
-.quiz-body{max-width:760px;margin:0 auto;padding:100px 40px 80px;}
+.qz-body{max-width:740px;margin:0 auto;padding:96px 36px 80px;}
+.qz-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px;}
+.qz-num{font-size:12px;color:rgba(255,255,255,.28);font-family:var(--mono);display:block;margin-bottom:10px;}
+.qz-title{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;color:#fff;line-height:1.15;margin-bottom:10px;}
+.qz-desc{font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;margin-bottom:40px;}
 
-/* Scan */
-.scan-anim{height:20px;margin-bottom:8px;position:relative;overflow:hidden;}
-.scan-line-el{position:absolute;top:0;left:-60%;width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:sp .5s ease-out forwards;}
-@keyframes sp{from{left:-60%;}to{left:100%;}}
-
-.quiz-sec-eyebrow{
-  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--accent);display:block;margin-bottom:10px;
-}
-.quiz-sec-num{font-size:12px;color:rgba(255,255,255,.3);font-family:var(--mono);display:block;margin-bottom:12px;}
-.quiz-sec-title{
-  font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-.03em;
-  color:#fff;line-height:1.15;margin-bottom:10px;
-}
-.quiz-sec-desc{font-size:15px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:44px;}
-
-/* Question block */
-.qb{margin-bottom:44px;}
-.qb-num{
-  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--accent);display:block;margin-bottom:6px;
-}
-.qb-text{
-  font-size:18px;font-weight:600;color:#fff;letter-spacing:-.01em;
-  line-height:1.3;margin-bottom:6px;
-}
-.qb-sub{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:20px;line-height:1.55;}
+/* Question */
+.qb{margin-bottom:40px;}
+.qb-num{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:5px;}
+.qb-txt{font-size:18px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:5px;}
+.qb-sub{font-size:13px;color:rgba(255,255,255,.38);margin-bottom:18px;line-height:1.5;}
 
 /* Options */
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .opt{
-  padding:16px 18px;border:1px solid rgba(255,255,255,.1);border-radius:10px;
+  padding:15px 17px;border:1px solid rgba(255,255,255,.1);border-radius:9px;
   background:rgba(255,255,255,.03);cursor:pointer;text-align:left;
-  transition:all .22s;position:relative;overflow:hidden;
+  transition:all .2s;
 }
-.opt::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateY(101%);transition:transform .28s cubic-bezier(.77,0,.18,1);}
-.opt:hover::before{transform:translateY(0);}
-.opt.selected{border-color:var(--accent);background:var(--accent);}
-.opt:hover .om,.opt.selected .om,.opt:hover .os,.opt.selected .os{color:#fff;}
-.om{font-size:13px;font-weight:600;color:rgba(255,255,255,.85);display:block;margin-bottom:3px;position:relative;z-index:1;transition:color .15s;}
-.os{font-size:12px;color:rgba(255,255,255,.35);line-height:1.4;position:relative;z-index:1;transition:color .15s;}
+.opt:hover{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.06);}
+.opt.sel{border-color:var(--accent);background:rgba(61,155,233,.18);}
+.om{font-size:13px;font-weight:600;color:rgba(255,255,255,.8);display:block;margin-bottom:2px;}
+.os{font-size:12px;color:rgba(255,255,255,.32);line-height:1.4;}
+.opt.sel .om{color:#fff;}
+.opt.sel .os{color:rgba(255,255,255,.5);}
 
 /* Multi tags */
-.tags{display:flex;flex-wrap:wrap;gap:10px;}
+.tags{display:flex;flex-wrap:wrap;gap:9px;}
 .tag{
-  padding:9px 16px;border-radius:100px;font-size:13px;font-weight:500;
-  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);
-  color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;
+  padding:9px 15px;border-radius:100px;font-size:13px;font-weight:500;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);
+  color:rgba(255,255,255,.55);cursor:pointer;transition:all .2s;
 }
-.tag.selected{border-color:var(--accent);background:rgba(61,155,233,.2);color:#fff;}
+.tag.sel{border-color:var(--accent);background:rgba(61,155,233,.18);color:#fff;}
 
-/* Slider */
-.sl-block{margin-bottom:24px;}
-.sl-row{display:grid;grid-template-columns:100px 1fr 100px;align-items:center;gap:14px;margin-bottom:18px;}
-.sl-lab{font-size:11px;color:rgba(255,255,255,.35);font-family:var(--mono);letter-spacing:.04em;}
-.sl-lab.right{text-align:right;}
-.sl-lab.active{color:rgba(255,255,255,.85);font-weight:500;}
+/* Sliders */
+.sl-row{display:grid;grid-template-columns:100px 1fr 100px;align-items:center;gap:14px;margin-bottom:16px;}
+.sl-l{font-size:11px;color:rgba(255,255,255,.32);font-family:var(--mono);}
+.sl-r{font-size:11px;color:rgba(255,255,255,.32);font-family:var(--mono);text-align:right;}
+.sl-l.on,.sl-r.on{color:#fff;font-weight:500;}
 .sl-track{position:relative;height:2px;background:rgba(255,255,255,.1);cursor:pointer;border-radius:2px;}
 .sl-fill{position:absolute;top:0;left:0;height:100%;background:rgba(61,155,233,.3);border-radius:2px;pointer-events:none;}
 .sl-dot{
   position:absolute;top:50%;transform:translate(-50%,-50%);
-  width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:grab;
-  box-shadow:0 0 0 3px rgba(61,155,233,.25);
+  width:16px;height:16px;border-radius:50%;background:var(--accent);
+  cursor:grab;box-shadow:0 0 0 3px rgba(61,155,233,.25);
 }
 .sl-dot:active{cursor:grabbing;}
 
 /* Nav */
-.quiz-nav{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);}
-.qnav-prev{
+.qz-nav{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:26px;border-top:1px solid rgba(255,255,255,.07);}
+.qz-prev{
   font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(255,255,255,.3);background:none;border:none;cursor:pointer;
-  transition:color .2s;display:flex;align-items:center;gap:6px;
+  color:rgba(255,255,255,.28);background:none;border:none;cursor:pointer;
+  transition:color .2s;display:flex;align-items:center;gap:5px;
 }
-.qnav-prev:hover{color:rgba(255,255,255,.7);}
-.qnav-prev::before{content:'←';}
-.qnav-next{
-  display:inline-flex;align-items:center;gap:10px;
+.qz-prev:hover{color:rgba(255,255,255,.65);}
+.qz-prev::before{content:'← ';}
+.qz-next{
+  display:inline-flex;align-items:center;gap:9px;
   font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   color:#fff;background:var(--accent);border:none;
-  padding:13px 24px;border-radius:8px;cursor:pointer;transition:background .2s;
+  padding:13px 22px;border-radius:7px;cursor:pointer;transition:background .2s;
 }
-.qnav-next:hover{background:var(--accent-d);}
+.qz-next:hover{background:var(--accent-d);}
 
-/* ══════════════════════
+/* ══════════════════
    DONE
-══════════════════════ */
-#screen-done{
-  display:none;min-height:100vh;background:var(--dark);
+══════════════════ */
+#pg-done{
+  display:none;min-height:100vh;
+  background:var(--dark);
   flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:60px 24px;
 }
-#screen-done.active{display:flex;}
 .done-ring{
-  width:72px;height:72px;border-radius:50%;
-  border:2px solid rgba(61,155,233,.3);
+  width:68px;height:68px;border-radius:50%;
+  border:1.5px solid rgba(61,155,233,.3);
   display:flex;align-items:center;justify-content:center;
-  margin:0 auto 32px;position:relative;
-  animation:ringPulse 2s ease-in-out infinite;
+  margin:0 auto 28px;
+  animation:rp 2s ease-in-out infinite;
 }
-@keyframes ringPulse{0%,100%{box-shadow:0 0 0 0 rgba(61,155,233,.2);}50%{box-shadow:0 0 0 12px rgba(61,155,233,0);}}
-.done-ring-inner{width:40px;height:40px;border-radius:50%;background:rgba(61,155,233,.15);display:flex;align-items:center;justify-content:center;}
-.done-check{width:18px;height:11px;border-bottom:2.5px solid var(--accent);border-left:2.5px solid var(--accent);transform:rotate(-45deg);margin-top:3px;}
-.done-tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s both;}
-.done-title{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-.03em;color:#fff;margin-bottom:12px;opacity:0;animation:fadeUp .8s .2s both;}
-.done-desc{font-size:15px;color:rgba(255,255,255,.45);max-width:420px;line-height:1.75;opacity:0;animation:fadeUp .7s .35s both;}
+@keyframes rp{0%,100%{box-shadow:0 0 0 0 rgba(61,155,233,.2);}50%{box-shadow:0 0 0 10px rgba(61,155,233,0);}}
+.done-inner{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(61,155,233,.12);
+  display:flex;align-items:center;justify-content:center;
+}
+.done-check{width:17px;height:10px;border-bottom:2.5px solid var(--accent);border-left:2.5px solid var(--accent);transform:rotate(-45deg);margin-top:3px;}
+.done-tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.done-title{font-size:clamp(26px,4vw,42px);font-weight:700;letter-spacing:-.03em;color:#fff;margin-bottom:10px;}
+.done-desc{font-size:15px;color:rgba(255,255,255,.4);max-width:400px;margin:0 auto;line-height:1.75;}
 .done-back{
-  margin-top:36px;padding:13px 28px;background:rgba(255,255,255,.08);color:#fff;
-  border:1px solid rgba(255,255,255,.12);font-size:14px;font-weight:500;
-  cursor:pointer;border-radius:8px;transition:background .2s;opacity:0;animation:fadeUp .7s .5s both;
+  margin-top:32px;padding:12px 24px;
+  background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);
+  border:1px solid rgba(255,255,255,.1);border-radius:7px;
+  font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;
 }
 .done-back:hover{background:rgba(255,255,255,.12);}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-
-/* Mobile */
 @media(max-width:768px){
-  #screen-login.active{grid-template-columns:1fr;}
-  .login-left{display:none;}
-  .login-right{padding:48px 32px;}
-  .dash-sidebar{display:none;}
+  #pg-login{grid-template-columns:1fr;}
+  .lg-left{display:none;}
+  .lg-right{padding:48px 28px;}
+  .dash-side{display:none;}
   .dash-main{margin-left:0;}
-  .stats-row{grid-template-columns:1fr 1fr;}
-  .grid-3,.grid-2,.grid-2-1{grid-template-columns:1fr;}
+  .stats-row,.g3{grid-template-columns:1fr 1fr;}
+  .g2{grid-template-columns:1fr;}
   .opts{grid-template-columns:1fr;}
   .sl-row{grid-template-columns:70px 1fr 70px;}
-  .quiz-body{padding:80px 24px 60px;}
-  .quiz-top-bar{padding:0 20px;}
+  .qz-body{padding:80px 20px 60px;}
+  .dh-nav{display:none;}
+  .comp-head,.comp-row{grid-template-columns:1fr 1fr;}
+  .comp-hc:last-child,.comp-gap{display:none;}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ LOGIN ══ -->
-<div id="screen-login" class="screen" style="display:grid;grid-template-columns:1fr 1fr;">
-  <div class="login-left">
-    <div class="login-left-bg"></div>
-    <div class="login-grid-lines"></div>
-    <div class="login-mark">
-      <div class="login-star"></div>
-      <div>
-        <div class="login-brand-name">Boney Joy Consulting</div>
-        <div class="login-tagline">From being <strong>seen</strong><br>to being <strong>felt</strong><br>to being <strong>remembered.</strong></div>
-      </div>
+<!-- LOGIN -->
+<div id="pg-login">
+  <div class="lg-left">
+    <div class="lg-left-glow"></div>
+    <div class="lg-grid"></div>
+    <div class="lg-star"></div>
+    <div class="lg-tagline">
+      From being <strong>seen</strong><br>
+      to being <strong>felt</strong><br>
+      to being <strong>remembered.</strong>
     </div>
   </div>
-  <div class="login-right">
-    <div class="login-eyebrow">Client Portal</div>
-    <h1 class="login-title">Login</h1>
-    <p class="login-sub">Sign in with the credentials we shared with you to access your brand workspace.</p>
-    <div class="lf">
-      <label>Username</label>
-      <input type="text" id="login-u" placeholder="Enter your username" autocomplete="username">
+  <div class="lg-right">
+    <div class="lg-eyebrow">Client Portal</div>
+    <h1 class="lg-title">Login</h1>
+    <p class="lg-sub">Sign in with the credentials we shared with you to access your brand workspace.</p>
+    <div class="lg-field">
+      <label class="lg-label">Username</label>
+      <input class="lg-input" type="text" id="u" placeholder="Enter username" autocomplete="username">
     </div>
-    <div class="lf">
-      <label>Password</label>
-      <input type="password" id="login-p" placeholder="Enter your password" autocomplete="current-password">
+    <div class="lg-field">
+      <label class="lg-label">Password</label>
+      <input class="lg-input" type="password" id="p" placeholder="Enter password" autocomplete="current-password">
     </div>
-    <button class="login-btn" onclick="doLogin()">
-      Sign In
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </button>
-    <p class="login-err" id="login-err">Incorrect credentials. Please try again.</p>
+    <button class="btn-accent" style="margin-top:8px" onclick="doLogin()">Sign In →</button>
+    <p class="lg-err" id="lg-err">Incorrect credentials. Please try again.</p>
   </div>
 </div>
 
-<!-- ══ LOADING ══ -->
-<div id="screen-loading" class="screen" style="display:none;">
-  <canvas id="ld-canvas"></canvas>
+<!-- LOADING -->
+<div id="pg-loading">
+  <canvas id="ld-cv"></canvas>
   <div class="ld-lines">
-    <div class="ld-line" id="ll0"><div class="ld-dot active" id="ld0"></div><span class="ld-txt" id="lt0">Loading your brand workspace...</span></div>
-    <div class="ld-line" id="ll1"><div class="ld-dot" id="ld1"></div><span class="ld-txt" id="lt1">Pulling performance insights...</span></div>
-    <div class="ld-line" id="ll2"><div class="ld-dot" id="ld2"></div><span class="ld-txt" id="lt2">Analysing competitive landscape...</span></div>
-    <div class="ld-line" id="ll3"><div class="ld-dot" id="ld3"></div><span class="ld-txt done" id="lt3">Your dashboard is ready.</span></div>
+    <div class="ld-row" id="lr0"><div class="ld-dot pulse" id="ld0"></div><span class="ld-txt" id="lt0">Loading your brand workspace...</span></div>
+    <div class="ld-row" id="lr1"><div class="ld-dot" id="ld1"></div><span class="ld-txt" id="lt1">Pulling performance insights...</span></div>
+    <div class="ld-row" id="lr2"><div class="ld-dot" id="ld2"></div><span class="ld-txt" id="lt2">Analysing competitive landscape...</span></div>
+    <div class="ld-row" id="lr3"><div class="ld-dot" id="ld3"></div><span class="ld-txt" id="lt3">Your dashboard is ready.</span></div>
   </div>
 </div>
 
-<!-- ══ DASHBOARD ══ -->
-<div id="screen-dashboard" class="screen" style="display:none;">
-  <header id="dash-header">
+<!-- DASHBOARD -->
+<div id="pg-dashboard">
+  <header class="dh">
     <div class="dh-logo">
-      <div class="dh-logo-icon">BJ</div>
-      <div class="dh-logo-text">
+      <div class="dh-icon">BJ</div>
+      <div class="dh-name">
         <div class="l1">BONEY JOY</div>
         <div class="l2">CONSULTING</div>
       </div>
@@ -600,505 +498,473 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:10
       <a href="https://www.boneyjoyconsulting.com/services" target="_blank">Services</a>
       <a href="https://www.boneyjoyconsulting.com/portfolio" target="_blank">Portfolio</a>
     </nav>
-    <div class="dh-right">
-      <div class="dh-client" id="dh-client" style="display:none">
-        <div class="dh-client-dot"></div>
-        <span class="dh-client-name" id="dh-client-name">Neuherbs · Active</span>
-      </div>
+    <div class="dh-tag" id="dh-tag" style="display:none">
+      <div class="dh-tag-dot"></div>
+      <span class="dh-tag-txt" id="dh-tag-txt">Neuherbs · Active</span>
     </div>
   </header>
 
-  <div class="dash-body">
-    <!-- Sidebar -->
-    <aside class="dash-sidebar">
-      <div class="ds-section-label">Workspace</div>
-      <a class="ds-item active" href="#" onclick="return false">
-        <svg class="ds-item-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+  <div class="dash-wrap">
+    <aside class="dash-side">
+      <div class="ds-lbl">Workspace</div>
+      <div class="ds-item on">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="currentColor"><rect x="1" y="1" width="5.5" height="5.5" rx="1"/><rect x="8.5" y="1" width="5.5" height="5.5" rx="1"/><rect x="1" y="8.5" width="5.5" height="5.5" rx="1"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1"/></svg>
         Dashboard
-      </a>
-      <a class="ds-item" href="#" onclick="startQuiz();return false">
-        <svg class="ds-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      </div>
+      <div class="ds-item" onclick="goQuiz()">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7.5" cy="7.5" r="6"/><path d="M7.5 4.5v3l2 1.5"/></svg>
         Questionnaire
         <span class="ds-badge">5</span>
-      </a>
-
-      <div class="ds-section-label">Insights</div>
-      <a class="ds-item" href="#s-brand" onclick="scrollTo('#s-brand');return false">
-        <svg class="ds-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 7h6M5 10h4"/></svg>
+      </div>
+      <div class="ds-lbl">Insights</div>
+      <div class="ds-item" onclick="sTo('s-brand')">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="2.5" width="12" height="10" rx="1"/><path d="M4 6h7M4 9h5"/></svg>
         Brand Overview
-      </a>
-      <a class="ds-item" href="#s-web" onclick="scrollTo('#s-web');return false">
-        <svg class="ds-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,11 5,8 8,10 11,6 14,9"/></svg>
+      </div>
+      <div class="ds-item" onclick="sTo('s-web')">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4"><polyline points="1.5,10 4,7 7,9 10.5,5 13.5,8"/></svg>
         Performance
-      </a>
-      <a class="ds-item" href="#s-aud" onclick="scrollTo('#s-aud');return false">
-        <svg class="ds-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="3"/><circle cx="11" cy="6" r="2"/><path d="M1 14c0-2.2 2.2-4 5-4"/><path d="M14 14c0-1.8-1.3-3-3-3"/></svg>
+      </div>
+      <div class="ds-item" onclick="sTo('s-aud')">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="5.5" cy="5.5" r="2.5"/><circle cx="10.5" cy="5.5" r="1.8"/><path d="M1 13c0-2 2-3.5 4.5-3.5"/><path d="M13 13c0-1.6-1.2-2.8-2.8-2.8"/></svg>
         Audience
-      </a>
-      <a class="ds-item" href="#s-comp" onclick="scrollTo('#s-comp');return false">
-        <svg class="ds-item-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2L8 14M2 8L14 8"/><circle cx="8" cy="8" r="6"/></svg>
+      </div>
+      <div class="ds-item" onclick="sTo('s-comp')">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7.5" cy="7.5" r="6"/><path d="M7.5 1.5v12M1.5 7.5h12"/></svg>
         Competition
-      </a>
+      </div>
     </aside>
 
-    <!-- Main -->
     <main class="dash-main">
-      <div class="dash-welcome-row">
-        <div class="dash-welcome-left">
-          <h1 id="dash-name">Neuherbs — Brand Workspace</h1>
+      <div class="dash-head">
+        <div>
+          <h1 id="dash-ttl">Neuherbs — Brand Workspace</h1>
           <p>Strategy Engagement · Boney Joy Consulting</p>
         </div>
-        <span class="dash-date" id="dash-date"></span>
+        <span class="dash-date" id="dash-dt"></span>
       </div>
 
       <!-- CTA -->
-      <div class="dash-cta" onclick="startQuiz()">
-        <div class="cta-left">
-          <div class="cta-eyebrow">Client Questionnaire · 5 Sections</div>
-          <div class="cta-title">Begin your Brand Questionnaire</div>
-          <div class="cta-sub">~10 minutes · Shapes your entire brand strategy</div>
-        </div>
-        <div class="cta-right">
-          <div class="cta-pill">Not started</div>
-          <button class="cta-arrow-btn">
-            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Opening insight -->
-      <div class="insight-strip">
-        <div class="is-dot"></div>
+      <div class="dash-cta" onclick="goQuiz()">
         <div>
-          <div class="is-label">Boney's Opening Insight</div>
-          <div class="is-text">Instagram reaches <em>83% men</em> — but top content (1.2M, 1.1M views) is women's health. <em>True Vitamin Women</em> has 65% repeat — highest in the range. There's a brand signal being built that your current positioning hasn't caught up to yet. This is what we resolve together.</div>
+          <div class="cta-ey">Client Questionnaire · 5 Sections · ~10 mins</div>
+          <div class="cta-ttl">Begin your Brand Questionnaire</div>
+          <div class="cta-sub">Shapes your entire brand strategy</div>
+        </div>
+        <button class="cta-arr">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <!-- Insight -->
+      <div class="ins-strip">
+        <div class="ins-dot"></div>
+        <div>
+          <div class="ins-lbl">Boney's Opening Insight</div>
+          <div class="ins-txt">Instagram reaches <em>83% men</em> — but top content (1.2M, 1.1M views) is women's health. <em>True Vitamin Women</em> has 65% repeat — highest in the range. There's a brand signal being built that your positioning hasn't caught up to. This is what we resolve together.</div>
         </div>
       </div>
 
-      <!-- BRAND OVERVIEW -->
-      <div id="s-brand" class="sec-label">Brand Overview</div>
+      <!-- BRAND -->
+      <div id="s-brand" class="sec-h">Brand Overview</div>
       <div class="stats-row">
-        <div class="stat-card green">
-          <div class="sc-label">Customers</div>
-          <div class="sc-value green">2.5M+</div>
+        <div class="sc c-green">
+          <div class="sc-lbl">Customers</div>
+          <div class="sc-val green">2.5M+</div>
           <div class="sc-sub">Loyal customer base</div>
-          <span class="sc-tag up">↑ Growing</span>
+          <span class="sc-badge up">↑ Growing</span>
         </div>
-        <div class="stat-card blue">
-          <div class="sc-label">Amazon India 2024</div>
-          <div class="sc-value blue">#1</div>
+        <div class="sc c-blue">
+          <div class="sc-lbl">Amazon India 2024</div>
+          <div class="sc-val blue">#1</div>
           <div class="sc-sub">Chosen supplement brand</div>
-          <span class="sc-tag up">Verified</span>
+          <span class="sc-badge up">Verified</span>
         </div>
-        <div class="stat-card orange">
-          <div class="sc-label">Products</div>
-          <div class="sc-value orange">70+</div>
+        <div class="sc c-orange">
+          <div class="sc-lbl">Products</div>
+          <div class="sc-val orange">70+</div>
           <div class="sc-sub">Across 10 categories</div>
-          <span class="sc-tag warn">Breadth risk</span>
+          <span class="sc-badge warn">Breadth risk</span>
         </div>
-        <div class="stat-card blue">
-          <div class="sc-label">Founded</div>
-          <div class="sc-value" style="font-size:20px">2015</div>
+        <div class="sc c-blue">
+          <div class="sc-lbl">Founded</div>
+          <div class="sc-val" style="font-size:20px;color:var(--ink)">2015</div>
           <div class="sc-sub">Bootstrapped · Noida</div>
         </div>
       </div>
 
-      <!-- WEB PERFORMANCE -->
-      <div id="s-web" class="sec-label">Website Performance</div>
-      <div class="grid-3">
-        <div class="data-card">
-          <div class="dc-head"><div><div class="dc-title">Traffic & Conversion</div><div class="dc-sub">Last 6 months</div></div><span class="dc-badge badge-blue">Data</span></div>
-          <div class="dr"><span class="dk">Total Traffic</span><span class="dv blue">8,65,677</span></div>
-          <div class="dr"><span class="dk">Conversion Rate</span><span class="dv green">4.2%</span></div>
+      <!-- WEB -->
+      <div id="s-web" class="sec-h">Website Performance</div>
+      <div class="g3">
+        <div class="dc">
+          <div class="dc-head"><div><div class="dc-ttl">Traffic & Conversion</div><div class="dc-sub">Last 6 months</div></div><span class="dc-badge b-blue">Data</span></div>
+          <div class="dr"><span class="dk">Total Traffic</span><span class="dv bl">8,65,677</span></div>
+          <div class="dr"><span class="dk">Conversion Rate</span><span class="dv gr">4.2%</span></div>
           <div class="dr"><span class="dk">Best Platform</span><span class="dv">Google Search</span></div>
-          <div class="callout blue">
-            <div class="cl-label">Read</div>
-            <div class="cl-text">4.2% CVR is solid. The traffic volume is strong. The problem is what happens between arrival and purchase.</div>
+          <div class="dr"><span class="dk">Ad Platforms</span><span class="dv">Instagram · Google</span></div>
+          <div class="callout bl">
+            <div class="cl-lbl">Read</div>
+            <div class="cl-txt">4.2% CVR is solid. The traffic is there. Problem is what happens between arrival and purchase.</div>
           </div>
         </div>
-        <div class="data-card">
-          <div class="dc-head"><div><div class="dc-title">Bounce Rates</div><div class="dc-sub">By page</div></div><span class="dc-badge badge-warn">Attention</span></div>
-          <div class="pb-row">
-            <div class="pb-head"><span class="pb-label">Homepage</span><span class="pb-val" style="color:var(--orange)">45.53%</span></div>
+        <div class="dc">
+          <div class="dc-head"><div><div class="dc-ttl">Bounce Rates</div><div class="dc-sub">By page</div></div><span class="dc-badge b-warn">Attention</span></div>
+          <div class="pb">
+            <div class="pb-head"><span class="pb-lbl">Homepage</span><span class="pb-val" style="color:var(--orange)">45.53%</span></div>
             <div class="pb-track"><div class="pb-fill" style="width:45.53%;background:var(--orange)"></div></div>
           </div>
-          <div class="pb-row">
-            <div class="pb-head"><span class="pb-label">Product Page</span><span class="pb-val" style="color:var(--red)">68.82%</span></div>
+          <div class="pb">
+            <div class="pb-head"><span class="pb-lbl">Product Page</span><span class="pb-val" style="color:var(--red)">68.82%</span></div>
             <div class="pb-track"><div class="pb-fill" style="width:68.82%;background:var(--red)"></div></div>
           </div>
-          <div class="pb-row">
-            <div class="pb-head"><span class="pb-label">Checkout</span><span class="pb-val" style="color:var(--orange)">33.71%</span></div>
+          <div class="pb">
+            <div class="pb-head"><span class="pb-lbl">Checkout</span><span class="pb-val" style="color:var(--orange)">33.71%</span></div>
             <div class="pb-track"><div class="pb-fill" style="width:33.71%;background:var(--orange)"></div></div>
           </div>
           <div class="callout">
-            <div class="cl-label">Boney's Read</div>
-            <div class="cl-text">68.82% product page bounce is a communication failure — not a product failure. People are curious but not convinced.</div>
+            <div class="cl-lbl">Boney's Read</div>
+            <div class="cl-txt">68.82% product page bounce = communication failure, not product failure. People are curious but not convinced.</div>
           </div>
         </div>
-        <div class="data-card">
-          <div class="dc-head"><div><div class="dc-title">Sales & Retention</div><div class="dc-sub">Last 3 months</div></div><span class="dc-badge badge-blue">Data</span></div>
-          <div class="dr"><span class="dk">Revenue</span><span class="dv blue">₹1.76 Cr</span></div>
-          <div class="dr"><span class="dk">Repeat Rate</span><span class="dv orange">31.4%</span></div>
-          <div class="dr"><span class="dk">Cart Abandonment</span><span class="dv red">69.9%</span></div>
+        <div class="dc">
+          <div class="dc-head"><div><div class="dc-ttl">Sales & Retention</div><div class="dc-sub">Last 3 months</div></div><span class="dc-badge b-blue">Data</span></div>
+          <div class="dr"><span class="dk">Revenue</span><span class="dv bl">₹1.76 Cr</span></div>
+          <div class="dr"><span class="dk">Repeat Rate</span><span class="dv or">31.4%</span></div>
+          <div class="dr"><span class="dk">Cart Abandonment</span><span class="dv rd">69.9%</span></div>
           <div class="dr"><span class="dk">Add to Cart</span><span class="dv">1,23,214</span></div>
-          <div class="dr"><span class="dk">Best Repeat SKU</span><span class="dv green">True Vit. Women 65%</span></div>
+          <div class="dr"><span class="dk">Best Repeat SKU</span><span class="dv gr">True Vit. Women 65%</span></div>
           <div class="callout">
-            <div class="cl-label">Boney's Read</div>
-            <div class="cl-text">69.9% cart abandonment + 93.7% ad-driven views = buying attention, not building trust. This is the brand problem.</div>
+            <div class="cl-lbl">Boney's Read</div>
+            <div class="cl-txt">69.9% cart abandonment + 93.7% ad-driven views = buying attention, not trust. This is the brand problem.</div>
           </div>
         </div>
       </div>
 
       <!-- AUDIENCE -->
-      <div id="s-aud" class="sec-label">Audience & Demographics</div>
-      <div class="grid-2">
-        <div class="data-card">
-          <div class="dc-head"><div><div class="dc-title">Purchase Demographics</div><div class="dc-sub">Buyer data</div></div><span class="dc-badge badge-blue">Data</span></div>
-          <div class="pb-row" style="margin-top:4px;">
-            <div class="pb-head"><span class="pb-label">Age 18–24</span><span class="pb-val">34.3%</span></div>
-            <div class="pb-track"><div class="pb-fill" style="width:34.3%;background:var(--accent)"></div></div>
-          </div>
-          <div class="pb-row">
-            <div class="pb-head"><span class="pb-label">Age 25–34</span><span class="pb-val">31.6%</span></div>
-            <div class="pb-track"><div class="pb-fill" style="width:31.6%;background:var(--accent)"></div></div>
-          </div>
-          <div class="pb-row">
-            <div class="pb-head"><span class="pb-label">Age 35–44</span><span class="pb-val">16.7%</span></div>
-            <div class="pb-track"><div class="pb-fill" style="width:16.7%;background:var(--accent)"></div></div>
-          </div>
-          <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div style="background:var(--faint);border-radius:8px;padding:12px;text-align:center;">
-              <div style="font-size:20px;font-weight:700;color:var(--accent)">76.6%</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px;">Male Buyers</div>
-            </div>
-            <div style="background:var(--faint);border-radius:8px;padding:12px;text-align:center;">
-              <div style="font-size:20px;font-weight:700;color:var(--orange)">23.4%</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px;">Female Buyers</div>
-            </div>
+      <div id="s-aud" class="sec-h">Audience & Demographics</div>
+      <div class="g2">
+        <div class="dc">
+          <div class="dc-head"><div><div class="dc-ttl">Purchase Demographics</div><div class="dc-sub">Buyer data</div></div><span class="dc-badge b-blue">Data</span></div>
+          <div class="pb"><div class="pb-head"><span class="pb-lbl">Age 18–24</span><span class="pb-val">34.3%</span></div><div class="pb-track"><div class="pb-fill" style="width:34.3%;background:var(--accent)"></div></div></div>
+          <div class="pb"><div class="pb-head"><span class="pb-lbl">Age 25–34</span><span class="pb-val">31.6%</span></div><div class="pb-track"><div class="pb-fill" style="width:31.6%;background:var(--accent)"></div></div></div>
+          <div class="pb"><div class="pb-head"><span class="pb-lbl">Age 35–44</span><span class="pb-val">16.7%</span></div><div class="pb-track"><div class="pb-fill" style="width:16.7%;background:var(--accent)"></div></div></div>
+          <div class="mini-pair">
+            <div class="mini"><div class="mini-val" style="color:var(--accent)">76.6%</div><div class="mini-lbl">Male Buyers</div></div>
+            <div class="mini"><div class="mini-val" style="color:var(--orange)">23.4%</div><div class="mini-lbl">Female Buyers</div></div>
           </div>
         </div>
-        <div class="data-card">
-          <div class="dc-head"><div><div class="dc-title">Instagram Audience</div><div class="dc-sub">Last 30 days · 59.97L views</div></div><span class="dc-badge badge-warn">Tension</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-            <div style="background:var(--faint);border-radius:8px;padding:12px;text-align:center;">
-              <div style="font-size:20px;font-weight:700;color:var(--ink)">83%</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px;">Men on IG</div>
-            </div>
-            <div style="background:var(--faint);border-radius:8px;padding:12px;text-align:center;">
-              <div style="font-size:20px;font-weight:700;color:var(--orange)">93.7%</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px;">Views from Ads</div>
-            </div>
+        <div class="dc">
+          <div class="dc-head"><div><div class="dc-ttl">Instagram Audience</div><div class="dc-sub">Last 30 days · 59.97L views</div></div><span class="dc-badge b-warn">Tension</span></div>
+          <div class="mini-pair">
+            <div class="mini"><div class="mini-val" style="color:var(--ink)">83%</div><div class="mini-lbl">Men on IG</div></div>
+            <div class="mini"><div class="mini-val" style="color:var(--orange)">93.7%</div><div class="mini-lbl">Views from Ads</div></div>
           </div>
           <div class="dr"><span class="dk">IG Age 18–24</span><span class="dv">53.3%</span></div>
           <div class="dr"><span class="dk">IG Age 25–34</span><span class="dv">34.2%</span></div>
-          <div class="dr"><span class="dk">Top content (1.2M views)</span><span class="dv" style="color:var(--orange)">Women's Health</span></div>
+          <div class="dr"><span class="dk">Top content (1.2M views)</span><span class="dv or">Women's Health</span></div>
+          <div class="dr"><span class="dk">Top content (1.1M views)</span><span class="dv or">Women's Health</span></div>
           <div class="callout">
-            <div class="cl-label">Strategic Tension</div>
-            <div class="cl-text">Building a female audience accidentally. Women's content outperforms — but the brand isn't built for them. Intentional or not?</div>
+            <div class="cl-lbl">Strategic Tension</div>
+            <div class="cl-txt">Building a female audience accidentally. Women's content outperforms — but the brand isn't built for them.</div>
           </div>
         </div>
       </div>
 
       <!-- COMPETITION -->
-      <div id="s-comp" class="sec-label">Competitive Landscape</div>
-      <div class="data-card" style="margin-bottom:14px;">
-        <div class="dc-head"><div><div class="dc-title">Market Map — India D2C Supplements</div><div class="dc-sub">Boney's analysis · May 2025</div></div><span class="dc-badge badge-warn">Analysis</span></div>
-        <div class="comp-table">
-          <div class="ct-head"><div class="ct-hcell">Brand</div><div class="ct-hcell">What they own</div><div class="ct-hcell">Their gap</div></div>
-          <div class="ct-row"><div><div class="ct-name">OZiva</div><div class="ct-owner">Acquired by HUL · 2023</div></div><div class="ct-cell">Women's health, plant-based protein</div><div class="ct-gap">Revenue flat ~₹104Cr. Post-HUL identity blur. Losing authenticity.</div></div>
-          <div class="ct-row"><div><div class="ct-name">MuscleBlaze</div><div class="ct-owner">HealthKart</div></div><div class="ct-cell">Male performance, protein, gym</div><div class="ct-gap">Zero play in everyday wellness. Hyper-niche.</div></div>
-          <div class="ct-row"><div><div class="ct-name">Wellbeing Nutrition</div><div class="ct-owner">HUL-backed</div></div><div class="ct-cell">Premium science-led, melts format</div><div class="ct-gap">Too expensive. Metro-only. Not mass accessible.</div></div>
-          <div class="ct-row"><div><div class="ct-name">Plix</div><div class="ct-owner">Plant-based D2C</div></div><div class="ct-cell">Functional gummies, skin + gut</div><div class="ct-gap">Trend-led. Low repeat. Category is narrow.</div></div>
-          <div class="ct-row"><div><div class="ct-name">TrueBasics</div><div class="ct-owner">HealthKart</div></div><div class="ct-cell">Daily vitamins, mainstream</div><div class="ct-gap">Generic. No distinct personality or owned territory.</div></div>
-        </div>
-        <div class="callout blue" style="margin-top:14px;">
-          <div class="cl-label" style="color:var(--accent)">The Whitespace</div>
-          <div class="cl-text">Nobody owns "clean, trusted, everyday nutrition for health-aware Indians." OZiva had it — HUL blurred it. MuscleBlaze is too narrow. Wellbeing is too premium. That's Neuherbs' opening — if it's taken deliberately.</div>
+      <div id="s-comp" class="sec-h">Competitive Landscape</div>
+      <div class="dc" style="margin-bottom:12px">
+        <div class="dc-head"><div><div class="dc-ttl">Market Map — India D2C Supplements</div><div class="dc-sub">Boney's analysis · 2025</div></div><span class="dc-badge b-warn">Analysis</span></div>
+        <div class="comp-head"><div class="comp-hc">Brand</div><div class="comp-hc">What they own</div><div class="comp-hc">Their gap</div></div>
+        <div class="comp-row"><div><div class="comp-name">OZiva</div><div class="comp-own">Acquired by HUL</div></div><div class="comp-cell">Women's health, plant-based</div><div class="comp-gap">Revenue flat ~₹104Cr. Post-HUL identity blur.</div></div>
+        <div class="comp-row"><div><div class="comp-name">MuscleBlaze</div><div class="comp-own">HealthKart</div></div><div class="comp-cell">Male performance, protein</div><div class="comp-gap">Zero play in everyday wellness.</div></div>
+        <div class="comp-row"><div><div class="comp-name">Wellbeing Nutrition</div><div class="comp-own">HUL-backed</div></div><div class="comp-cell">Premium science-led</div><div class="comp-gap">Too expensive. Metro-only.</div></div>
+        <div class="comp-row"><div><div class="comp-name">Plix</div><div class="comp-own">Plant-based D2C</div></div><div class="comp-cell">Functional gummies</div><div class="comp-gap">Trend-led. Low repeat.</div></div>
+        <div class="comp-row"><div><div class="comp-name">TrueBasics</div><div class="comp-own">HealthKart</div></div><div class="comp-cell">Daily vitamins, mainstream</div><div class="comp-gap">Generic. No distinct personality.</div></div>
+        <div class="callout bl" style="margin-top:12px">
+          <div class="cl-lbl" style="color:var(--accent)">The Whitespace</div>
+          <div class="cl-txt">Nobody owns "clean, trusted, everyday nutrition for health-aware Indians." OZiva had it — HUL blurred it. That's Neuherbs' opening — if taken deliberately.</div>
         </div>
       </div>
 
-      <div class="pending">All pre-filled data is based on Boney Joy Consulting's analysis of your shared data — website stats, sales data, Instagram insights, and market research. It will be verified and updated in collaboration with your team throughout the engagement.</div>
+      <div class="pending">⚠ &nbsp;All pre-filled data is based on Boney Joy Consulting's analysis of your shared data. It will be verified and updated throughout the engagement.</div>
     </main>
   </div>
 </div>
 
-<!-- ══ QUESTIONNAIRE ══ -->
-<div id="screen-quiz" class="screen" style="display:none;">
-  <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quiz-pf" style="width:0%"></div></div>
-  <div class="quiz-top-bar">
-    <div class="qtb-logo">Boney <span>for</span> Brands</div>
-    <span class="qtb-section" id="qtb-sec">Brand Questionnaire</span>
-    <button class="qtb-back" onclick="showScreen('screen-dashboard')">← Back to Dashboard</button>
+<!-- QUESTIONNAIRE -->
+<div id="pg-quiz">
+  <div class="qz-prog"><div class="qz-prog-fill" id="qz-pf" style="width:0%"></div></div>
+  <div class="qz-bar">
+    <div class="qz-logo">Boney <span>for</span> Brands</div>
+    <span class="qz-sec" id="qz-sec-lbl">Brand Questionnaire</span>
+    <button class="qz-back" onclick="go('pg-dashboard')">← Back</button>
   </div>
-  <div class="quiz-body">
-    <div class="scan-anim" id="scan-anim"></div>
-    <div id="quiz-content"></div>
+  <div class="qz-body">
+    <div id="qz-content"></div>
   </div>
 </div>
 
-<!-- ══ DONE ══ -->
-<div id="screen-done" class="screen" style="display:none;">
-  <div class="done-ring"><div class="done-ring-inner"><div class="done-check"></div></div></div>
+<!-- DONE -->
+<div id="pg-done">
+  <div class="done-ring"><div class="done-inner"><div class="done-check"></div></div></div>
   <p class="done-tag">Submitted Successfully</p>
   <h1 class="done-title">We've got everything.</h1>
-  <p class="done-desc">Thank you. Boney will review your answers and be in touch within 48 hours to begin your brand strategy session.</p>
-  <button class="done-back" onclick="showScreen('screen-dashboard')">← Back to Dashboard</button>
+  <p class="done-desc">Boney will review your answers and be in touch within 48 hours to begin your brand strategy session.</p>
+  <button class="done-back" onclick="go('pg-dashboard')">← Back to Dashboard</button>
 </div>
 
 <script>
 const API='/api/portal';
-let currentClient=null;
-let cSection=0;
-const ans={},sliders={tone:.5,appeal:.5,position:.5,price:.5,cred:.5},multi={};
+let client=null, cSec=0;
+const ans={}, sliders={tone:.5,appeal:.5,position:.5,price:.5,cred:.5}, multi={};
 
-/* SECTIONS */
-const SECTIONS=[
-  {num:'01 / 05',tag:'Brand Basics',title:'How do you see\nNeuherbs today?',desc:'Before we define where you\'re going, we need to understand how you see where you are. Be honest — not aspirational.',
-    questions:[
-      {n:'Q1',id:'basics-pos',text:'How would you describe Neuherbs\' current positioning in the market?',sub:'Not what you want it to be — what it actually communicates today.',
-        opts:[{l:'Clean-label supplement brand',s:'Nature-derived, transparent, no false claims'},{l:'Everyday wellness for all Indians',s:'Accessible health, daily use, broad audience'},{l:'Science-backed nutrition brand',s:'Formulation credibility and efficacy first'},{l:'We haven\'t nailed it yet',s:'Still finding our most ownable territory'}]},
-      {n:'Q2',id:'basics-channel',text:'Which channel is your biggest growth driver right now?',sub:'Where is Neuherbs actually winning?',
-        opts:[{l:'Amazon / Flipkart',s:'Marketplace is where we convert best'},{l:'D2C Website',s:'Our own channel is our priority'},{l:'Instagram / Meta Ads',s:'Social is driving the most discovery'},{l:'Google Search',s:'Intent-led — people search and find us'}]},
-      {n:'Q3',id:'basics-asset',text:'What is Neuherbs\' single most defensible advantage?',sub:'The thing a competitor cannot easily replicate.',
-        opts:[{l:'Clean-label credibility across all SKUs',s:'No artificial additives anywhere in the range'},{l:'2.5M customer base and Amazon trust',s:'Scale and marketplace authority'},{l:'Price-to-quality ratio',s:'Premium quality at accessible Indian price points'},{l:'Range breadth',s:'70+ products — something for every need'}]},
-    ]
-  },
-  {num:'02 / 05',tag:'Your Audience',title:'Who are you\nreally building for?',desc:'Not the full range. Not "everyone." The one person who gets the most out of what Neuherbs makes.',
-    questions:[
-      {n:'Q4',id:'aud-core',text:'If you had to pick one — who is Neuherbs\' primary customer?',sub:'The person your brand is built around.',
-        opts:[{l:'Urban male, 22–32',s:'Gym-aware, fitness-motivated, supplement-literate'},{l:'Urban female, 25–35',s:'Health-conscious, skin + wellness focused'},{l:'Health-aware family buyer, 30–45',s:'Buys for the household, quality-driven'},{l:'Both men and women equally',s:'Multi-category brand — no single core audience'}]},
-      {n:'Q5',id:'aud-belief',text:'What does your customer believe before they buy Neuherbs?',sub:'The pre-existing belief that makes them receptive to you.',
-        opts:[{l:'"I need to supplement my diet"',s:'Aware of nutritional gaps, actively seeking'},{l:'"Natural is safer than pharma"',s:'Prefers clean label over clinical brands'},{l:'"I want to perform better"',s:'Fitness-motivated, results-driven'},{l:'"I saw it online and trust the reviews"',s:'Discovery-led, social proof driven'}]},
-      {n:'Q6',id:'aud-women',text:'True Vitamin Women has 65% repeat — highest in the range. What should Neuherbs mean to a woman customer?',sub:'This is a real strategic question — take it seriously.',
-        opts:[{l:'A trusted everyday wellness companion',s:'For her daily health — skin, hormones, energy'},{l:'A science-first supplement she can trust',s:'Clean, credible, the label says what it does'},{l:'Not our primary focus right now',s:'We\'re focused on the male audience first'},{l:'We haven\'t defined this yet',s:'One of the key things we need to resolve together'}]},
-    ]
-  },
-  {num:'03 / 05',tag:'Competition',title:'How do you see\nthe battlefield?',desc:'Your perspective on the competitive landscape — what you feel in the market every day, beyond the data.',
-    questions:[
-      {n:'Q7',id:'comp-lose',text:'Which competitor do you lose to most often?',sub:'Where do customers go when they don\'t choose Neuherbs?',
-        opts:[{l:'OZiva',s:'Women\'s segment, plant-based'},{l:'MuscleBlaze / HealthKart',s:'Performance and protein segment'},{l:'Amazon private labels',s:'Price-driven, convenience-first'},{l:'We\'re not tracking this yet',s:'Haven\'t mapped it properly'}]},
-      {n:'Q8',id:'comp-diff',text:'What does Neuherbs do that no competitor actually does?',sub:'Be specific. "Quality" is not an answer.',
-        opts:[{l:'Clean-label across every category',s:'No artificial additives — unique at this scale'},{l:'Breadth without compromise',s:'70+ products, all meeting the same clean standard'},{l:'Accessible price for clean label',s:'Premium quality at mass-market price points'},{l:'Honestly — still figuring this out',s:'Our differentiation isn\'t sharp enough yet'}]},
-      {n:'Q9',id:'comp-threat',text:'What\'s the competitive threat you\'re most worried about?',sub:'The thing that keeps you up at night.',
-        opts:[{l:'A funded competitor outspending us on ads',s:'Wellbeing Nutrition or Plix scaling fast'},{l:'Amazon commoditising the category',s:'Private labels eating our margin and visibility'},{l:'Not having a sharp enough brand position',s:'Looking like everyone else as the market grows'},{l:'OZiva recovering under HUL',s:'They had the women\'s market — if they fix it, we lose'}]},
-    ]
-  },
-  {num:'04 / 05',tag:'Brand Personality',title:'What should Neuherbs\nfeel like?',desc:'Place the brand honestly on each scale. Then tell us what it must never become.',
-    questions:[
-      {n:'Q10',id:'pers-sliders',text:'Drag each slider to where Neuherbs honestly sits today.',sub:'Not where you want it. Where it actually is right now.',type:'sliders',
-        sliders:[{l:'Serious',r:'Playful',key:'tone'},{l:'Functional',r:'Emotional',key:'appeal'},{l:'Mainstream',r:'Disruptive',key:'position'},{l:'Premium',r:'Accessible',key:'price'},{l:'Scientific',r:'Natural',key:'cred'}]},
-      {n:'Q11',id:'pers-not',text:'What should Neuherbs never feel like?',sub:'Your brand\'s hard boundary — what must be rejected completely.',
-        opts:[{l:'Gym bro / performance-only',s:'Hyper-masculine, intimidating, exclusive'},{l:'Pharma / clinical',s:'Cold, jargon-heavy, distancing'},{l:'Preachy wellness brand',s:'Moralising, telling people how to live'},{l:'Generic discount supplement',s:'No personality — just price and volume'}]},
-      {n:'Q12',id:'pers-analogy',text:'Which brand comes closest to the energy Neuherbs wants?',sub:'Not the category — the feeling, the relationship with the customer.',
-        opts:[{l:'Dabur',s:'Trusted, Indian, household — built over generations'},{l:'Paper Boat',s:'Warm, honest, emotionally resonant without trying'},{l:'The Whole Truth',s:'Brutally transparent, label-proud, earns trust through honesty'},{l:'Himalaya',s:'Nature-backed, credible, gentle authority'}]},
-    ]
-  },
-  {num:'05 / 05',tag:'Goals & Assets',title:'What are we\nbuilding together?',desc:'What success looks like — and what we\'re working with.',
-    questions:[
-      {n:'Q13',id:'goal-primary',text:'If we achieve only one thing from this engagement — what should it be?',sub:'This shapes the entire scope of work.',
-        opts:[{l:'A sharp, ownable brand position',s:'Clear territory no competitor can claim'},{l:'Communication that converts the product page',s:'Fix the 68.82% bounce — messaging that convinces'},{l:'A deliberate strategy for the women\'s market',s:'Intentional positioning — not accidental'},{l:'A visual identity that stands out in feed',s:'Look that differentiates on shelf and scroll'}]},
-      {n:'Q14',id:'goal-timeline',text:'What timeline are you working with?',sub:'',
-        opts:[{l:'Urgent — within 1 month',s:'Launch or campaign coming up'},{l:'Short — 1 to 3 months',s:'Moving quickly but deliberately'},{l:'Medium — 3 to 6 months',s:'Building it properly'},{l:'Long-term partnership',s:'Sustained engagement — evolving together'}]},
-      {n:'Q15',id:'assets-have',text:'What does Neuherbs already have?',sub:'Select all that apply.',type:'multi',
-        tags:['Logo & visual identity','Brand guidelines','D2C website','Packaging','Photography / video content','Performance marketing data','Product range fully defined','Customer reviews & testimonials']},
-      {n:'Q16',id:'assets-need',text:'What do you need Boney to define or create?',sub:'Select all that apply.',type:'multi',
-        tags:['Brand positioning statement','Tone of voice','Campaign concept','Visual direction / refresh','Content strategy','Communication system for ads','Product page messaging','Brand guidelines update']},
-    ]
-  },
-];
+/* ── SCREEN SWITCH — dead simple ── */
+const PAGES=['pg-login','pg-loading','pg-dashboard','pg-quiz','pg-done'];
+const DMAP={'pg-login':'grid','pg-loading':'flex','pg-dashboard':'flex','pg-quiz':'flex','pg-done':'flex'};
 
-/* LOGIN */
+function go(id){
+  PAGES.forEach(pid=>{
+    const el=document.getElementById(pid);
+    if(el){el.style.display='none';el.style.flexDirection='';}
+  });
+  const el=document.getElementById(id);
+  if(!el) return;
+  const d=DMAP[id]||'block';
+  el.style.display=d;
+  if(d==='flex'){
+    const dirs={'pg-loading':'column','pg-dashboard':'column','pg-quiz':'column','pg-done':'column'};
+    el.style.flexDirection=dirs[id]||'row';
+  }
+  window.scrollTo(0,0);
+}
+
+/* ── LOGIN ── */
 async function doLogin(){
-  const u=document.getElementById('login-u').value.trim();
-  const p=document.getElementById('login-p').value.trim();
+  const u=document.getElementById('u').value.trim();
+  const p=document.getElementById('p').value.trim();
   if(!u||!p){showErr('Please enter both fields.');return;}
-  document.getElementById('login-err').classList.remove('show');
+  document.getElementById('lg-err').classList.remove('show');
   try{
     const r=await fetch(`${API}?action=login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
     const d=await r.json();
-    if(d.success){currentClient=d;showLoading();}
+    if(d.success){client=d;startLoading();}
     else showErr('Incorrect credentials. Please try again.');
-  }catch{showErr('Something went wrong. Please try again.');}
+  }catch{showErr('Something went wrong.');}
 }
-function showErr(m){const e=document.getElementById('login-err');e.textContent=m;e.classList.add('show');}
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('screen-login').classList.contains('active'))doLogin();});
+function showErr(m){const e=document.getElementById('lg-err');e.textContent=m;e.classList.add('show');}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('pg-login').style.display!=='none')doLogin();});
 
-/* LOADING */
-function showLoading(){
-  showScreen('screen-loading');
+/* ── LOADING ── */
+function startLoading(){
+  go('pg-loading');
   startSphere();
   const t=[300,1000,2000,3100];
   [0,1,2,3].forEach(i=>{
     setTimeout(()=>{
-      document.getElementById(`ll${i}`).classList.add('show');
-      if(i>0){document.getElementById(`ld${i-1}`).classList.remove('active');document.getElementById(`ld${i-1}`).classList.add('done');}
-      document.getElementById(`ld${i}`).classList.add('active');
-      if(i===3){document.getElementById(`ld3`).classList.remove('active');document.getElementById(`ld3`).classList.add('done');}
+      document.getElementById(`lr${i}`).classList.add('show');
+      if(i>0){
+        document.getElementById(`ld${i-1}`).classList.remove('pulse');
+        document.getElementById(`ld${i-1}`).classList.add('done');
+        document.getElementById(`lt${i-1}`).classList.add('done');
+      }
+      document.getElementById(`ld${i}`).classList.add('pulse');
+      if(i===3){
+        setTimeout(()=>{
+          document.getElementById(`ld3`).classList.remove('pulse');
+          document.getElementById(`ld3`).classList.add('done');
+          document.getElementById(`lt3`).classList.add('done');
+        },500);
+      }
     },t[i]);
   });
-  setTimeout(()=>showDashboard(),4200);
+  setTimeout(()=>showDash(),4400);
 }
 
 function startSphere(){
-  const cv=document.getElementById('ld-canvas');
+  const cv=document.getElementById('ld-cv');
   const ctx=cv.getContext('2d');
   const dpr=window.devicePixelRatio||1;
-  cv.width=200*dpr;cv.height=200*dpr;ctx.scale(dpr,dpr);
-  const cx=100,cy=100,R=76;
-  const pts=Array.from({length:1500},()=>{
+  cv.width=180*dpr;cv.height=180*dpr;ctx.scale(dpr,dpr);
+  const cx=90,cy=90,R=66;
+  const pts=Array.from({length:1400},()=>{
     const u=Math.random()*Math.PI*2,v=Math.acos(2*Math.random()-1);
     return{bx:Math.sin(v)*Math.cos(u),by:Math.sin(v)*Math.sin(u),bz:Math.cos(v),
       dA:.02+Math.random()*.04,dS:.003+Math.random()*.008,dP:Math.random()*Math.PI*2,
-      sz:.5+Math.random()*1.1,al:.2+Math.random()*.5};
+      sz:.5+Math.random()*1,al:.2+Math.random()*.5};
   });
   let rotY=0,frame=0;
   const ry=(x,y,z,a)=>({x:x*Math.cos(a)+z*Math.sin(a),y,z:-x*Math.sin(a)+z*Math.cos(a)});
   const rx=(x,y,z,a)=>({x,y:y*Math.cos(a)-z*Math.sin(a),z:y*Math.sin(a)+z*Math.cos(a)});
-  function draw(){
-    ctx.clearRect(0,0,200,200);rotY+=.005;
+  (function draw(){
+    ctx.clearRect(0,0,180,180);rotY+=.005;
     const t=frame*.01;
     const proj=pts.map(p=>{
       const d=Math.sin(t*p.dS*60+p.dP)*p.dA;
       let r=ry(p.bx*(1+d),p.by*(1+d),p.bz*(1+d),rotY);
-      r=rx(r.x,r.y,r.z,.2);
+      r=rx(r.x,r.y,r.z,.18);
       return{px:cx+r.x*R,py:cy+r.y*R,depth:(r.z+1)/2,p};
     });
     proj.sort((a,b)=>a.depth-b.depth);
     proj.forEach(({px,py,depth,p})=>{
       const al=p.al*(.15+depth*.85),sz=p.sz*(.4+depth*.6);
       const df=Math.max(0,(Math.sqrt((px-cx)**2+(py-cy)**2)/R-.7)/.3);
-      if(df>.1){ctx.beginPath();ctx.arc(px,py,sz+.7,0,Math.PI*2);ctx.fillStyle=`rgba(61,155,233,${al*df*.5})`;ctx.fill();}
+      if(df>.1){ctx.beginPath();ctx.arc(px,py,sz+.6,0,Math.PI*2);ctx.fillStyle=`rgba(61,155,233,${al*df*.45})`;ctx.fill();}
       ctx.beginPath();ctx.arc(px,py,sz,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${al})`;ctx.fill();
     });
     frame++;requestAnimationFrame(draw);
-  }
-  draw();
+  })();
 }
 
-/* SCREENS */
-function showScreen(id){
-  ['screen-login','screen-loading','screen-dashboard','screen-quiz','screen-done'].forEach(sid=>{
-    const s=document.getElementById(sid);
-    if(s){s.style.cssText='display:none';}
-  });
-  const styles={
-    'screen-login':'display:grid;grid-template-columns:1fr 1fr;min-height:100vh;',
-    'screen-loading':'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#0E0E10;gap:40px;',
-    'screen-dashboard':'display:flex;flex-direction:column;min-height:100vh;',
-    'screen-quiz':'display:block;min-height:100vh;background:#0E0E10;',
-    'screen-done':'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#0E0E10;text-align:center;padding:60px 24px;',
-  };
-  const el=document.getElementById(id);
-  if(el){el.style.cssText=styles[id]||'display:block';}
-  window.scrollTo({top:0,behavior:'smooth'});
+function showDash(){
+  go('pg-dashboard');
+  const name=client?.name||'Neuherbs';
+  document.getElementById('dash-ttl').textContent=name+' — Brand Workspace';
+  document.getElementById('dh-tag').style.display='flex';
+  document.getElementById('dh-tag-txt').textContent=name+' · Active';
+  document.getElementById('dash-dt').textContent=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
 }
 
-function showDashboard(){
-  showScreen('screen-dashboard');
-  const name=currentClient?.name||'Neuherbs';
-  document.getElementById('dash-name').textContent=name+' — Brand Workspace';
-  document.getElementById('dh-client').style.display='flex';
-  document.getElementById('dh-client-name').textContent=name+' · Active';
-  document.getElementById('dash-date').textContent=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-}
+function goQuiz(){cSec=0;go('pg-quiz');renderSec(0);}
+function sTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
 
-/* QUIZ */
-function startQuiz(){
-  cSection=0;showScreen('screen-quiz');renderSection(0);
-}
+/* ── SECTIONS ── */
+const SECS=[
+  {num:'01/05',tag:'Brand Basics',title:'How do you see\nNeuherbs today?',desc:'Before we define where you\'re going, we need to understand where you are. Be honest — not aspirational.',
+    qs:[
+      {n:'Q1',id:'bp',txt:'How would you describe Neuherbs\' current positioning?',sub:'Not what you want it to be — what it actually communicates today.',
+        opts:[{l:'Clean-label supplement brand',s:'Nature-derived, transparent, no false claims'},{l:'Everyday wellness for all Indians',s:'Accessible health, daily use, broad audience'},{l:'Science-backed nutrition brand',s:'Formulation credibility and efficacy first'},{l:'We haven\'t nailed it yet',s:'Still finding our most ownable territory'}]},
+      {n:'Q2',id:'bc',txt:'Which channel is your biggest growth driver right now?',sub:'Where is Neuherbs actually winning?',
+        opts:[{l:'Amazon / Flipkart',s:'Marketplace is where we convert best'},{l:'D2C Website',s:'Our own channel is our priority'},{l:'Instagram / Meta Ads',s:'Social is driving the most discovery'},{l:'Google Search',s:'Intent-led — people search and find us'}]},
+      {n:'Q3',id:'ba',txt:'What is Neuherbs\' single most defensible advantage?',sub:'The thing a competitor cannot easily replicate.',
+        opts:[{l:'Clean-label across all SKUs',s:'No artificial additives anywhere in the range'},{l:'2.5M customer base and Amazon trust',s:'Scale and marketplace authority'},{l:'Price-to-quality ratio',s:'Premium quality at accessible price points'},{l:'Range breadth',s:'70+ products — something for every need'}]},
+    ]
+  },
+  {num:'02/05',tag:'Your Audience',title:'Who are you\nreally building for?',desc:'Not the full range. Not "everyone." The one person who gets the most out of what Neuherbs makes.',
+    qs:[
+      {n:'Q4',id:'ac',txt:'If you had to pick one — who is Neuherbs\' primary customer?',sub:'The person your brand is built around.',
+        opts:[{l:'Urban male, 22–32',s:'Gym-aware, fitness-motivated, supplement-literate'},{l:'Urban female, 25–35',s:'Health-conscious, skin + wellness focused'},{l:'Health-aware family buyer, 30–45',s:'Buys for the household, quality-driven'},{l:'Both men and women equally',s:'Multi-category brand — no single core audience'}]},
+      {n:'Q5',id:'ab',txt:'What does your customer believe before they buy Neuherbs?',sub:'The pre-existing belief that makes them receptive to you.',
+        opts:[{l:'"I need to supplement my diet"',s:'Aware of nutritional gaps, actively seeking'},{l:'"Natural is safer than pharma"',s:'Prefers clean label over clinical brands'},{l:'"I want to perform better"',s:'Fitness-motivated, results-driven'},{l:'"I saw it online and trust the reviews"',s:'Discovery-led, social proof driven'}]},
+      {n:'Q6',id:'aw',txt:'True Vitamin Women has 65% repeat — highest in range. What should Neuherbs mean to a woman customer?',sub:'A real strategic question — take it seriously.',
+        opts:[{l:'A trusted everyday wellness companion',s:'For her daily health — skin, hormones, energy'},{l:'A science-first supplement she can trust',s:'Clean, credible, the label says what it does'},{l:'Not our primary focus right now',s:'We\'re focused on the male audience first'},{l:'We haven\'t defined this yet',s:'One of the things we need to resolve together'}]},
+    ]
+  },
+  {num:'03/05',tag:'Competition',title:'How do you see\nthe battlefield?',desc:'Your perspective on the competitive landscape — beyond what the data shows.',
+    qs:[
+      {n:'Q7',id:'cl',txt:'Which competitor do you lose to most often?',sub:'Where do customers go when they don\'t choose Neuherbs?',
+        opts:[{l:'OZiva',s:'Women\'s segment, plant-based'},{l:'MuscleBlaze / HealthKart',s:'Performance and protein segment'},{l:'Amazon private labels',s:'Price-driven, convenience-first'},{l:'We\'re not tracking this yet',s:'Haven\'t mapped it properly'}]},
+      {n:'Q8',id:'cd',txt:'What does Neuherbs do that no competitor actually does?',sub:'Be specific. "Quality" is not an answer.',
+        opts:[{l:'Clean-label across every category',s:'No artificial additives — unique at this scale'},{l:'Breadth without compromise',s:'70+ products, all meeting the same clean standard'},{l:'Accessible price for clean label',s:'Premium quality at mass-market price points'},{l:'Honestly — still figuring this out',s:'Our differentiation isn\'t sharp enough yet'}]},
+      {n:'Q9',id:'ct',txt:'What\'s the competitive threat you\'re most worried about?',sub:'The thing that keeps you up at night.',
+        opts:[{l:'A funded competitor outspending us',s:'Wellbeing Nutrition or Plix scaling fast'},{l:'Amazon commoditising the category',s:'Private labels eating our margin'},{l:'Not having a sharp brand position',s:'Looking like everyone else as market grows'},{l:'OZiva recovering under HUL',s:'They had the women\'s market — if they fix it, we lose'}]},
+    ]
+  },
+  {num:'04/05',tag:'Brand Personality',title:'What should Neuherbs\nfeel like?',desc:'Place the brand honestly on each scale. Then tell us what it must never become.',
+    qs:[
+      {n:'Q10',id:'ps',txt:'Drag each slider to where Neuherbs honestly sits today.',sub:'Not where you want it. Where it actually is.',type:'sliders',
+        sliders:[{l:'Serious',r:'Playful',key:'tone'},{l:'Functional',r:'Emotional',key:'appeal'},{l:'Mainstream',r:'Disruptive',key:'position'},{l:'Premium',r:'Accessible',key:'price'},{l:'Scientific',r:'Natural',key:'cred'}]},
+      {n:'Q11',id:'pn',txt:'What should Neuherbs never feel like?',sub:'Your brand\'s hard boundary.',
+        opts:[{l:'Gym bro / performance-only',s:'Hyper-masculine, intimidating, exclusive'},{l:'Pharma / clinical',s:'Cold, jargon-heavy, distancing'},{l:'Preachy wellness brand',s:'Moralising, telling people how to live'},{l:'Generic discount supplement',s:'No personality — just price and volume'}]},
+      {n:'Q12',id:'pa',txt:'Which brand comes closest to the energy Neuherbs wants?',sub:'Not the category — the feeling, the relationship.',
+        opts:[{l:'Dabur',s:'Trusted, Indian, household — built over generations'},{l:'Paper Boat',s:'Warm, honest, emotionally resonant'},{l:'The Whole Truth',s:'Brutally transparent, label-proud'},{l:'Himalaya',s:'Nature-backed, credible, gentle authority'}]},
+    ]
+  },
+  {num:'05/05',tag:'Goals & Assets',title:'What are we\nbuilding together?',desc:'What success looks like — and what we\'re working with.',
+    qs:[
+      {n:'Q13',id:'gp',txt:'If we achieve only one thing — what should it be?',sub:'This shapes the entire scope of work.',
+        opts:[{l:'A sharp, ownable brand position',s:'Clear territory no competitor can claim'},{l:'Communication that converts the product page',s:'Fix the 68.82% bounce'},{l:'A deliberate women\'s market strategy',s:'Intentional positioning — not accidental'},{l:'A visual identity that stands out',s:'Look that differentiates on shelf and scroll'}]},
+      {n:'Q14',id:'gt',txt:'What timeline are you working with?',sub:'',
+        opts:[{l:'Urgent — within 1 month',s:'Launch or campaign coming up'},{l:'Short — 1 to 3 months',s:'Moving quickly but deliberately'},{l:'Medium — 3 to 6 months',s:'Building it properly'},{l:'Long-term partnership',s:'Sustained engagement'}]},
+      {n:'Q15',id:'gh',txt:'What does Neuherbs already have?',sub:'Select all that apply.',type:'multi',
+        tags:['Logo & visual identity','Brand guidelines','D2C website','Packaging','Photography / video','Performance data','Full product range','Customer reviews']},
+      {n:'Q16',id:'gn',txt:'What do you need Boney to define or create?',sub:'Select all that apply.',type:'multi',
+        tags:['Brand positioning','Tone of voice','Campaign concept','Visual direction','Content strategy','Ad messaging','Product page copy','Brand guidelines']},
+    ]
+  },
+];
 
-function triggerScan(){
-  const el=document.getElementById('scan-anim');
-  el.innerHTML='<div class="scan-line-el"></div>';void el.offsetWidth;
-}
+function renderSec(idx){
+  const sec=SECS[idx];
+  document.getElementById('qz-pf').style.width=`${((idx+1)/SECS.length)*100}%`;
+  document.getElementById('qz-sec-lbl').textContent=sec.tag;
+  const c=document.getElementById('qz-content');
+  c.style.opacity='0';
 
-function renderSection(idx){
-  const sec=SECTIONS[idx];
-  document.getElementById('quiz-pf').style.width=`${((idx+1)/SECTIONS.length)*100}%`;
-  document.getElementById('qtb-sec').textContent=sec.tag;
-  triggerScan();
-  const content=document.getElementById('quiz-content');
-  content.style.opacity='0';
+  let h=`<span class="qz-eyebrow">${sec.tag}</span>
+    <span class="qz-num">${sec.num}</span>
+    <h2 class="qz-title">${sec.title.replace('\n','<br>')}</h2>
+    <p class="qz-desc">${sec.desc}</p>`;
 
-  let h=`<span class="quiz-sec-eyebrow">${sec.tag}</span>
-    <span class="quiz-sec-num">${sec.num}</span>
-    <h2 class="quiz-sec-title">${sec.title.replace('\n','<br>')}</h2>
-    <p class="quiz-sec-desc">${sec.desc}</p>`;
-
-  sec.questions.forEach((q,qi)=>{
-    h+=`<div class="qb"><span class="qb-num">${q.n}</span><h3 class="qb-text">${q.text}</h3>${q.sub?`<p class="qb-sub">${q.sub}</p>`:''}`;
-    if(!q.type||q.type==='opts'){
+  sec.qs.forEach(q=>{
+    h+=`<div class="qb"><span class="qb-num">${q.n}</span><div class="qb-txt">${q.txt}</div>${q.sub?`<div class="qb-sub">${q.sub}</div>`:''}`;
+    if(!q.type){
       h+=`<div class="opts">`;
-      q.opts.forEach((o,oi)=>{
-        const sel=ans[q.id]===oi?'selected':'';
-        h+=`<button class="opt ${sel}" onclick="selOpt('${q.id}',${oi},this)"><span class="om">${o.l}</span><span class="os">${o.s||''}</span></button>`;
+      q.opts.forEach((o,i)=>{
+        h+=`<button class="opt ${ans[q.id]===i?'sel':''}" onclick="selO('${q.id}',${i},this)"><span class="om">${o.l}</span><span class="os">${o.s}</span></button>`;
       });
       h+=`</div>`;
     } else if(q.type==='sliders'){
-      h+=`<div class="sl-block">`;
+      h+=`<div>`;
       q.sliders.forEach(sl=>{
         const v=sliders[sl.key]??0.5;
-        h+=`<div class="sl-row"><span class="sl-lab" id="sll-${sl.key}">${sl.l}</span><div class="sl-track" id="slt-${sl.key}"><div class="sl-fill" id="slf-${sl.key}" style="width:${v*100}%"></div><div class="sl-dot" id="sld-${sl.key}" style="left:${v*100}%"></div></div><span class="sl-lab right" id="slr-${sl.key}">${sl.r}</span></div>`;
+        h+=`<div class="sl-row"><span class="sl-l${v<.38?' on':''}" id="sl-l-${sl.key}">${sl.l}</span><div class="sl-track" id="sl-t-${sl.key}"><div class="sl-fill" id="sl-f-${sl.key}" style="width:${v*100}%"></div><div class="sl-dot" id="sl-d-${sl.key}" style="left:${v*100}%"></div></div><span class="sl-r${v>.62?' on':''}" id="sl-r-${sl.key}">${sl.r}</span></div>`;
       });
       h+=`</div>`;
     } else if(q.type==='multi'){
       const sel=multi[q.id]||[];
       h+=`<div class="tags">`;
-      q.tags.forEach((tag,ti)=>{
-        h+=`<button class="tag ${sel.includes(ti)?'selected':''}" onclick="togTag('${q.id}',${ti},this)">${tag}</button>`;
-      });
+      q.tags.forEach((t,i)=>h+=`<button class="tag ${sel.includes(i)?'sel':''}" onclick="togT('${q.id}',${i},this)">${t}</button>`);
       h+=`</div>`;
     }
     h+=`</div>`;
   });
 
-  const isLast=idx===SECTIONS.length-1;
-  h+=`<div class="quiz-nav"><button class="qnav-prev" ${idx===0?'style="opacity:0;pointer-events:none"':''} onclick="prevSec()">Previous</button><button class="qnav-next" onclick="nextSec()">${isLast?'Submit Answers →':'Next Section →'}</button></div>`;
+  const last=idx===SECS.length-1;
+  h+=`<div class="qz-nav"><button class="qz-prev" ${idx===0?'style="opacity:0;pointer-events:none"':''} onclick="prevSec()">Previous</button><button class="qz-next" onclick="nextSec()">${last?'Submit →':'Next Section →'}</button></div>`;
 
-  setTimeout(()=>{
-    content.innerHTML=h;
-    content.style.transition='opacity .35s';content.style.opacity='1';
-    if(idx===3) initSliders(sec);
-  },180);
-  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>{c.innerHTML=h;c.style.transition='opacity .35s';c.style.opacity='1';if(idx===3)initSl(sec);},180);
+  window.scrollTo(0,0);
 }
 
-function selOpt(id,idx,el){el.closest('.opts').querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');ans[id]=idx;}
-function togTag(id,idx,el){if(!multi[id])multi[id]=[];const i=multi[id].indexOf(idx);if(i===-1){multi[id].push(idx);el.classList.add('selected');}else{multi[id].splice(i,1);el.classList.remove('selected');}}
+function selO(id,i,el){el.closest('.opts').querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');ans[id]=i;}
+function togT(id,i,el){if(!multi[id])multi[id]=[];const x=multi[id].indexOf(i);if(x===-1){multi[id].push(i);el.classList.add('sel');}else{multi[id].splice(x,1);el.classList.remove('sel');}}
 
-function initSliders(sec){
-  sec.questions.forEach(q=>{
+function initSl(sec){
+  sec.qs.forEach(q=>{
     if(q.type!=='sliders')return;
     q.sliders.forEach(sl=>{
-      const tr=document.getElementById(`slt-${sl.key}`),dt=document.getElementById(`sld-${sl.key}`),fl=document.getElementById(`slf-${sl.key}`),ll=document.getElementById(`sll-${sl.key}`),lr=document.getElementById(`slr-${sl.key}`);
+      const tr=document.getElementById(`sl-t-${sl.key}`),dt=document.getElementById(`sl-d-${sl.key}`),fl=document.getElementById(`sl-f-${sl.key}`),ll=document.getElementById(`sl-l-${sl.key}`),lr=document.getElementById(`sl-r-${sl.key}`);
       if(!tr)return;let drag=false;
-      function sv(e){const r=tr.getBoundingClientRect(),x=(e.touches?e.touches[0].clientX:e.clientX)-r.left,v=Math.max(.02,Math.min(.98,x/r.width));sliders[sl.key]=v;dt.style.left=(v*100)+'%';fl.style.width=(v*100)+'%';ll.classList.toggle('active',v<.38);lr.classList.toggle('active',v>.62);}
-      tr.addEventListener('mousedown',e=>{drag=true;sv(e);});tr.addEventListener('touchstart',e=>{drag=true;sv(e);},{passive:true});
-      document.addEventListener('mousemove',e=>{if(drag)sv(e);});document.addEventListener('touchmove',e=>{if(drag)sv(e);},{passive:true});
-      document.addEventListener('mouseup',()=>drag=false);document.addEventListener('touchend',()=>drag=false);
+      function sv(e){
+        const r=tr.getBoundingClientRect(),x=(e.touches?e.touches[0].clientX:e.clientX)-r.left,v=Math.max(.02,Math.min(.98,x/r.width));
+        sliders[sl.key]=v;dt.style.left=(v*100)+'%';fl.style.width=(v*100)+'%';
+        ll.className='sl-l'+(v<.38?' on':'');lr.className='sl-r'+(v>.62?' on':'');
+      }
+      tr.addEventListener('mousedown',e=>{drag=true;sv(e);});
+      tr.addEventListener('touchstart',e=>{drag=true;sv(e);},{passive:true});
+      document.addEventListener('mousemove',e=>{if(drag)sv(e);});
+      document.addEventListener('touchmove',e=>{if(drag)sv(e);},{passive:true});
+      document.addEventListener('mouseup',()=>drag=false);
+      document.addEventListener('touchend',()=>drag=false);
     });
   });
 }
 
-function nextSec(){if(cSection===SECTIONS.length-1){submitAll();return;}cSection++;renderSection(cSection);}
-function prevSec(){if(cSection===0)return;cSection--;renderSection(cSection);}
+function nextSec(){if(cSec===SECS.length-1){submit();return;}cSec++;renderSec(cSec);}
+function prevSec(){if(cSec===0)return;cSec--;renderSec(cSec);}
 
-async function submitAll(){
-  const btn=document.querySelector('.qnav-next');btn.textContent='Submitting...';btn.style.pointerEvents='none';
-  const payload={
-    'Client Name':currentClient?.name||'Neuherbs','Brand':currentClient?.brand||'Neuherbs',
-    'Submitted':new Date().toISOString().split('T')[0],
-    'Stage':JSON.stringify(ans),'Audience':JSON.stringify(ans),
-    'Competition':JSON.stringify(ans),'Personality':JSON.stringify({...ans,...sliders}),
-    'Goals':JSON.stringify({...ans,...multi}),'Assets':JSON.stringify(multi),
-  };
+async function submit(){
+  const btn=document.querySelector('.qz-next');btn.textContent='Submitting...';btn.style.pointerEvents='none';
+  const payload={'Client Name':client?.name||'Neuherbs','Brand':client?.brand||'Neuherbs','Submitted':new Date().toISOString().split('T')[0],'Stage':JSON.stringify(ans),'Audience':JSON.stringify(ans),'Competition':JSON.stringify(ans),'Personality':JSON.stringify({...ans,...sliders}),'Goals':JSON.stringify({...ans,...multi}),'Assets':JSON.stringify(multi)};
   try{
     await fetch(`${API}?action=submit`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    showScreen('screen-done');
-  }catch{btn.textContent='Submit Answers →';btn.style.pointerEvents='auto';alert('Could not submit. Please try again.');}
+    go('pg-done');
+  }catch{btn.textContent='Submit →';btn.style.pointerEvents='auto';alert('Could not submit. Please try again.');}
 }
 
-function scrollTo(id){const el=document.querySelector(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+/* Init — hide everything except login */
+PAGES.forEach(pid=>{const el=document.getElementById(pid);if(el)el.style.display='none';});
+document.getElementById('pg-login').style.display='grid';
 </script>
 </body>
 </html>
