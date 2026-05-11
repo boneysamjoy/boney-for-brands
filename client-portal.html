@@ -182,12 +182,12 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
   display:flex;align-items:center;justify-content:space-between;
   cursor:pointer;transition:opacity .2s;
   position:relative;overflow:hidden;
-  box-shadow:0 0 0 0 rgba(61,155,233,0.4);
-  animation:ctaPulse 2.5s ease-in-out infinite;
+  animation:ctaPulse 2s ease-in-out infinite;
+  border:1.5px solid rgba(61,155,233,0);
 }
 @keyframes ctaPulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(61,155,233,0.25);}
-  50%{box-shadow:0 0 0 8px rgba(61,155,233,0);}
+  0%,100%{box-shadow:0 0 0 0 rgba(61,155,233,0.5);border-color:rgba(61,155,233,0.5);}
+  60%{box-shadow:0 0 0 14px rgba(61,155,233,0);border-color:rgba(61,155,233,0);}
 }
 .dash-cta:hover{opacity:.88;}
 .cta-ey{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:5px;}
@@ -717,7 +717,7 @@ body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
   <div class="done-ring"><div class="done-inner"><div class="done-check"></div></div></div>
   <p class="done-tag">Submitted Successfully</p>
   <h1 class="done-title">We've got everything.</h1>
-  <p class="done-desc">Boney will review your answers and be in touch within 48 hours to begin your brand strategy session.</p>
+  <p class="done-desc">The team will review your answers and will be in touch within 48 hours. We're looking forward to building this with you.</p>
   <button class="done-back" onclick="go('pg-dashboard')">← Back to Dashboard</button>
 </div>
 
@@ -755,7 +755,7 @@ async function doLogin(){
   try{
     const r=await fetch(`${API}?action=login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
     const d=await r.json();
-    if(d.success){client=d;showDash();}
+    if(d.success){client=d;startLoading();}
     else showErr('Incorrect credentials. Please try again.');
   }catch{showErr('Something went wrong.');}
 }
@@ -765,27 +765,29 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
 /* ── LOADING ── */
 function startLoading(){
   go('pg-loading');
-  startSphere();
-  const t=[300,1000,2000,3100];
+  const t=[300,900,1800,2800];
   [0,1,2,3].forEach(i=>{
     setTimeout(()=>{
-      document.getElementById(`lr${i}`).classList.add('show');
+      const row=document.getElementById('lr'+i);
+      const dot=document.getElementById('ld'+i);
+      const txt=document.getElementById('lt'+i);
+      if(row) row.classList.add('show');
       if(i>0){
-        document.getElementById(`ld${i-1}`).classList.remove('pulse');
-        document.getElementById(`ld${i-1}`).classList.add('done');
-        document.getElementById(`lt${i-1}`).classList.add('done');
+        const pd=document.getElementById('ld'+(i-1));
+        const pt=document.getElementById('lt'+(i-1));
+        if(pd){pd.classList.remove('pulse');pd.classList.add('done');}
+        if(pt) pt.classList.add('done');
       }
-      document.getElementById(`ld${i}`).classList.add('pulse');
+      if(dot) dot.classList.add('pulse');
       if(i===3){
         setTimeout(()=>{
-          document.getElementById(`ld3`).classList.remove('pulse');
-          document.getElementById(`ld3`).classList.add('done');
-          document.getElementById(`lt3`).classList.add('done');
-        },500);
+          if(dot){dot.classList.remove('pulse');dot.classList.add('done');}
+          if(txt) txt.classList.add('done');
+        },400);
       }
     },t[i]);
   });
-  setTimeout(()=>showDash(),4400);
+  setTimeout(()=>showDash(),3800);
 }
 
 function startSphere(){
