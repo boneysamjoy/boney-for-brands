@@ -747,7 +747,7 @@ async function doLogin(){
   try{
     const r=await fetch(`${API}?action=login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
     const d=await r.json();
-    if(d.success){client=d;startLoading();}
+    if(d.success){client=d;showDash();}
     else showErr('Incorrect credentials. Please try again.');
   }catch{showErr('Something went wrong.');}
 }
